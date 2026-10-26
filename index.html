@@ -1,0 +1,1075 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Algebra II Warm-Ups</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2c6b55">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+:root{--bg:#f5f4ef;--panel:#ffffff;--ink:#1d2330;--muted:#687080;--line:#e2e0d8;--accent:#2c6b55;--accent-ink:#fff;
+--good:#2b7a4b;--bad:#b0402c;--warn:#a86d12;--good-bg:#e3f1e8;--bad-bg:#f8e3de;--warn-bg:#faefd9;
+--grid:#e8e8e8;--axis:#555;--l0:#2f5d8a;--l1:#c4562c;--pt:#1d2330}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171d;--panel:#1d2129;--ink:#e8e9ec;--muted:#9ba2ae;--line:#2e333d;--accent:#6cc09f;--accent-ink:#0d1117;
+--good:#5fc189;--bad:#e67f68;--warn:#e2ab4d;--good-bg:#1e3428;--bad-bg:#3b2520;--warn-bg:#3a2f1b;
+--grid:#2b3039;--axis:#9ba2ae;--l0:#71a5d8;--l1:#ec8a60;--pt:#e8e9ec;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14171d;--panel:#1d2129;--ink:#e8e9ec;--muted:#9ba2ae;--line:#2e333d;--accent:#6cc09f;--accent-ink:#0d1117;
+--good:#5fc189;--bad:#e67f68;--warn:#e2ab4d;--good-bg:#1e3428;--bad-bg:#3b2520;--warn-bg:#3a2f1b;
+--grid:#2b3039;--axis:#9ba2ae;--l0:#71a5d8;--l1:#ec8a60;--pt:#e8e9ec;color-scheme:dark}
+:root{--scrim:rgba(20,23,29,.45)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));border-bottom:1px solid var(--line);background:var(--panel)}
+header h1{font-size:18px;margin:0;font-weight:650}
+#classbox select{font-weight:650;font-size:15px}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav button{border:none;background:none;color:var(--ink);padding:7px 14px;border-radius:8px;font:inherit;font-size:15px;cursor:pointer}
+nav button:hover{background:var(--bg)}
+nav button.on{background:var(--accent);color:var(--accent-ink)}
+.today{margin-left:auto;color:var(--muted);font-size:14px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.chip{border:1px solid var(--line);border-radius:999px;padding:2px 10px;background:var(--bg);cursor:pointer;font:inherit;font-size:13px;color:var(--ink)}
+.chip:hover{border-color:var(--bad)}
+main{max-width:1250px;margin:0 auto;padding-block:20px 90px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 26px}
+.who{font-size:clamp(40px,7vw,84px);font-weight:700;line-height:1.05;letter-spacing:-.01em}
+.skill{text-transform:uppercase;letter-spacing:.08em;font-size:14px;color:var(--accent);font-weight:650;margin-top:8px}
+.prob{font-size:clamp(26px,3.6vw,44px);margin:20px 0 6px;line-height:1.5}
+.ins{font-size:.72em;line-height:1.4;display:block}
+.wp{font-size:.64em;line-height:1.5;display:block}
+.math{white-space:nowrap}
+.math i{font-family:"Cambria Math",Cambria,"Times New Roman",serif;font-style:italic;padding:0 .03em}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.72em;line-height:1.08;margin:0 .06em}
+.frac .nu{border-bottom:.08em solid currentColor;padding:0 .14em}
+.frac .de{padding:0 .14em}
+.sys{display:flex;flex-direction:column;gap:.3em;border-left:3px solid var(--ink);border-radius:12px 0 0 12px;padding:.15em 0 .15em .6em;margin:.35em 0 0 .3em;width:max-content}
+.seq{margin-top:.25em}
+.rel{margin-top:.25em;font-size:.85em}
+table.vt{border-collapse:collapse;width:auto;font-size:.72em;margin-top:10px}
+table.vt th,table.vt td{border:1.5px solid var(--ink);padding:3px 14px;text-align:center}
+table.vt th{font-family:"Cambria Math",Cambria,"Times New Roman",serif;font-style:italic;font-weight:400;background:var(--bg)}
+.qgraph{margin-top:8px}
+.map{width:min(100%,320px);height:auto;margin-top:6px;display:block}
+.map ellipse{fill:none;stroke:var(--ink);stroke-width:1.5}
+.map text{fill:var(--ink);font-size:17px;font-family:system-ui,sans-serif}
+.map text.hd{fill:var(--muted);font-size:13px}
+.map line{stroke:var(--accent);stroke-width:1.7}
+.map .ah{fill:var(--accent)}
+.ans{border-top:1px dashed var(--line);margin-top:16px;padding-top:16px;font-size:clamp(20px,2.6vw,32px);display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start}
+.ans .sub{font-size:.68em;color:var(--muted);margin-top:6px}
+.graph{width:min(100%,420px);height:auto;flex:none}
+.graph .gr{stroke:var(--grid);stroke-width:1}
+.graph .ax{stroke:var(--axis);stroke-width:1.6}
+.graph text{fill:var(--muted);font-size:10px;font-family:system-ui,sans-serif}
+.graph .ln{stroke-width:3;fill:none}
+.graph .ln0{stroke:var(--l0)} .graph .ln1{stroke:var(--l1)}
+.graph .sh0{fill:var(--l0);opacity:.2}
+.graph .pt{fill:var(--pt)}
+.graph .ptl{fill:var(--ink);font-size:13px;font-weight:650}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+button{font:inherit;cursor:pointer}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:9px 16px;font-size:15px}
+.btn:hover{border-color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.big{font-size:22px;padding:16px 30px}
+.btn.danger{color:var(--bad)}
+.btn.sm{font-size:13px;padding:5px 10px}
+.res{font-size:18px;padding:14px 22px;font-weight:650}
+.res.good{background:var(--good-bg);color:var(--good);border-color:var(--good)}
+.res.bad{background:var(--bad-bg);color:var(--bad);border-color:var(--bad)}
+.res.na{background:var(--warn-bg);color:var(--warn);border-color:var(--warn)}
+.sep{flex:1}
+select,input[type=text]{font:inherit;font-size:15px;padding:7px 9px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);max-width:100%}
+textarea{width:100%;font:15px/1.5 ui-monospace,Consolas,monospace;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+.muted{color:var(--muted)} .small{font-size:13px}
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;display:flex;gap:14px;align-items:center;box-shadow:0 6px 24px rgba(0,0,0,.2);z-index:5;max-width:calc(100% - 32px)}
+.toast button{background:none;border:none;color:inherit;text-decoration:underline;font-weight:650;padding:0}
+.banner{background:var(--warn-bg);color:var(--warn);padding:8px 18px;font-size:14px}
+.tablewrap{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%}
+th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:middle}
+.cov th,.cov td{text-align:center;border:1px solid var(--line)}
+.cov th:first-child,.cov td:first-child{text-align:left;white-space:nowrap;position:sticky;left:0;background:var(--panel)}
+.cov thead th{font-size:12px;font-weight:600;color:var(--muted);min-width:80px;vertical-align:bottom}
+.cov td.cell{font-weight:700;font-size:15px}
+.c-good{background:var(--good-bg);color:var(--good)} .c-bad{background:var(--bad-bg);color:var(--bad)} .c-na{background:var(--warn-bg);color:var(--warn)}
+.cov sup{font-weight:500;font-size:10px;margin-left:1px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin:10px 2px}
+.legend span b{display:inline-block;width:22px;text-align:center;border-radius:4px;margin-right:4px}
+.hist .p{font-size:14px}
+.hist .p .graph,.hist .p .map{width:120px}
+.hist .p table.vt{font-size:12px}
+.tag{font-size:12px;font-weight:650;padding:2px 8px;border-radius:999px}
+section.set{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:16px}
+section.set h2{font-size:17px;margin:0 0 8px}
+.catrow{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
+.catrow:last-child{border-bottom:none}
+.catrow label{flex:1;display:flex;gap:8px;align-items:center}
+.empty{text-align:center;padding:60px 20px}
+.kbd{font-size:12px;color:var(--muted);margin-top:14px}
+h3{margin:18px 0 6px;font-size:15px}
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.slots.one{grid-template-columns:1fr}
+@media (max-width:900px){.slots{grid-template-columns:1fr}}
+.slot{padding:18px 20px;transition:opacity .2s;min-width:0;overflow-wrap:break-word}
+.slot.active{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.slot.done{opacity:.75}
+.slothead{display:flex;align-items:center;gap:12px}
+.pnum{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:18px;flex:none}
+.slothead .skill{margin:0}
+.slot .prob{font-size:clamp(22px,2.7vw,36px);margin:16px 0 6px}
+.slot .ans{font-size:clamp(17px,1.9vw,24px);gap:16px}
+.slot .graph{width:min(100%,330px)}
+.whobox{margin-top:18px;min-height:64px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.slot .who{font-size:clamp(34px,4.6vw,60px)}
+.tag.big{font-size:15px;padding:5px 12px}
+.slot .res{font-size:16px;padding:11px 15px}
+.small-row .btn{font-size:14px;padding:7px 12px}
+.small-row select{font-size:14px;max-width:220px}
+.center{justify-content:center}
+table.syn{width:auto;border-collapse:collapse;margin:6px 0 2px;font-variant-numeric:tabular-nums;font-size:.95em}
+table.syn td{border:none;padding:1px 9px;text-align:right}
+table.syn td.k{border-right:1.5px solid currentColor;padding-right:8px}
+table.syn tr.res td{border-top:1.5px solid currentColor}
+table.syn tr.res td.k{border-top:none}
+table.syn td.last{font-weight:700}
+.rc{border-top:.07em solid currentColor;padding:0 .06em;margin-left:.02em}
+.math sup{font-size:.68em;line-height:0}
+.mback{position:fixed;inset:0;background:var(--scrim);display:flex;align-items:center;justify-content:center;z-index:20;padding:16px}
+.mbox{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:20px 22px;width:min(100%,460px);max-height:calc(100% - 32px);overflow:auto;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.mbox.wide{width:min(100%,640px)}
+.mbox h2{margin:0 0 8px;font-size:18px;text-wrap:balance}
+.mbody{color:var(--muted);font-size:15px}
+.mbox input[type=text]{width:100%;margin-top:10px}
+.mbox textarea{margin-top:10px;font-size:13px}
+.mrow{justify-content:flex-end;margin-top:18px}
+.btn.dangerfill{background:var(--bad);border-color:var(--bad);color:var(--panel)}
+.btn:focus-visible,nav button:focus-visible,.lvl button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lvl{display:inline-flex;align-items:center;gap:2px;font-size:13px;color:var(--muted)}
+.lvl span{margin-right:6px}
+.lvl button{border:1px solid var(--line);background:var(--panel);color:var(--ink);width:30px;height:30px;padding:0;font-size:14px;font-weight:600}
+.lvl button:first-of-type{border-radius:8px 0 0 8px}.lvl button:last-of-type{border-radius:0 8px 8px 0}
+.lvl button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.lvtag{margin-left:auto;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px}
+.how{flex-basis:100%;font-size:.8em;line-height:1.5;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 14px 10px 12px}
+.how .howt{font-size:.75em;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);font-weight:650;margin-bottom:4px}
+.how ol{margin:0;padding-left:1.4em}.how li{margin:3px 0}
+.how .frac{font-size:.8em}
+.classrow{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
+.classrow:last-child{border-bottom:none}
+.classrow .nm{flex:1;font-weight:600}
+.classrow.cur .nm::after{content:"  · selected";font-weight:400;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<div id="banner"></div>
+<header>
+  <h1>Algebra II Warm-Ups</h1>
+  <div id="classbox"></div>
+  <div id="lvlbox"></div>
+  <nav id="nav">
+    <button data-tab="warm">Warm-Up</button>
+    <button data-tab="cov">Coverage</button>
+    <button data-tab="hist">History</button>
+    <button data-tab="setup">Setup</button>
+  </nav>
+  <div class="today" id="today"></div>
+  <button class="btn sm" id="fsbtn" data-act="fs" hidden>Full screen</button>
+</header>
+<main id="main"></main>
+<div id="toast"></div>
+<div id="modal"></div>
+<input type="file" id="importFile" accept=".json,application/json" hidden>
+<input type="file" id="importSkills" accept=".json,application/json" hidden>
+<script>
+/* ===================== math helpers ===================== */
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1};
+function R(n,d=1){if(d<0){n=-n;d=-d}const g=gcd(n,d);return{n:n/g,d:d/g}}
+const rval=r=>r.n/r.d;
+const rand=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const nz=(a,b)=>{let v;do{v=rand(a,b)}while(v===0);return v};
+const sgn=()=>Math.random()<.5?-1:1;
+const gauss=()=>{let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=rand(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+const rnd=(v,p)=>{const f=10**p;return Math.round(v*f)/f};
+function tryGen(f){for(let i=0;i<3000;i++){const r=f();if(r)return r}throw new Error('Could not generate a problem')}
+
+const MINUS='−';
+const num=n=>(n<0?MINUS:'')+Math.abs(n);
+const f2=v=>{const s=Math.abs(v).toFixed(2);return(v<0&&s!=='0.00'?MINUS:'')+s};
+const money=v=>'$'+(Number.isInteger(v)?v.toLocaleString('en-US'):v.toFixed(2));
+const V=v=>`<i>${v}</i>`;
+const M=s=>`<span class="math">${s}</span>`;
+const frac=(n,d)=>`<span class="frac"><span class="nu">${n}</span><span class="de">${d}</span></span>`;
+const rAbs=r=>{const n=Math.abs(r.n);return r.d===1?String(n):frac(n,r.d)};
+const rHTML=r=>(r.n<0?MINUS:'')+rAbs(r);
+function expr(terms){let out='',first=true;
+  for(const[c,v]of terms){if(c.n===0)continue;const neg=c.n<0,a=R(Math.abs(c.n),c.d);
+    const body=v?((a.n===1&&a.d===1)?V(v):rAbs(a)+V(v)):rAbs(a);
+    if(first){out+=(neg?MINUS:'')+body;first=false}else out+=(neg?` ${MINUS} `:' + ')+body}
+  return first?'0':out}
+const slopeInt=(m,b)=>`${V('y')} = ${expr([[m,'x'],[b,'']])}`;
+const stdForm=(A,B,C)=>`${expr([[R(A),'x'],[R(B),'y']])} = ${num(C)}`;
+const pt=(x,y)=>`(${num(x)}, ${num(y)})`;
+const sys=(a,b)=>`<div class="sys"><div>${M(a)}</div><div>${M(b)}</div></div>`;
+// decimal-coefficient linear equation, e.g. C = 35h + 60
+const coefD=m=>m===1?'':m===-1?MINUS:num(m);
+const linEq=(yv,xv,m,b,fmt=num)=>`${V(yv)} = ${coefD(m)}${V(xv)}${b===0?'':` ${b<0?MINUS:'+'} ${fmt(Math.abs(b))}`}`;
+function ptSlope(m,x1,y1){
+  const L=y1===0?V('y'):`${V('y')} ${y1<0?'+':MINUS} ${Math.abs(y1)}`;
+  if(m.n===0)return`${L} = 0`;
+  const c=(m.n===1&&m.d===1)?'':(m.n===-1&&m.d===1)?MINUS:rHTML(m);
+  const bare=`${V('x')} ${x1<0?'+':MINUS} ${Math.abs(x1)}`;
+  const inner=x1===0?V('x'):c===''?bare:`(${bare})`;
+  return`${L} = ${c}${inner}`}
+const SLOPES=[[1,1],[2,1],[3,1],[1,2],[1,3],[2,3],[3,2],[3,4],[4,3],[1,4]].flatMap(([n,d])=>[R(n,d),R(-n,d)]);
+const OPS={'<':'&lt;','<=':'&le;','>':'&gt;','>=':'&ge;'};
+const FLIP={'<':'>','<=':'>=','>':'<','>=':'<='};
+const ord=n=>{const s=(n%100>=11&&n%100<=13)?'th':({1:'st',2:'nd',3:'rd'}[n%10]||'th');return n+s};
+const ins=s=>`<span class="ins">${s}</span>`;
+
+/* ===================== drawing ===================== */
+let svgN=0;
+function graphSVG({lines=[],points=[],paths=[],N=10}){
+  const S=400,u=S/(2*N),X=x=>+((x+N)*u).toFixed(2),Y=y=>+((N-y)*u).toFixed(2);
+  const id='c'+(++svgN)+Math.random().toString(36).slice(2,6);
+  let s=`<svg class="graph" viewBox="-16 -16 ${S+32} ${S+32}" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="${id}"><rect x="0" y="0" width="${S}" height="${S}"/></clipPath></defs>`;
+  for(let i=-N;i<=N;i++){if(i===0)continue;s+=`<line class="gr" x1="${X(i)}" y1="0" x2="${X(i)}" y2="${S}"/><line class="gr" x1="0" y1="${Y(i)}" x2="${S}" y2="${Y(i)}"/>`}
+  s+=`<line class="ax" x1="${X(0)}" y1="0" x2="${X(0)}" y2="${S}"/><line class="ax" x1="0" y1="${Y(0)}" x2="${S}" y2="${Y(0)}"/>`;
+  for(let i=-N+2;i<N;i+=2){if(i===0)continue;
+    s+=`<text x="${X(i)}" y="${Y(0)+13}" text-anchor="middle">${num(i)}</text><text x="${X(0)-4}" y="${Y(i)+3.5}" text-anchor="end">${num(i)}</text>`}
+  s+=`<g clip-path="url(#${id})">`;
+  lines.forEach((l,i)=>{const dash=l.dashed?' stroke-dasharray="12 8"':'';
+    if(l.vx!==undefined){const x=X(l.vx);
+      if(l.shade)s+=l.shade==='right'?`<rect class="sh0" x="${x}" y="0" width="${S-x}" height="${S}"/>`:`<rect class="sh0" x="0" y="0" width="${x}" height="${S}"/>`;
+      s+=`<line class="ln ln${i}"${dash} x1="${x}" y1="-5" x2="${x}" y2="${S+5}"/>`}
+    else{const f=x=>rval(l.m)*x+rval(l.b),a=-N-1,b=N+1,p0=[X(a),Y(f(a))],p1=[X(b),Y(f(b))];
+      if(l.shade){const e=l.shade==='above'?-99999:99999;s+=`<polygon class="sh0" points="${p0} ${p1} ${p1[0]},${e} ${p0[0]},${e}"/>`}
+      s+=`<line class="ln ln${i}"${dash} x1="${p0[0]}" y1="${p0[1]}" x2="${p1[0]}" y2="${p1[1]}"/>`}});
+  paths.forEach(pp=>{s+=`<polyline class="ln ln0" points="${pp.map(([x,y])=>`${X(Math.max(-60,Math.min(60,x)))},${Y(Math.max(-60,Math.min(60,y)))}`).join(' ')}"/>`});
+  s+='</g>';
+  points.forEach(p=>{s+=`<circle class="pt" cx="${X(p.x)}" cy="${Y(p.y)}" r="5"/>`;
+    if(p.label){const right=p.x<N-4;s+=`<text class="ptl" x="${X(p.x)+(right?9:-9)}" y="${Y(p.y)-9}" text-anchor="${right?'start':'end'}">${pt(p.x,p.y)}</text>`}});
+  return s+'</svg>'}
+const sampleX=(f,a=-11,b=11)=>{const o=[];for(let x=a;x<=b+1e-9;x+=.1)o.push([x,f(x)]);return o};
+const sampleY=(g,a=-11,b=11)=>{const o=[];for(let y=a;y<=b+1e-9;y+=.1)o.push([g(y),y]);return o};
+
+function niceStep(range){const raw=range/5,p=10**Math.floor(Math.log10(raw)),m=raw/p;return(m<1.5?1:m<3?2:m<7?5:10)*p}
+function scatterSVG(pts,{line=null,labels=true}={}){
+  const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);
+  let x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+  const sx=niceStep((x1-x0)||1),sy=niceStep((y1-y0)||1);
+  x0=Math.floor(x0/sx)*sx-(x0%sx===0?sx:0);x1=Math.ceil(x1/sx)*sx+(x1%sx===0?sx:0);
+  y0=Math.floor(y0/sy)*sy-(y0%sy===0?sy:0);y1=Math.ceil(y1/sy)*sy+(y1%sy===0?sy:0);
+  const W=400,H=320,pl=labels?40:12,pb=labels?26:12,pr=12,pt_=12;
+  const X=x=>+(pl+(x-x0)/(x1-x0)*(W-pl-pr)).toFixed(2),Y=y=>+(H-pb-(y-y0)/(y1-y0)*(H-pb-pt_)).toFixed(2);
+  const id='s'+(++svgN)+Math.random().toString(36).slice(2,6);
+  let s=`<svg class="graph" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="${id}"><rect x="${pl}" y="${pt_}" width="${W-pl-pr}" height="${H-pb-pt_}"/></clipPath></defs>`;
+  const fx=v=>num(rnd(v,6));
+  for(let x=x0;x<=x1+1e-9;x+=sx){s+=`<line class="gr" x1="${X(x)}" y1="${pt_}" x2="${X(x)}" y2="${H-pb}"/>`;if(labels)s+=`<text x="${X(x)}" y="${H-pb+15}" text-anchor="middle">${fx(x)}</text>`}
+  for(let y=y0;y<=y1+1e-9;y+=sy){s+=`<line class="gr" x1="${pl}" y1="${Y(y)}" x2="${W-pr}" y2="${Y(y)}"/>`;if(labels)s+=`<text x="${pl-5}" y="${Y(y)+3.5}" text-anchor="end">${fx(y)}</text>`}
+  s+=`<line class="ax" x1="${pl}" y1="${pt_}" x2="${pl}" y2="${H-pb}"/><line class="ax" x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}"/>`;
+  if(line)s+=`<g clip-path="url(#${id})"><line class="ln ln1" x1="${X(x0)}" y1="${Y(line.a*x0+line.b)}" x2="${X(x1)}" y2="${Y(line.a*x1+line.b)}"/></g>`;
+  pts.forEach(([x,y])=>{s+=`<circle class="pt" cx="${X(x)}" cy="${Y(y)}" r="4.5"/>`});
+  return s+'</svg>'}
+
+function mapSVG(pairs){
+  const xs=[...new Set(pairs.map(p=>p[0]))].sort((a,b)=>a-b),ys=[...new Set(pairs.map(p=>p[1]))].sort((a,b)=>a-b);
+  const rows=Math.max(xs.length,ys.length),rowH=36,top=26,H=top+rows*rowH+14,W=300,lx=70,rx=230;
+  const yAt=(i,n)=>top+7+(rows*rowH)*(i+.5)/n;
+  const id='m'+(++svgN)+Math.random().toString(36).slice(2,6);
+  let s=`<svg class="map" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><defs><marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
+  s+=`<text class="hd" x="${lx}" y="16" text-anchor="middle">Input</text><text class="hd" x="${rx}" y="16" text-anchor="middle">Output</text>`;
+  const cy=top+7+rows*rowH/2,ry=rows*rowH/2+4;
+  s+=`<ellipse cx="${lx}" cy="${cy}" rx="38" ry="${ry}"/><ellipse cx="${rx}" cy="${cy}" rx="38" ry="${ry}"/>`;
+  pairs.forEach(([x,y])=>{const a=yAt(xs.indexOf(x),xs.length),b=yAt(ys.indexOf(y),ys.length);
+    s+=`<line x1="${lx+20}" y1="${a}" x2="${rx-22}" y2="${b}" marker-end="url(#${id})"/>`});
+  xs.forEach((x,i)=>{s+=`<text x="${lx}" y="${yAt(i,xs.length)+6}" text-anchor="middle">${num(x)}</text>`});
+  ys.forEach((y,i)=>{s+=`<text x="${rx}" y="${yAt(i,ys.length)+6}" text-anchor="middle">${num(y)}</text>`});
+  return s+'</svg>'}
+const vtable=(pairs,xl='x',yl='y')=>`<table class="vt"><tr><th>${xl}</th>${pairs.map(p=>`<td>${num(p[0])}</td>`).join('')}</tr><tr><th>${yl}</th>${pairs.map(p=>`<td>${num(p[1])}</td>`).join('')}</tr></table>`;
+
+/* ===================== Algebra II generators (each takes lv = 1..5) ===================== */
+const par=v=>v<0?`(${num(v)})`:num(v);
+const wp=s=>`<span class="wp">${s}</span>`;
+const sup=n=>`<sup>${n}</sup>`;
+const xp=(p,v='x')=>p===0?'':p===1?V(v):V(v)+sup(p);
+const toR=c=>typeof c==='number'?R(c):c;
+function poly(c,v='x'){const n=c.length-1;let out='',first=true;
+  c.forEach((co,i)=>{const r=toR(co);if(r.n===0)return;const p=n-i,neg=r.n<0,a=R(Math.abs(r.n),r.d);
+    const body=p===0?rAbs(a):((a.n===1&&a.d===1)?'':rAbs(a))+xp(p,v);
+    out+=first?(neg?MINUS:'')+body:(neg?` ${MINUS} `:' + ')+body;first=false});
+  return first?'0':out}
+const ptrim=a=>{let i=0;while(i<a.length-1&&Math.abs(a[i])<1e-12)i++;return a.slice(i)};
+const pmul=(a,b)=>{const r=Array(a.length+b.length-1).fill(0);a.forEach((x,i)=>b.forEach((y,j)=>{r[i+j]+=x*y}));return r};
+const padd=(a,b)=>{const n=Math.max(a.length,b.length),A=Array(n-a.length).fill(0).concat(a),B=Array(n-b.length).fill(0).concat(b);return ptrim(A.map((x,i)=>x+B[i]))};
+const pneg=a=>a.map(x=>-x);
+const peval=(c,x)=>c.reduce((s,a)=>s*x+a,0);
+const pfromRoots=rs=>rs.reduce((p,r)=>pmul(p,[1,-r]),[1]);
+const near=(a,b)=>Math.abs(a-b)<1e-6*Math.max(1,Math.abs(a),Math.abs(b));
+const samePoly=(a,b)=>{for(const x of [-2.3,-.7,.4,1.9,3.1])if(!near(peval(a,x),peval(b,x)))return false;return true};
+function cevalP(c,re,im){let a=0,b=0;for(const k of c){const na=a*re-b*im+k,nb=a*im+b*re;a=na;b=nb}return[a,b]}
+const isRootC=(c,re,im)=>{const[a,b]=cevalP(c,re,im);return Math.abs(a)<1e-6&&Math.abs(b)<1e-6};
+function synth(c,k){const out=[c[0]],mid=[null];for(let i=1;i<c.length;i++){const m=out[i-1]*k;mid.push(m);out.push(c[i]+m)}return{q:out.slice(0,-1),r:out[out.length-1],mid,out}}
+function synthTable(c,k,s){return `<table class="syn"><tr><td class="k">${num(k)}</td>${c.map(x=>`<td>${num(x)}</td>`).join('')}</tr><tr><td class="k"></td>${s.mid.map(x=>`<td>${x===null?'':num(x)}</td>`).join('')}</tr><tr class="res"><td class="k"></td>${s.out.map((x,i)=>`<td${i===s.out.length-1?' class="last"':''}>${num(x)}</td>`).join('')}</tr></table>`}
+function sqrtParts(n){let k=1,m=n;for(let f=2;f*f<=m;f++)while(m%(f*f)===0){m/=f*f;k*=f}return[k,m]}
+const isSq=n=>n>=0&&Math.round(Math.sqrt(n))**2===n;
+const rad=m=>`√<span class="rc">${m}</span>`;
+const radStr=(k,m)=>m===1?String(k):(k===1?'':String(k))+rad(m);
+const imag=(k,m)=>(k===1?'':String(k))+V('i')+(m===1?'':rad(m));
+const SQF=[2,3,5,6,7,10,11,13];
+const radd=(a,b)=>R(a.n*b.d+b.n*a.d,a.d*b.d),rsub=(a,b)=>R(a.n*b.d-b.n*a.d,a.d*b.d),rmul=(a,b)=>R(a.n*b.n,a.d*b.d);
+function exactRoots(a,b,c){const D=b*b-4*a*c;
+  if(D>=0&&isSq(D)){const s=Math.round(Math.sqrt(D)),r=[R(-b-s,2*a),R(-b+s,2*a)].sort((p,q)=>rval(p)-rval(q)),list=D===0?[r[0]]:r;
+    return{D,type:D===0?'double':'rational',list,body:list.map(rHTML).join(', '),disp:list.map(x=>M(V('x')+' = '+rHTML(x))).join(', &nbsp;'),roots:list.map(x=>[rval(x),0])}}
+  const cpx=D<0,[k,m]=sqrtParts(Math.abs(D));let P=-b,Q=k,den=2*a;const g=gcd(gcd(P,Q),den);P/=g;Q/=g;den/=g;if(den<0){den=-den;P=-P}
+  const qs=Q===1?'':String(Q),surd=cpx?(m===1?qs+V('i'):qs+V('i')+rad(m)):qs+rad(m);
+  const body=den===1?(P===0?`±${surd}`:`${num(P)} ± ${surd}`):(P===0?`±${frac(surd,den)}`:frac(`${num(P)} ± ${surd}`,den));
+  const re=P/den,w=Q*Math.sqrt(m)/den;
+  return{D,type:cpx?'complex':'irrational',body,disp:M(V('x')+' = '+body),roots:cpx?[[re,w],[re,-w]]:[[re+w,0],[re-w,0]],P,Q,m,den}}
+const chkRoots=(c,roots)=>roots.every(([re,im])=>isRootC(c,re,im));
+
+const sq=s=>s+sup(2);
+const xm=(h,v='x')=>h===0?V(v):`${V(v)} ${h>0?MINUS:'+'} ${Math.abs(h)}`;
+const lead=a=>a===1?'':a===-1?MINUS:num(a);
+const vform=(a,h,k,y='y')=>`${V(y)} = ${lead(a)}${h===0?sq(V('x')):sq(`(${xm(h)})`)}${k===0?'':` ${k<0?MINUS:'+'} ${Math.abs(k)}`}`;
+const iform=(a,p,q,y='y')=>`${V(y)} = ${lead(a)}${p===0?V('x'):`(${xm(p)})`}${q===0?V('x'):`(${xm(q)})`}`;
+const sform=(c,y='y')=>`${V(y)} = ${poly(c)}`;
+const VF=`${V('y')} = ${V('a')}(${V('x')} ${MINUS} ${V('h')})${sup(2)} + ${V('k')}`,IF=`${V('y')} = ${V('a')}(${V('x')} ${MINUS} ${V('p')})(${V('x')} ${MINUS} ${V('q')})`;
+const quadPlot=(f,points)=>graphSVG({paths:[sampleX(f)],points:points.filter(p=>Math.abs(p.x)<=9.5&&Math.abs(p.y)<=9.5)});
+
+/* ---------- Unit 1: quadratics ---------- */
+function genKeyFeat(lv){return tryGen(()=>{
+  const h=rand(-6,6),k=rand(-7,7);
+  if(lv<=2){const a=lv===1?pick([1,-1]):pick([2,3,-2,-3,-1]),f=x=>a*(x-h)**2+k;
+    const ansL=[`Vertex: ${M(pt(h,k))}`];if(lv===2)ansL.push(`Axis of symmetry: ${M(V('x')+' = '+num(h))}`);ansL.push(`Opens ${a>0?'up':'down'}`);
+    return{q:ins(lv===1?'State the vertex and whether the parabola opens up or down.':'State the vertex, the axis of symmetry, and whether the parabola opens up or down.')+`<div class="seq">${M(vform(a,h,k))}</div>`,
+      a:`<div>${ansL.join('<br>')}</div>`,graph:quadPlot(f,[{x:h,y:k}]),
+      how:[`Vertex form is ${M(VF)}; the vertex is ${M(`(${V('h')}, ${V('k')})`)}.`,`Here ${M(V('h')+' = '+num(h))} (the sign inside the parentheses is opposite) and ${M(V('k')+' = '+num(k))}.`,
+        ...(lv===2?[`The axis of symmetry is the vertical line through the vertex, ${M(V('x')+' = '+num(h))}.`]:[]),`${M(V('a')+' = '+num(a))} is ${a>0?'positive, so it opens up':'negative, so it opens down'}.`],chk:()=>true}}
+  if(lv===3){const a=pick([1,-1,2,-2]),p=rand(-8,8);let q;do{q=rand(-8,8)}while(q===p);const xv=R(p+q,2),f=x=>a*(x-p)*(x-q),r=[p,q].sort((u,v)=>u-v);
+    return{q:ins('State the x-intercepts and the x-coordinate of the vertex.')+`<div class="seq">${M(iform(a,p,q))}</div>`,
+      a:`<div><i>x</i>-intercepts: ${M(pt(r[0],0))}, ${M(pt(r[1],0))}<br>Vertex <i>x</i>-coordinate: ${M(rHTML(xv))}</div>`,graph:quadPlot(f,[{x:p,y:0},{x:q,y:0}]),
+      how:[`Intercept form is ${M(IF)}; the <i>x</i>-intercepts are ${M(V('p'))} and ${M(V('q'))}: ${M(num(p))} and ${M(num(q))}.`,
+        `The vertex is halfway between them: ${M(`${V('x')} = ${frac(`${num(p)} + ${par(q)}`,2)} = ${rHTML(xv)}`)}.`],chk:()=>near(rval(xv),(p+q)/2)}}
+  const a=pick([1,-1,2,-2,3]),b=-2*a*h,c=a*h*h+k;if(Math.abs(c)>30||b===0)return null;const coef=[a,b,c],f=x=>a*(x-h)**2+k;
+  const aos=`${M(`${V('x')} = ${frac(`${MINUS}${V('b')}`,`2${V('a')}`)} = ${frac(`${MINUS}${par(b)}`,`2(${num(a)})`)} = ${num(h)}`)}`;
+  if(lv===4)return{q:ins('State the y-intercept and the axis of symmetry.')+`<div class="seq">${M(sform(coef))}</div>`,
+    a:`<div><i>y</i>-intercept: ${M(pt(0,c))}<br>Axis of symmetry: ${M(V('x')+' = '+num(h))}</div>`,graph:quadPlot(f,[{x:0,y:c},{x:h,y:k}]),
+    how:[`In standard form ${M(`${V('y')} = ${V('a')}${V('x')}${sup(2)} + ${V('b')}${V('x')} + ${V('c')}`)}, the <i>y</i>-intercept is ${M(`(0, ${V('c')})`)} = ${M(pt(0,c))}.`,`Axis of symmetry: ${aos}.`],chk:()=>near(-b/(2*a),h)};
+  return{q:ins('State the vertex, the axis of symmetry, and whether the parabola opens up or down.')+`<div class="seq">${M(sform(coef))}</div>`,
+    a:`<div>Vertex: ${M(pt(h,k))}<br>Axis of symmetry: ${M(V('x')+' = '+num(h))}<br>Opens ${a>0?'up':'down'}</div>`,graph:quadPlot(f,[{x:h,y:k}]),
+    how:[`Axis of symmetry: ${aos}.`,`Substitute ${M(V('x')+' = '+num(h))}: ${M(`${V('y')} = ${num(a)}(${num(h)})${sup(2)} ${b<0?MINUS:'+'} ${Math.abs(b)}(${num(h)}) ${c<0?MINUS:'+'} ${Math.abs(c)} = ${num(k)}`)}, so the vertex is ${M(pt(h,k))}.`,
+      `${M(V('a')+' = '+num(a))} is ${a>0?'positive, so it opens up':'negative, so it opens down'}.`],chk:()=>near(peval(coef,h),k)}})}
+
+function genToStd(lv){return tryGen(()=>{
+  const vertex=lv===2||lv===4||(lv===5&&Math.random()<.6),a=lv<=2?1:lv<=4?pick([2,3,-2,-3]):pick([-2,-3,-4,-1]);
+  if(vertex){const h=nz(lv===5?-7:-5,lv===5?7:5),k=nz(-9,9),sqc=[1,-2*h,h*h],res=padd(pmul([a],sqc),[k]);
+    const how=[`Square the binomial: ${M(`${sq(`(${xm(h)})`)} = ${poly(sqc)}`)}.`];
+    if(a!==1)how.push(`Distribute ${M(num(a))}: ${M(`${num(a)}(${poly(sqc)}) = ${poly(pmul([a],sqc))}`)}.`);
+    how.push(`${k<0?'Subtract':'Add'} ${Math.abs(k)}: ${M(sform(res))}.`);
+    return{q:ins('Rewrite in standard form.')+`<div class="seq">${M(vform(a,h,k))}</div>`,a:`<div>${M(sform(res))}</div>`,how,chk:()=>samePoly(res,padd(pmul([a],pmul([1,-h],[1,-h])),[k]))}}
+  const p=nz(-9,9);let q;do{q=nz(-9,9)}while(q===p);const prod=[1,-(p+q),p*q],res=pmul([a],prod);
+  const how=[`Multiply the binomials: first ${M(`${V('x')}·${V('x')} = ${sq(V('x'))}`)}, outer + inner ${M(`${par(-q)}${V('x')} + ${par(-p)}${V('x')} = ${num(-(p+q))}${V('x')}`)}, last ${M(`${par(-p)}${par(-q)} = ${num(p*q)}`)}.`,
+    `So ${M(`(${xm(p)})(${xm(q)}) = ${poly(prod)}`)}.`];
+  if(a!==1)how.push(`Distribute ${M(num(a))}: ${M(sform(res))}.`);
+  return{q:ins('Rewrite in standard form.')+`<div class="seq">${M(iform(a,p,q))}</div>`,a:`<div>${M(sform(res))}</div>`,how,chk:()=>samePoly(res,pmul([a],pmul([1,-p],[1,-q])))}})}
+
+function genGraphQuad(lv){return tryGen(()=>{
+  let a,h,k,form,roots=[];
+  if(lv===1){a=1;h=rand(-5,5);const s=rand(0,3);k=Math.random()<.75?-s*s:rand(1,5);form='v'}
+  else if(lv===2){a=1;const p=rand(-7,7),q=rand(-7,7);if(p===q)return null;roots=[p,q];h=(p+q)/2;if(!Number.isInteger(h))return null;k=-(((q-p)/2)**2);form='i'}
+  else if(lv===3){a=pick([-1,2,-2]);h=rand(-5,5);const s=rand(1,3);k=Math.random()<.75?-a*s*s:a*rand(1,3);form='v'}
+  else{a=lv===4?1:pick([-1,2,-2]);h=rand(-4,4);const s=rand(1,3);k=Math.random()<.85?-a*s*s:a*rand(1,2);form='s'}
+  if(Math.abs(k)>9)return null;
+  if(!roots.length&&-k/a>=0){const s=Math.sqrt(-k/a);if(!Number.isInteger(s))return null;roots=s===0?[h]:[h-s,h+s]}
+  roots.sort((u,v)=>u-v);const c=a*h*h+k,coef=[a,-2*a*h,c],f=x=>a*(x-h)**2+k;if(Math.abs(c)>20)return null;
+  const eq=form==='v'?vform(a,h,k):form==='i'?iform(a,roots[0],roots[1]):sform(coef);
+  const xi=roots.length?roots.map(r=>M(pt(r,0))).join(', '):'none';
+  const how=[];
+  if(form==='v')how.push(`Vertex form: the vertex is ${M(pt(h,k))} and the axis of symmetry is ${M(V('x')+' = '+num(h))}.`);
+  if(form==='i')how.push(`Intercept form: the <i>x</i>-intercepts are ${M(num(roots[0]))} and ${M(num(roots[1]))}; the axis of symmetry is halfway between, ${M(V('x')+' = '+num(h))}. Substitute to get the vertex ${M(pt(h,k))}.`);
+  if(form==='s')how.push(`Axis of symmetry: ${M(`${V('x')} = ${MINUS}${V('b')}/(2${V('a')}) = ${num(h)}`)}; substitute to get the vertex ${M(pt(h,k))}.`);
+  how.push(`<i>y</i>-intercept: let ${M(V('x')+' = 0')}: ${M(pt(0,c))}.`,
+    roots.length?(form==='i'?'Plot the intercepts, the vertex and the y-intercept, then draw a smooth parabola.':`<i>x</i>-intercepts: set ${M(V('y')+' = 0')} and solve: ${roots.map(r=>M(num(r))).join(' and ')}.`)
+      :`The vertex is ${a>0?'above':'below'} the <i>x</i>-axis and the parabola opens ${a>0?'up':'down'}, so there are no <i>x</i>-intercepts.`,
+    `Use symmetry: the point ${M(pt(2*h,c))} mirrors the <i>y</i>-intercept across the axis.`);
+  return{q:ins('Graph the function. Label the vertex, axis of symmetry, x-intercepts, and y-intercept.')+`<div class="seq">${M(eq)}</div>`,
+    a:`<div>Vertex: ${M(pt(h,k))}<br>Axis: ${M(V('x')+' = '+num(h))}<br><i>x</i>-int: ${xi}<br><i>y</i>-int: ${M(pt(0,c))}</div>`,
+    graph:quadPlot(f,[{x:h,y:k},{x:0,y:c},...roots.map(r=>({x:r,y:0}))]),how,chk:()=>roots.every(r=>near(f(r),0))&&near(peval(coef,0),c)}})}
+
+function genDomRange(lv){return tryGen(()=>{
+  if(lv===5){const k=rand(2,6),v=16*k,top=4*k*k;
+    return{q:wp(`A ball is kicked from the ground. Its height in feet after ${M(V('t'))} seconds is ${M(`${V('h')}(${V('t')}) = ${MINUS}16${V('t')}${sup(2)} + ${v}${V('t')}`)}. What are a reasonable domain and range for this situation?`),
+      a:`<div>Domain: ${M(`0 ≤ ${V('t')} ≤ ${k}`)}<br>Range: ${M(`0 ≤ ${V('h')} ≤ ${top}`)}</div>`,
+      how:[`The ball is in the air from ${M(V('t')+' = 0')} until it lands: ${M(`${MINUS}16${V('t')}(${V('t')} ${MINUS} ${k}) = 0`)}, so ${M(V('t')+' = '+k)}.`,
+        `Highest point at the vertex: ${M(`${V('t')} = ${frac(`${MINUS}${v}`,`2(${MINUS}16)`)} = ${rHTML(R(k,2))}`)}, ${M(`${V('h')} = ${MINUS}16(${rHTML(R(k,2))})${sup(2)} + ${v}(${rHTML(R(k,2))}) = ${top}`)} feet.`,
+        'Time and height cannot be negative, so both start at 0.'],chk:()=>near(-16*(k/2)**2+v*k/2,top)}}
+  const h=rand(-6,6),k=rand(-8,8),a=lv===1?pick([1,2,3]):lv===2?pick([-1,-2,-3]):pick([1,-1,2,-2,3,-3]);
+  let eq,find;
+  if(lv<=2){eq=vform(a,h,k);find=`The vertex is ${M(pt(h,k))} (vertex form).`}
+  else if(lv===3){const c=a*h*h+k;if(Math.abs(c)>30||h===0)return null;eq=sform([a,-2*a*h,c]);find=`Vertex: ${M(`${V('x')} = ${MINUS}${V('b')}/(2${V('a')}) = ${num(h)}`)}, then ${M(V('y')+' = '+num(k))}, so the vertex is ${M(pt(h,k))}.`}
+  else{const s=rand(1,4);const kk=-a*s*s;if(Math.abs(kk)>12)return null;return mk(a,h,kk,iform(a,h-s,h+s),`The vertex is halfway between the <i>x</i>-intercepts ${M(num(h-s))} and ${M(num(h+s))}: ${M(V('x')+' = '+num(h))}, and ${M(`${V('y')} = ${num(a)}(${num(h)} ${MINUS} ${par(h-s)})(${num(h)} ${MINUS} ${par(h+s)}) = ${num(kk)}`)}.`)}
+  return mk(a,h,k,eq,find);
+  function mk(a,h,k,eq,find){const up=a>0,inf=up?'+∞':`${MINUS}∞`;
+    return{q:ins('State the domain and range. Then describe the end behavior.')+`<div class="seq">${M(eq)}</div>`,
+      a:`<div>Domain: all real numbers<br>Range: ${M(`${V('y')} ${up?'≥':'≤'} ${num(k)}`)}<br>As ${M(`${V('x')} → ${MINUS}∞`)}, ${M(`${V('y')} → ${inf}`)}; as ${M(`${V('x')} → +∞`)}, ${M(`${V('y')} → ${inf}`)}</div>`,
+      graph:quadPlot(x=>a*(x-h)**2+k,[{x:h,y:k}]),
+      how:['Any <i>x</i> can be substituted, so the domain is all real numbers.',find,`${M(V('a'))} is ${up?'positive: the parabola opens up, so the vertex is the minimum':'negative: the parabola opens down, so the vertex is the maximum'}. Range: ${M(`${V('y')} ${up?'≥':'≤'} ${num(k)}`)}.`,
+        `Both ends of a parabola go the same way: ${up?'up':'down'}, so ${M(`${V('y')} → ${inf}`)} on both sides.`],chk:()=>true}}})}
+
+const linF=(m,p)=>`(${m===1?'':m}${V('x')} ${p>0?MINUS:'+'} ${Math.abs(p)})`; // (mx − p)
+function genFactorSolve(lv){return tryGen(()=>{
+  let m1=1,p1,m2=1,p2,eqL,extra=[];
+  if(lv<=2){p1=nz(-9,9);p2=nz(-9,9);if(p1===p2||Math.abs(p1+p2)>14)return null}
+  else if(lv===3){const t=pick(['dos','gcf','pst']);
+    if(t==='dos'){const s=rand(2,9),c=pick([1,1,2,3]);m1=m2=c;p1=s;p2=-s;if(c>1&&gcd(c,s)!==1)return null}
+    else if(t==='gcf'){const g=pick([1,2,3,4,5]),r=nz(-9,9);const coef=[g,-g*r,0],roots=[0,r].sort((u,v)=>u-v);
+      return{q:ins('Solve by factoring.')+`<div class="seq">${M(poly(coef)+' = 0')}</div>`,a:`<div>${roots.map(x=>M(V('x')+' = '+num(x))).join(', &nbsp;')}</div>`,
+        how:[`Factor out the GCF ${M((g===1?'':g)+V('x'))}: ${M(`${g===1?'':g}${V('x')}(${xm(r)}) = 0`)}.`,`Zero product property: ${M(`${g===1?'':g}${V('x')} = 0`)} or ${M(`${xm(r)} = 0`)}, so ${roots.map(x=>M(V('x')+' = '+num(x))).join(' or ')}.`],chk:()=>roots.every(x=>near(peval(coef,x),0))}}
+    else{p1=p2=nz(-9,9)}}
+  else if(lv===4){const a=pick([2,3,5]);m1=a;p1=nz(-9,9);if(gcd(a,p1)!==1)return null;p2=nz(-8,8)}
+  else{const pr=pick([[2,3],[2,5],[3,2],[4,3],[3,4],[2,2]]);m1=pr[0];m2=pr[1];p1=nz(-7,7);p2=nz(-7,7);if(gcd(m1,p1)!==1||gcd(m2,p2)!==1)return null}
+  const coef=pmul([m1,-p1],[m2,-p2]);if(coef.some(c=>Math.abs(c)>80))return null;
+  const roots=[R(p1,m1),R(p2,m2)].sort((u,v)=>rval(u)-rval(v)),uniq=rval(roots[0])===rval(roots[1])?[roots[0]]:roots;
+  let shown=poly(coef)+' = 0';
+  if(lv===2&&Math.random()<.6){const c=coef[2];shown=`${poly([coef[0],coef[1],0])} = ${num(-c)}`;extra.push(`Move every term to one side: ${M(poly(coef)+' = 0')}.`)}
+  const a=coef[0],b=coef[1],c=coef[2],u=-m1*p2,v=-m2*p1;
+  const how=[...extra];
+  if(a===1)how.push(`Find two numbers that multiply to ${M(num(c))} and add to ${M(num(b))}: ${M(num(Math.min(u,v)))} and ${M(num(Math.max(u,v)))}.`);
+  else if(p1===-p2&&m1===m2)how.push(`Difference of squares: ${M(`${poly(coef)} = ${linF(m1,p1)}${linF(m2,p2)}`)}.`);
+  else how.push(`Find two numbers that multiply to ${M(`${V('a')}${V('c')} = ${num(a*c)}`)} and add to ${M(num(b))}: ${M(num(Math.min(u,v)))} and ${M(num(Math.max(u,v)))}. Split the middle term and factor by grouping.`);
+  how.push(`Factor: ${M(`${p1===p2&&m1===m2?sq(linF(m1,p1)):linF(m1,p1)+linF(m2,p2)} = 0`)}.`,`Set each factor equal to 0: ${uniq.map(r=>M(V('x')+' = '+rHTML(r))).join(' or ')}.`);
+  return{q:ins('Solve by factoring.')+`<div class="seq">${M(shown)}</div>`,a:`<div>${uniq.map(r=>M(V('x')+' = '+rHTML(r))).join(', &nbsp;')}</div>`,how,
+    chk:()=>uniq.every(r=>near(peval(coef,rval(r)),0))&&near(u*v,a*c)&&near(u+v,b)}})}
+
+function genRadical(lv){return tryGen(()=>{
+  const m=pick(SQF);
+  if(lv===1){const k=rand(2,7),n=k*k*m;return{q:ins('Simplify.')+`<div class="seq">${M(rad(n))}</div>`,a:`<div>${M(radStr(k,m))}</div>`,
+    how:[`Find the largest perfect-square factor: ${M(`${n} = ${k*k} · ${m}`)}.`,`${M(`${rad(n)} = ${rad(k*k)} · ${rad(m)} = ${radStr(k,m)}`)}.`],chk:()=>near(Math.sqrt(n),k*Math.sqrt(m))}}
+  if(lv===2){const b=pick([4,9,16,25,36,49,64,81]),sb=Math.sqrt(b),k=pick([1,1,2,3]),num_=k*k*m;if(gcd(k,sb)!==1||gcd(num_,b)!==1)return null;
+    return{q:ins('Simplify.')+`<div class="seq">${M(rad(frac(num_,b)))}</div>`,a:`<div>${M(frac(radStr(k,m),sb))}</div>`,
+      how:[`Split the root: ${M(`${rad(frac(num_,b))} = ${frac(rad(num_),rad(b))}`)}.`,`${M(`${rad(b)} = ${sb}`)}${k>1?` and ${M(`${rad(num_)} = ${radStr(k,m)}`)}`:''}, so the answer is ${M(frac(radStr(k,m),sb))}.`],chk:()=>near(Math.sqrt(num_/b),k*Math.sqrt(m)/sb)}}
+  if(lv===3){const c=rand(1,12);const g=gcd(c,m),A=c/g,D=m/g;
+    return{q:ins('Rationalize the denominator.')+`<div class="seq">${M(frac(c,rad(m)))}</div>`,a:`<div>${M(D===1?radStr(A,m):frac(radStr(A,m),D))}</div>`,
+      how:[`Multiply top and bottom by ${M(rad(m))}: ${M(`${frac(c,rad(m))} · ${frac(rad(m),rad(m))} = ${frac(radStr(c,m),m)}`)}.`,g>1?`Simplify the fraction (divide ${c} and ${m} by ${g}): ${M(D===1?radStr(A,m):frac(radStr(A,m),D))}.`:'The fraction is already in lowest terms.'],
+      chk:()=>near(c/Math.sqrt(m),A*Math.sqrt(m)/D)}}
+  if(lv===4){const k=rand(2,3),n=k*k*m,c=rand(2,12),g=gcd(c,k*m),A=c/g,D=k*m/g;
+    return{q:ins('Simplify and rationalize the denominator.')+`<div class="seq">${M(frac(c,rad(n)))}</div>`,a:`<div>${M(D===1?radStr(A,m):frac(radStr(A,m),D))}</div>`,
+      how:[`Simplify the root first: ${M(`${rad(n)} = ${radStr(k,m)}`)}, so ${M(`${frac(c,rad(n))} = ${frac(c,radStr(k,m))}`)}.`,`Multiply top and bottom by ${M(rad(m))}: ${M(frac(radStr(c,m),k*m))}.`,`Reduce: ${M(D===1?radStr(A,m):frac(radStr(A,m),D))}.`],
+      chk:()=>near(c/Math.sqrt(n),A*Math.sqrt(m)/D)}}
+  const a=rand(1,6),s=sgn(),c=rand(1,12);if(a*a===m)return null;let N=a*a-m,A=c*a,B=-s*c;const g=gcd(gcd(A,B),N);A/=g;B/=g;N/=g;if(N<0){N=-N;A=-A;B=-B}
+  const numer=`${num(A)} ${B<0?MINUS:'+'} ${radStr(Math.abs(B),m)}`,ans=N===1?numer:frac(numer,N),den=`${a} ${s>0?'+':MINUS} ${rad(m)}`,conj=`${a} ${s>0?MINUS:'+'} ${rad(m)}`;
+  return{q:ins('Rationalize the denominator.')+`<div class="seq">${M(frac(c,den))}</div>`,a:`<div>${M(ans)}</div>`,
+    how:[`Multiply top and bottom by the conjugate ${M(`(${conj})`)}.`,`Denominator: ${M(`(${den})(${conj}) = ${a*a} ${MINUS} ${m} = ${a*a-m}`)}. Numerator: ${M(`${c}(${conj}) = ${c*a} ${s>0?MINUS:'+'} ${radStr(c,m)}`)}.`,`Simplify the fraction: ${M(ans)}.`],
+    chk:()=>near(c/(a+s*Math.sqrt(m)),(A+B*Math.sqrt(m))/N)}})}
+
+function genSqrtSolve(lv){return tryGen(()=>{
+  if(lv===1){const s=rand(2,15),a=pick([1,1,1,2,3]);const rhs=a*s*s;
+    return{q:ins('Solve by taking square roots.')+`<div class="seq">${M(`${a===1?'':a}${sq(V('x'))} = ${rhs}`)}</div>`,a:`<div>${M(V('x')+' = ±'+s)}</div>`,
+      how:[...(a>1?[`Divide by ${a}: ${M(`${sq(V('x'))} = ${s*s}`)}.`]:[]),`Take the square root of both sides (remember ±): ${M(`${V('x')} = ±${rad(s*s)} = ±${s}`)}.`],chk:()=>near(a*s*s,rhs)}}
+  if(lv===2){if(Math.random()<.5){const a=pick([2,3,4,5]),s=rand(1,7),c=nz(-20,20),e=a*s*s+c;
+      return{q:ins('Solve by taking square roots.')+`<div class="seq">${M(`${a}${sq(V('x'))} ${c<0?MINUS:'+'} ${Math.abs(c)} = ${num(e)}`)}</div>`,a:`<div>${M(V('x')+' = ±'+s)}</div>`,
+        how:[`${c<0?'Add':'Subtract'} ${Math.abs(c)}: ${M(`${a}${sq(V('x'))} = ${a*s*s}`)}. Divide by ${a}: ${M(`${sq(V('x'))} = ${s*s}`)}.`,`Take square roots: ${M(V('x')+' = ±'+s)}.`],chk:()=>near(a*s*s+c,e)}}
+    const h=nz(-8,8),s=rand(1,9),r=[h-s,h+s];
+    return{q:ins('Solve by taking square roots.')+`<div class="seq">${M(`${sq(`(${xm(h)})`)} = ${s*s}`)}</div>`,a:`<div>${M(V('x')+' = '+num(r[0]))}, ${M(V('x')+' = '+num(r[1]))}</div>`,
+      how:[`Take square roots: ${M(`${xm(h)} = ±${s}`)}.`,`${h>0?'Add':'Subtract'} ${Math.abs(h)}: ${M(`${V('x')} = ${num(h)} ± ${s}`)}, so ${M(num(r[0]))} or ${M(num(r[1]))}.`],chk:()=>r.every(x=>near((x-h)**2,s*s))}}
+  const h=nz(-8,8);
+  if(lv===3||lv===4){const k=rand(1,4),mm=pick(SQF),n=k*k*mm,a=lv===3?1:pick([2,3,4]),c=lv===3?0:nz(-15,15),e=a*n+c;
+    const shown=lv===3?`${sq(`(${xm(h)})`)} = ${n}`:`${a}${sq(`(${xm(h)})`)} ${c<0?MINUS:'+'} ${Math.abs(c)} = ${num(e)}`;
+    const how=lv===4?[`${c<0?'Add':'Subtract'} ${Math.abs(c)} and divide by ${a}: ${M(`${sq(`(${xm(h)})`)} = ${n}`)}.`]:[];
+    how.push(`Take square roots: ${M(`${xm(h)} = ±${rad(n)}`)}${k>1?` and simplify ${M(`${rad(n)} = ${radStr(k,mm)}`)}`:''}.`,`${h>0?'Add':'Subtract'} ${Math.abs(h)}: ${M(`${V('x')} = ${num(h)} ± ${radStr(k,mm)}`)}.`);
+    return{q:ins('Solve by taking square roots. Give exact answers.')+`<div class="seq">${M(shown)}</div>`,a:`<div>${M(`${V('x')} = ${num(h)} ± ${radStr(k,mm)}`)}</div>`,how,chk:()=>near(a*(k*Math.sqrt(mm))**2+c,e)}}
+  const k=rand(1,5),mm=pick([1,1,2,3,5]),n=k*k*mm,c=rand(1,12),e=c-n;
+  return{q:ins('Solve by taking square roots. Give exact answers.')+`<div class="seq">${M(`${sq(`(${xm(h)})`)} + ${c} = ${num(e)}`)}</div>`,a:`<div>${M(`${V('x')} = ${num(h)} ± ${imag(k,mm)}`)}</div>`,
+    how:[`Subtract ${c}: ${M(`${sq(`(${xm(h)})`)} = ${num(-n)}`)}.`,`Take square roots: ${M(`${xm(h)} = ±${rad(num(-n))} = ±${imag(k,mm)}`)} (since ${M(rad(MINUS+'1')+' = '+V('i'))}).`,`${h>0?'Add':'Subtract'} ${Math.abs(h)}: ${M(`${V('x')} = ${num(h)} ± ${imag(k,mm)}`)}.`],
+    chk:()=>near(-(k*k*mm)+c,e)}})}
+
+const cstr=(re,im)=>{re=toR(re);im=toR(im);const reS=re.n!==0?rHTML(re):'';if(im.n===0)return reS||'0';const a=R(Math.abs(im.n),im.d),imS=((a.n===1&&a.d===1)?'':rAbs(a))+V('i');if(!reS)return(im.n<0?MINUS:'')+imS;return`${reS} ${im.n<0?MINUS:'+'} ${imS}`};
+const cp=(a,b)=>`(${cstr(a,b)})`;
+function genComplex(lv){return tryGen(()=>{
+  const a=nz(-9,9),b=nz(-9,9),c=nz(-9,9),d=nz(-9,9);
+  const iSq=`Replace ${M(sq(V('i')))} with ${M(MINUS+'1')}.`;
+  if(lv===1){const add=Math.random()<.5,re=add?a+c:a-c,im=add?b+d:b-d;
+    return{q:ins(`Simplify. Write the answer in standard form ${M(`${V('a')} + ${V('b')}${V('i')}`)}.`)+`<div class="seq">${M(`${cp(a,b)} ${add?'+':MINUS} ${cp(c,d)}`)}</div>`,a:`<div>${M(cstr(re,im))}</div>`,
+      how:[add?'Add the real parts and add the imaginary parts.':'Distribute the subtraction to both parts of the second number.',`Real: ${M(`${num(a)} ${add?'+':MINUS} ${par(c)} = ${num(re)}`)}; imaginary: ${M(`${num(b)} ${add?'+':MINUS} ${par(d)} = ${num(im)}`)}.`],chk:()=>true}}
+  if(lv===2||(lv===3&&Math.random()<.5)){let C=c,Dd=d,label='';
+    if(lv===3){if(Math.random()<.5){C=a;Dd=-b;label='conj'}else{C=a;Dd=b;label='square'}}
+    const re=a*C-b*Dd,im=a*Dd+b*C,shown=label==='square'?sq(cp(a,b)):`${cp(a,b)}${cp(C,Dd)}`;
+    return{q:ins(`Simplify. Write the answer in standard form ${M(`${V('a')} + ${V('b')}${V('i')}`)}.`)+`<div class="seq">${M(shown)}</div>`,a:`<div>${M(cstr(re,im))}</div>`,
+      how:[`Multiply like binomials (FOIL): ${M(`${num(a*C)} ${a*Dd<0?MINUS:'+'} ${Math.abs(a*Dd)}${V('i')} ${b*C<0?MINUS:'+'} ${Math.abs(b*C)}${V('i')} ${b*Dd<0?MINUS:'+'} ${Math.abs(b*Dd)}${sq(V('i'))}`)}.`,iSq+` ${M(`${num(b*Dd)}${sq(V('i'))} = ${num(-b*Dd)}`)}.`,`Combine: ${M(cstr(re,im))}.${label==='conj'?' A number times its conjugate is always real.':''}`],
+      chk:()=>{const re2=a*C-b*Dd,im2=a*Dd+b*C;return near(re,re2)&&near(im,im2)}}}
+  if(lv===3||(lv===4&&Math.random()<.3)){const trip=lv===3?pick([[3,4],[6,8],[5,12],[8,15]]):[rand(1,7),rand(1,7)],A=trip[0]*sgn(),B=trip[1]*sgn(),s2=A*A+B*B,[k,m]=sqrtParts(s2);
+    return{q:ins('Find the absolute value.')+`<div class="seq">${M(`|${cstr(A,B)}|`)}</div>`,a:`<div>${M(radStr(k,m))}</div>`,
+      how:[`${M(`|${V('a')} + ${V('b')}${V('i')}| = ${rad(`${sq(V('a'))} + ${sq(V('b'))}`)}`)}.`,`${M(`${rad(`${sq(par(A))} + ${sq(par(B))}`)} = ${rad(s2)}${m===1||k>1?' = '+radStr(k,m):''}`)}.`],chk:()=>near(Math.sqrt(s2),k*Math.sqrt(m))}}
+  const N=c*c+d*d;let numRe,numIm,shownNum;
+  if(lv===4){numRe=a;numIm=0;shownNum=num(a)}else{numRe=a;numIm=b;shownNum=cstr(a,b)}
+  const pr=numRe*c+numIm*d,pi=numIm*c-numRe*d,re=R(pr,N),im=R(pi,N);
+  return{q:ins(`Simplify. Write the answer in standard form ${M(`${V('a')} + ${V('b')}${V('i')}`)}.`)+`<div class="seq">${M(frac(shownNum,cstr(c,d)))}</div>`,a:`<div>${M(cstr(re,im))}</div>`,
+    how:[`Multiply top and bottom by the conjugate of the denominator, ${M(cstr(c,-d))}.`,`Denominator: ${M(`${cp(c,d)}${cp(c,-d)} = ${sq(par(c))} + ${sq(par(d))} = ${N}`)}.`,`Numerator: ${M(`${numIm?cp(a,b):num(a)}${cp(c,-d)} = ${cstr(pr,pi)}`)} (using ${M(sq(V('i'))+' = '+MINUS+'1')}).`,`Divide each part by ${N}: ${M(cstr(re,im))}.`],
+    chk:()=>{const den=c*c+d*d,xr=(numRe*c+numIm*d)/den,xi=(numIm*c-numRe*d)/den;return near(xr*c-xi*d,numRe)&&near(xr*d+xi*c,numIm)}}})}
+
+function genCtsq(lv){return tryGen(()=>{
+  let a=1,b,c;
+  if(lv===1){const h=nz(-6,6),s=rand(1,6);if(s===Math.abs(h))return null;b=2*h;c=h*h-s*s}
+  else if(lv===2){const h=nz(-6,6),n=pick(SQF)*pick([1,1,4]);b=2*h;c=h*h-n}
+  else if(lv===3){const h=nz(-6,6),n=rand(1,20);b=2*h;c=h*h+n}
+  else if(lv===4){b=pick([1,3,5,7,-1,-3,-5,-7]);c=nz(-15,15);const D=b*b-4*c;if(D===0)return null}
+  else{a=pick([2,3,4]);const h=nz(-4,4);b=2*a*h;c=nz(-24,24);if(c%a&&a!==4)return null;if(b*b-4*a*c===0)return null}
+  const coef=[a,b,c],ex=exactRoots(a,b,c);if(lv>=4&&ex.type==='rational'&&Math.random()<.5)return null;
+  const B=R(b,a),C=R(c,a),half=R(b,2*a),hsq=rmul(half,half),rhs=rsub(hsq,C);
+  const how=[];
+  if(a!==1)how.push(`Divide every term by ${a}: ${M(`${sq(V('x'))} ${B.n<0?MINUS:'+'} ${rAbs(B)}${V('x')} ${C.n<0?MINUS:'+'} ${rAbs(C)} = 0`)}.`);
+  how.push(`Move the constant: ${M(`${sq(V('x'))} ${B.n<0?MINUS:'+'} ${rAbs(B)}${V('x')} = ${rHTML(R(-C.n,C.d))}`)}.`,
+    `Add ${M(`(${frac(V('b'),2)})${sup(2)} = ${rHTML(hsq)}`)} to both sides: ${M(`${sq(`(${V('x')} ${half.n<0?MINUS:'+'} ${rAbs(half)})`)} = ${rHTML(rhs)}`)}.`,
+    `Take square roots: ${M(`${V('x')} ${half.n<0?MINUS:'+'} ${rAbs(half)} = ±${rad(rHTML(rhs))}`)}${rhs.n<0?' (imaginary)':''}.`,`Solve and simplify: ${ex.disp}.`);
+  return{q:ins('Solve by completing the square. Give exact answers.')+`<div class="seq">${M(poly(coef)+' = 0')}</div>`,a:`<div>${ex.disp}</div>`,how,chk:()=>chkRoots(coef,ex.roots)}})}
+
+function genQF(lv){return tryGen(()=>{
+  let a,b,c;
+  if(lv===1){const p=nz(-9,9),q=nz(-9,9);a=1;b=-(p+q);c=p*q}
+  else if(lv===2){const m=pick([2,3,5]),p=nz(-7,7),q=nz(-7,7);if(gcd(m,p)!==1)return null;[a,b,c]=pmul([m,-p],[1,-q])}
+  else{a=lv<=4?1:pick([2,3,4,5]);b=nz(-10,10);c=nz(-15,15)}
+  const coef=[a,b,c],ex=exactRoots(a,b,c);
+  if(lv===3&&ex.type!=='irrational')return null;if(lv===4&&ex.type!=='complex')return null;if(lv===5&&!['irrational','complex'].includes(ex.type))return null;
+  if(lv<=2&&ex.type!=='rational')return null;
+  const D=ex.D,sD=D<0?`${rad(num(D))}`:rad(D);
+  return{q:ins('Solve using the quadratic formula. Give exact answers.')+`<div class="seq">${M(poly(coef)+' = 0')}</div>`,a:`<div>${ex.disp}</div>`,
+    how:[`${M(`${V('a')} = ${num(a)}, ${V('b')} = ${num(b)}, ${V('c')} = ${num(c)}`)}.`,`Discriminant: ${M(`${sq(V('b'))} ${MINUS} 4${V('a')}${V('c')} = ${sq(par(b))} ${MINUS} 4(${num(a)})(${num(c)}) = ${num(D)}`)}.`,
+      `${M(`${V('x')} = ${frac(`${num(-b)} ± ${sD}`,2*a)}`)}${D<0?' (use '+M(rad(MINUS+'1')+' = '+V('i'))+')':''}.`,`Simplify: ${ex.disp}.`],chk:()=>chkRoots(coef,ex.roots)}})}
+
+function genDiscrim(lv){return tryGen(()=>{
+  const want=pick(['two','one','none']);let a,b,c;
+  if(want==='one'){const p=lv<=1?nz(-6,6):nz(-9,9),m=lv>=4?pick([2,3]):1;if(m>1&&gcd(m,p)!==1)return null;[a,b,c]=pmul([m,-p],[m,-p]);if(lv===3){a=-a;b=-b;c=-c}}
+  else{a=lv<=2?1:lv===3?pick([-1,-2,1]):pick([2,3,4,5,-2,-3]);b=nz(-10,10);c=nz(-12,12)}
+  const D=b*b-4*a*c,type=D>0?'two':D===0?'one':'none';if(type!==want)return null;
+  const coef=[a,b,c],typeTxt={two:'Two real solutions',one:'One real solution',none:'Two imaginary solutions'}[type];
+  const work=`${M(`${sq(par(b))} ${MINUS} 4(${num(a)})(${num(c)}) = ${num(D)}`)}`;
+  if(lv===5){const n={two:2,one:1,none:0}[type];
+    return{q:ins('Use the discriminant to find how many x-intercepts the graph has.')+`<div class="seq">${M(sform(coef))}</div>`,
+      a:`<div>Discriminant ${M(num(D))}<br>${n} <i>x</i>-intercept${n===1?'':'s'}</div>`,graph:quadPlot(x=>peval(coef,x),[]),
+      how:[`Discriminant: ${work}.`,D>0?'Positive: two real solutions, so the graph crosses the x-axis twice.':D===0?'Zero: one real solution, so the vertex touches the x-axis.':`Negative: no real solutions, so the graph never reaches the x-axis (it sits entirely ${a>0?'above':'below'} it).`],chk:()=>true}}
+  return{q:ins('Find the discriminant. Then state the number and type of solutions.')+`<div class="seq">${M(poly(coef)+' = 0')}</div>`,a:`<div>Discriminant ${M(num(D))}<br>${typeTxt}</div>`,
+    how:[`${M(`${V('a')} = ${num(a)}, ${V('b')} = ${num(b)}, ${V('c')} = ${num(c)}`)}; discriminant ${M(`${sq(V('b'))} ${MINUS} 4${V('a')}${V('c')}`)} = ${work}.`,'Positive: two real solutions. Zero: one real solution. Negative: two imaginary solutions.'],chk:()=>true}})}
+
+/* ---------- Unit 2: polynomials ---------- */
+function randPoly(deg,lo=-9,hi=9,lead=null){const c=[lead===null?nz(lo,hi):lead];for(let i=0;i<deg;i++)c.push(rand(lo,hi));return c}
+function genPolyOrNot(lv){return tryGen(()=>{
+  const yes=Math.random()<.5;let shown,a,how;
+  const terms=c=>poly(c);
+  if(yes){
+    if(lv<=2){const deg=rand(2,5),c=randPoly(deg);if(lv===2){// terms out of order
+        const parts=[];c.forEach((co,i)=>{if(co)parts.push([co,deg-i])});if(parts.length<3)return null;shuffle(parts);if(parts[0][1]===deg)parts.push(parts.shift());
+        shown=parts.map(([co,p],i)=>{const t=(Math.abs(co)===1&&p>0?'':Math.abs(co))+xp(p);return i===0?(co<0?MINUS:'')+t:(co<0?` ${MINUS} `:' + ')+t}).join('')}
+      else shown=terms(c);a=`<b>Yes</b> — degree ${deg}`;how=['Every exponent on <i>x</i> is a whole number and every coefficient is a real number, so it is a polynomial.',`The degree is the highest exponent: ${deg}.`]}
+    else if(lv===3||lv===4){const k=nz(-6,6),e=rand(1,3),f1=[nz(-5,5),nz(-9,9)],f2=[nz(-5,5),nz(-9,9)],deg=e+2;
+      shown=`${lead(k)}${xp(e)}(${poly(f1)})(${poly(f2)})`;a=`<b>Yes</b> — degree ${deg}`;how=['A product of polynomials is a polynomial.',`Add the degrees of the factors: ${e} + 1 + 1 = ${deg}.`]}
+    else{const t=pick(['radcoef','fraccoef']),deg=rand(2,4);
+      shown=t==='radcoef'?`${rad(pick([2,3,5,7]))}${xp(deg)} ${MINUS} ${rand(2,9)}${V('x')} + ${rand(1,9)}`:`${frac(xp(deg),pick([2,3,4]))} + ${rand(2,9)}${V('x')} ${MINUS} ${frac(1,pick([2,3,5]))}`;
+      a=`<b>Yes</b> — degree ${deg}`;how=[t==='radcoef'?'A radical in a coefficient is fine; only the variable cannot be under a radical.':'Fraction coefficients are fine; the variable is not in a denominator.',`The highest exponent on <i>x</i> is ${deg}.`]}}
+  else{const t=lv<=1?'denom':lv===2?pick(['denom','negexp']):lv===3?pick(['radvar','negexp']):lv===4?pick(['varexp','radvar','negexp']):pick(['fracexp','varexp','radvar']);
+    const base=poly(randPoly(rand(1,3)).slice(0,-1).concat([0])).replace(/^0$/,`${rand(2,9)}${sq(V('x'))}`),k=rand(2,9);
+    const bad={denom:[`${frac(k,V('x'))}`,'The variable is in a denominator.'],negexp:[`${k}${V('x')}${sup(MINUS+rand(1,3))}`,'It has a negative exponent on the variable.'],
+      radvar:[pick([rad(`${k}${V('x')}`),`${k}${rad(V('x'))}`]),'The variable is under a radical.'],varexp:[`${k}${sup(V('x'))}`,'The variable is in an exponent.'],
+      fracexp:[`${k}${V('x')}${sup('1/2')}`,'It has a fractional exponent on the variable.']}[t];
+    shown=`${base} ${pick(['+',MINUS])} ${bad[0]}`;a=`<b>No</b> — ${bad[1].charAt(0).toLowerCase()+bad[1].slice(1)}`;how=['A polynomial has only whole-number exponents on the variable and no variable in a denominator, radical, or exponent.',bad[1]+' So it is not a polynomial.']}
+  return{q:ins('Is this a polynomial function? If so, state its degree. If not, explain why.')+`<div class="seq">${M(`${V('f')}(${V('x')}) = ${shown}`)}</div>`,a:`<div>${a}</div>`,how,chk:()=>true}})}
+
+function genSynthSub(lv){return tryGen(()=>{
+  const deg=lv<=2?3:lv===3?4:5,c=randPoly(deg,lv>=4?-6:-5,lv>=4?6:5,lv>=4?nz(-3,3):nz(-4,4));
+  if(lv>=3){const z=lv===3?1:2;for(let i=0;i<z;i++)c[rand(1,deg-1)]=0}
+  const k=lv===1?rand(1,3):lv===2?-rand(1,3):lv===5?pick([-3,3,-2]):pick([-2,-1,1,2]),s=synth(c,k);if(Math.abs(s.r)>999)return null;
+  return{q:ins(`Use synthetic substitution to evaluate ${M(`${V('P')}(${num(k)})`)}.`)+`<div class="seq">${M(`${V('P')}(${V('x')}) = ${poly(c)}`)}</div>`,a:`<div>${M(`${V('P')}(${num(k)}) = ${num(s.r)}`)}</div>`,
+    how:[`Write the coefficients${c.includes(0)?', using 0 for each missing power':''}: ${M(c.map(num).join(', '))}.`,`Bring down the first, then repeatedly multiply by ${num(k)} and add:${synthTable(c,k,s)}`,`The last number is the value: ${M(`${V('P')}(${num(k)}) = ${num(s.r)}`)}.`],chk:()=>near(peval(c,k),s.r)}})}
+
+function genFuncOps(lv){return tryGen(()=>{
+  const f=[nz(-5,5),nz(-9,9)],h=[nz(-4,4),nz(-9,9)],g=[nz(-4,4),nz(-9,9),nz(-12,12)];
+  const F=`${V('f')}(${V('x')}) = ${poly(f)}`,G=`${V('g')}(${V('x')}) = ${poly(g)}`,H=`${V('h')}(${V('x')}) = ${poly(h)}`;
+  let given,ask,ans,how,check;
+  if(lv===1){if(f[0]===-h[0])return null;const r=padd(f,h);given=[F,H];ask=`(${V('f')} + ${V('h')})(${V('x')})`;ans=poly(r);how=[`${M(`(${V('f')} + ${V('h')})(${V('x')}) = ${V('f')}(${V('x')}) + ${V('h')}(${V('x')}) = (${poly(f)}) + (${poly(h)})`)}.`,`Combine like terms: ${M(poly(r))}.`];check=()=>samePoly(r,padd(f,h))}
+  else if(lv===2){const r=padd(g,pneg(f));given=[F,G];ask=`(${V('g')} ${MINUS} ${V('f')})(${V('x')})`;ans=poly(r);how=[`${M(`(${poly(g)}) ${MINUS} (${poly(f)})`)}: distribute the minus sign to every term of ${M(`${V('f')}(${V('x')})`)}.`,`Combine like terms: ${M(poly(r))}.`];check=()=>samePoly(r,padd(g,pneg(f)))}
+  else if(lv===3){if(Math.random()<.5){const r=pmul(f,h);given=[F,H];ask=`(${V('f')}${V('h')})(${V('x')})`;ans=poly(r);how=[`Multiply ${M(`(${poly(f)})(${poly(h)})`)} using FOIL.`,`Combine like terms: ${M(poly(r))}.`];check=()=>samePoly(r,pmul(f,h))}
+    else{const x=nz(-3,3),gv=peval(g,x),fv=peval(f,x);given=[F,G];ask=`(${V('g')} ${MINUS} ${V('f')})(${num(x)})`;ans=num(gv-fv);how=[`${M(`${V('g')}(${num(x)}) = ${num(gv)}`)} and ${M(`${V('f')}(${num(x)}) = ${num(fv)}`)}.`,`Subtract: ${M(`${num(gv)} ${MINUS} ${par(fv)} = ${num(gv-fv)}`)}.`];check=()=>true}}
+  else if(lv===4){const r=pmul(g,f);given=[F,G];ask=`(${V('g')}${V('f')})(${V('x')})`;ans=poly(r);how=[`Multiply each term of ${M(`${V('f')}(${V('x')}) = ${poly(f)}`)} by each term of ${M(`${V('g')}(${V('x')})`)}: ${M(`${poly(pmul(g,[f[0],0]))}`)} and ${M(`${poly(pmul(g,[f[1]]))}`)}.`,`Add and combine like terms: ${M(poly(r))}.`];check=()=>samePoly(r,pmul(g,f))}
+  else{const x=nz(-3,3),gv=peval(g,x),hv=peval(h,x);if(hv===0)return null;given=[G,H];ask=`(${frac(V('g'),V('h'))})(${num(x)})`;const q=R(gv,hv);ans=rHTML(q);how=[`${M(`${V('g')}(${num(x)}) = ${num(gv)}`)} and ${M(`${V('h')}(${num(x)}) = ${num(hv)}`)}.`,`Divide: ${M(`${frac(num(gv),num(hv))}${q.n===gv&&q.d===hv?'':' = '+rHTML(q)}`)}.`];check=()=>near(rval(q),gv/hv)}
+  return{q:wp(`Let ${given.map(M).join(' and ')}. Find ${M(ask)}.`),a:`<div>${M(ans)}</div>`,how,chk:check}})}
+
+function genPolyOps(lv){return tryGen(()=>{
+  let shown,r,how,v=pick(['x','x','x','k']);const P=c=>poly(c,v);
+  if(lv===1){const a=randPoly(rand(2,3)),b=randPoly(rand(1,3));r=padd(a,b);shown=`(${P(a)}) + (${P(b)})`;how=['Remove the parentheses and group like terms (same power).',`Combine: ${M(P(r))}.`]}
+  else if(lv===2){const a=randPoly(3),b=randPoly(rand(2,3));if(Math.random()<.5)b[1]=0;r=padd(a,pneg(b));shown=`(${P(a)}) ${MINUS} (${P(b)})`;how=[`Distribute the minus sign: ${M(`${P(a)} + (${P(pneg(b))})`)}.`,`Combine like terms: ${M(P(r))}.`]}
+  else if(lv===3){if(Math.random()<.5){const k=nz(-4,4),a=nz(-6,6);const sqr=[1,2*a,a*a];r=pmul([k,0],sqr);shown=`${k===1?'':k===-1?MINUS:num(k)}${V(v)}${sq(`(${xm(-a,v)})`)}`;how=[`Square the binomial first: ${M(`${sq(`(${xm(-a,v)})`)} = ${P(sqr)}`)}.`,`Multiply by ${M(`${num(k)}${V(v)}`)}: ${M(P(r))}.`]}
+    else{const a=[1,nz(-6,6)],b=[nz(-3,3),nz(-6,6),nz(-9,9)];r=pmul(a,b);shown=`(${P(a)})(${P(b)})`;how=[`Multiply ${M(V(v))} by each term, then ${M(num(a[1]))} by each term: ${M(P(pmul([1,0],b)))} and ${M(P(pmul([a[1]],b)))}.`,`Combine like terms: ${M(P(r))}.`]}}
+  else if(lv===4){const m=pick([1,1,2,3]),a=nz(-5,5);if(m>1&&Math.abs(a)>3)return null;const bin=[m,a];r=pmul(bin,pmul(bin,bin));shown=`(${P(bin)})${sup(3)}`;
+    how=[`Use ${M(`(${V('a')} + ${V('b')})${sup(3)} = ${V('a')}${sup(3)} + 3${V('a')}${sup(2)}${V('b')} + 3${V('a')}${V('b')}${sup(2)} + ${V('b')}${sup(3)}`)} with ${M(`${V('a')} = ${m===1?'':m}${V(v)}`)}, ${M(`${V('b')} = ${num(a)}`)}.`,`${M(`${P([m**3,0,0,0])} + 3(${P([m*m,0,0])})(${num(a)}) + 3(${P([m,0])})(${a*a}) + ${par(a**3)}`)}.`,`Simplify: ${M(P(r))}.`]}
+  else{const a=[1,nz(-5,5),nz(-6,6)],b=[1,nz(-5,5),nz(-6,6)];r=pmul(a,b);shown=`(${P(a)})(${P(b)})`;how=['Multiply every term of the first trinomial by every term of the second (9 products).',`${M(sq(V(v))+'·('+P(b)+') = '+P(pmul([1,0,0],b)))}, ${M(`${par(a[1])}${V(v)}·(${P(b)}) = ${P(pmul([a[1],0],b))}`)}, ${M(`${par(a[2])}·(${P(b)}) = ${P(pmul([a[2]],b))}`)}.`,`Combine like terms: ${M(P(r))}.`]}
+  return{q:ins('Perform the operation. Write the answer in standard form.')+`<div class="seq">${M(shown)}</div>`,a:`<div>${M(P(r))}</div>`,how,chk:()=>true}})}
+
+const remTerm=(r,divS)=>r===0?'':` ${r<0?MINUS:'+'} ${frac(Math.abs(r),divS)}`;
+function genDivide(lv){return tryGen(()=>{
+  if(lv<=3){const deg=lv===3?4:3,k=lv===3?nz(-3,3):nz(-4,4);let c;
+    if(lv===1){c=pmul([1,-k],randPoly(2,-6,6,nz(-3,3)))}else{c=randPoly(deg,-7,7,nz(-3,3));if(lv===3){c[rand(1,2)]=0}}
+    if(c.some(x=>Math.abs(x)>40))return null;const s=synth(c,k);if(lv===2&&s.r===0)return null;if(Math.abs(s.r)>99||s.q.some(x=>Math.abs(x)>99))return null;
+    const divS=`${V('x')} ${k>0?MINUS:'+'} ${Math.abs(k)}`,ans=poly(s.q)+remTerm(s.r,divS);
+    return{q:ins('Divide using synthetic division.')+`<div class="seq">${M(`(${poly(c)}) ÷ (${divS})`)}</div>`,a:`<div>${M(ans)}</div>`,
+      how:[`Divide by ${M(divS)}, so use ${M(num(k))}${c.includes(0)?' and write 0 for each missing power':''}:${synthTable(c,k,s)}`,`The bottom row gives the quotient (one degree lower): ${M(poly(s.q))}.`,s.r===0?'The remainder is 0.':`The remainder ${M(num(s.r))} goes over the divisor: ${M(frac(num(s.r),divS))}.`],
+      chk:()=>samePoly(padd(pmul(s.q,[1,-k]),[s.r]),c)}}
+  if(lv===4){const k=nz(-3,3),yes=Math.random()<.7;let c,r2,r3;
+    if(yes){r2=nz(-6,6);r3=nz(-6,6);c=pfromRoots([k,r2,r3])}else{c=randPoly(3,-9,9,1);if(peval(c,k)===0)return null}
+    if(c.some(x=>Math.abs(x)>60))return null;const s=synth(c,k),divS=xm(k);
+    const fac=yes?[k,r2,r3].sort((u,v)=>u-v):null;
+    const facS=yes?(()=>{const cnt={};fac.forEach(r=>cnt[r]=(cnt[r]||0)+1);return Object.keys(cnt).map(Number).sort((u,v)=>u-v).map(r=>cnt[r]>1?sq(`(${xm(r)})`):`(${xm(r)})`).join('')})():'';
+    return{q:ins(`Is ${M(divS)} a factor? If so, factor completely. If not, explain how you know.`)+`<div class="seq">${M(`${V('f')}(${V('x')}) = ${poly(c)}`)}</div>`,
+      a:yes?`<div><b>Yes</b><br>${M(`${V('f')}(${V('x')}) = ${facS}`)}</div>`:`<div><b>No</b> — the remainder is ${M(num(s.r))}, not 0.</div>`,
+      how:[`Divide by ${M(divS)} with synthetic division (use ${M(num(k))}):${synthTable(c,k,s)}`,yes?`The remainder is 0, so ${M(divS)} is a factor. The quotient is ${M(poly(s.q))}.`:`The remainder is ${M(num(s.r))}. A factor would leave a remainder of 0.`,...(yes?[`Factor the quadratic quotient: ${M(poly(s.q))} = ${M(`(${xm(r2)})(${xm(r3)})`)}.`]:[])],
+      chk:()=>yes?samePoly(c,pfromRoots(fac)):!near(peval(c,k),0)}}
+  const div=[1,nz(-4,4),nz(-5,5)],q=[nz(-3,3),nz(-6,6),nz(-6,6)],rem=[rand(-9,9),rand(-9,9)];if(rem[0]===0&&rem[1]===0)return null;
+  const c=padd(pmul(div,q),rem);if(c.some(x=>Math.abs(x)>60))return null;const rp=ptrim(rem);
+  const ans=`${poly(q)} ${'+'} ${frac(poly(rp),poly(div))}`;
+  return{q:ins('Use long division to divide.')+`<div class="seq">${M(`(${poly(c)}) ÷ (${poly(div)})`)}</div>`,a:`<div>${M(ans)}</div>`,
+    how:[`Divide the leading terms: ${M(`${frac(poly([c[0],0,0,0,0]),sq(V('x')))} = ${poly([q[0],0,0])}`)}. Multiply the divisor by it and subtract.`,`Repeat with the new leading term to get the rest of the quotient, ${M(poly(q))}.`,`Stop when the remainder's degree is less than 2. Remainder ${M(poly(rp))}, written over the divisor.`],
+    chk:()=>samePoly(padd(pmul(div,q),rem),c)}})}
+
+function genFactorSpecial(lv){return tryGen(()=>{
+  let c,facs,how;const L=(m,b)=>`(${poly([m,b])})`;
+  if(lv===1){const m=pick([1,1,2,3,4,5]),s=rand(1,9),g=pick([1,1,1,2,3]);if(gcd(m,s)!==1)return null;c=pmul([g],[m*m,0,-s*s]);
+    facs=`${g>1?g:''}${L(m,-s)}${L(m,s)}`;how=[...(g>1?[`Factor out the GCF ${g}: ${M(`${g}(${poly([m*m,0,-s*s])})`)}.`]:[]),`Difference of squares with ${M(`${V('a')} = ${m===1?'':m}${V('x')}`)}, ${M(`${V('b')} = ${s}`)}: ${M(`${sq(V('a'))} ${MINUS} ${sq(V('b'))} = (${V('a')} ${MINUS} ${V('b')})(${V('a')} + ${V('b')})`)}.`,`${M(facs)}.`]}
+  else if(lv<=3){const m=lv===2?1:pick([1,2,3]),s=rand(1,lv===2?5:4),plus=Math.random()<.5,g=lv===3&&m===1?pick([2,3,5]):1;if(gcd(m,s)!==1)return null;
+    const base=[m**3,0,0,plus?s**3:-(s**3)];c=pmul([g],base);
+    const A=m===1?V('x'):`${m}${V('x')}`,f1=L(m,plus?s:-s),f2=`(${poly([m*m,plus?-m*s:m*s,s*s])})`;facs=`${g>1?g:''}${f1}${f2}`;
+    how=[...(g>1?[`Factor out the GCF ${g}: ${M(`${g}(${poly(base)})`)}.`]:[]),`${plus?'Sum':'Difference'} of cubes with ${M(`${V('a')} = ${A}`)}, ${M(`${V('b')} = ${s}`)}: ${M(plus?`${V('a')}${sup(3)} + ${V('b')}${sup(3)} = (${V('a')} + ${V('b')})(${sq(V('a'))} ${MINUS} ${V('a')}${V('b')} + ${sq(V('b'))})`:`${V('a')}${sup(3)} ${MINUS} ${V('b')}${sup(3)} = (${V('a')} ${MINUS} ${V('b')})(${sq(V('a'))} + ${V('a')}${V('b')} + ${sq(V('b'))})`)}.`,`${M(facs)}.`]}
+  else if(lv===4){const p=rand(1,5);let q;if(Math.random()<.6){do{q=rand(1,6)}while(q===p);const P2=p*p,Q2=q*q;c=[1,0,-(P2+Q2),0,P2*Q2];const s=[p,q].sort((u,v)=>u-v);facs=`${L(1,-s[0])}${L(1,s[0])}${L(1,-s[1])}${L(1,s[1])}`;
+      how=[`Treat it as a quadratic in ${M(sq(V('x')))}: ${M(`(${sq(V('x'))} ${MINUS} ${P2})(${sq(V('x'))} ${MINUS} ${Q2})`)}.`,`Each factor is a difference of squares: ${M(facs)}.`]}
+    else{q=rand(1,5);const P2=p*p,Q2=q*q;c=[1,0,Q2-P2,0,-P2*Q2];if(Q2===P2)return null;facs=`${L(1,-p)}${L(1,p)}(${poly([1,0,Q2])})`;
+      how=[`Treat it as a quadratic in ${M(sq(V('x')))}: ${M(`(${sq(V('x'))} ${MINUS} ${P2})(${sq(V('x'))} + ${Q2})`)}.`,`${M(`${sq(V('x'))} ${MINUS} ${P2}`)} is a difference of squares; ${M(`${sq(V('x'))} + ${Q2}`)} does not factor over the integers. ${M(facs)}.`]}}
+  else{if(Math.random()<.6){const a=nz(-6,6),b=rand(1,5);c=pmul([1,a],[1,0,-b*b]);facs=`${L(1,a)}${L(1,-b)}${L(1,b)}`;
+      how=[`Group: ${M(`(${poly([1,a,0,0])}) + (${poly([-b*b,-a*b*b])})`)}.`,`Factor each group: ${M(`${sq(V('x'))}${L(1,a)} ${MINUS} ${b*b}${L(1,a)} = ${L(1,a)}(${poly([1,0,-b*b])})`)}.`,`Difference of squares: ${M(facs)}.`]}
+    else{const s=rand(1,4);c=[1,0,0,0,-(s**4)];facs=`(${poly([1,0,s*s])})${L(1,-s)}${L(1,s)}`;how=[`Difference of squares: ${M(`(${poly([1,0,s*s])})(${poly([1,0,-s*s])})`)}.`,`Factor ${M(poly([1,0,-s*s]))} again: ${M(facs)}.`]}}
+  return{q:ins('Factor completely.')+`<div class="seq">${M(poly(c))}</div>`,a:`<div>${M(facs)}</div>`,how,chk:()=>true}})}
+
+function divisors(n){n=Math.abs(n);const d=[];for(let i=1;i<=n;i++)if(n%i===0)d.push(i);return d}
+function genRatZeros(lv){return tryGen(()=>{
+  const a=lv<=2?1:lv===3?2:lv===4?pick([3,4]):pick([2,4,6]),c0=lv===1?pick([4,6,8,9,10]):lv===2?pick([12,15,18,20]):lv===3?pick([3,5,6,9]):lv===4?pick([4,6,8]):pick([9,10,12,15]);
+  const deg=rand(3,4),c=[a];for(let i=1;i<deg;i++)c.push(rand(-9,9));c.push(c0*sgn());
+  const P=divisors(c0),Q=divisors(a),set=new Map();P.forEach(p=>Q.forEach(q=>{const r=R(p,q);set.set(rval(r),r)}));
+  const list=[...set.values()].sort((u,v)=>rval(u)-rval(v));
+  return{q:ins('Use the Rational Zero Theorem to list all possible rational zeros.')+`<div class="seq">${M(`${V('f')}(${V('x')}) = ${poly(c)}`)}</div>`,
+    a:`<div style="font-size:.9em">${list.map(r=>M('±'+rHTML(r))).join(', ')}</div>`,
+    how:[`Factors of the constant term ${M(num(c[c.length-1]))}: ${M('±'+P.join(', ±'))}.`,`Factors of the leading coefficient ${M(num(a))}: ${M('±'+Q.join(', ±'))}.`,`List every ${M(frac(V('p'),V('q')))} and remove repeats.`],chk:()=>list.length===set.size}})}
+
+const lfac=r=>r===0?V('x'):`(${xm(r)})`;
+function genFindZeros(lv){return tryGen(()=>{
+  let c,zerosTxt,facTxt,how,checkRoots;
+  const testRoot=(c,r)=>{const s=synth(c,r);return{s,tbl:synthTable(c,r,s)}};
+  if(lv<=2){const rs=[nz(-5,5),nz(-5,5),nz(-6,6)];if(new Set(rs).size<3)return null;c=pfromRoots(rs);if(c.some(x=>Math.abs(x)>60))return null;
+    const k=rs[0],{s,tbl}=testRoot(c,k),srt=[...rs].sort((u,v)=>u-v);zerosTxt=srt.map(num).join(', ');facTxt=srt.map(lfac).join('');
+    how=[...(lv===2?[`Possible rational zeros are factors of ${M(num(c[3]))}. Try them with synthetic division until the remainder is 0.`]:[]),`${lv===1?'Divide by the given zero':''}${lv===2?'One that works':''} ${M(num(k))}:${tbl}`,`Factor the quotient ${M(poly(s.q))}: zeros ${M(num(rs[1]))} and ${M(num(rs[2]))}.`];
+    checkRoots=rs.map(r=>[r,0]);
+    return{q:ins(lv===1?`Given that ${M(num(k))} is a zero, find all the zeros. Then write the function as a product of linear factors.`:'Find all the zeros. Then write the function as a product of linear factors.')+`<div class="seq">${M(`${V('f')}(${V('x')}) = ${poly(c)}`)}</div>`,
+      a:`<div>Zeros: ${M(zerosTxt)}<br>${M(`${V('f')}(${V('x')}) = ${facTxt}`)}</div>`,how,chk:()=>chkRoots(c,checkRoots)}}
+  const r=nz(-4,4),p=nz(-3,3);let quad,pair;
+  if(lv===3||(lv===5&&Math.random()<.5)){const n=pick([2,3,5,6,7,8,12]);quad=[1,-2*p,p*p-n];const[kk,mm]=sqrtParts(n);pair={str:`${num(p)} ± ${radStr(kk,mm)}`,a:`${num(p)} + ${radStr(kk,mm)}`,b:`${num(p)} ${MINUS} ${radStr(kk,mm)}`,roots:[[p+Math.sqrt(n),0],[p-Math.sqrt(n),0]]}}
+  else{const q=rand(1,4);quad=[1,-2*p,p*p+q*q];const qi=(q===1?'':q)+V('i');pair={str:`${num(p)} ± ${qi}`,a:`${num(p)} + ${qi}`,b:`${num(p)} ${MINUS} ${qi}`,roots:[[p,q],[p,-q]]}}
+  let rat=[[r,1]];if(lv===5){const m=pick([1,2]),s=nz(-3,3);if(m===2&&s%2===0)return null;if(m===1&&s===r)return null;rat.push([s,m])}
+  c=quad;rat.forEach(([n,m])=>{c=pmul(c,[m,-n])});if(c.some(x=>Math.abs(x)>80))return null;
+  const ex=exactRoots(quad[0],quad[1],quad[2]);
+  const ratTxt=rat.map(([n,m])=>rHTML(R(n,m)));
+  zerosTxt=[...ratTxt,pair.str].join(', ');
+  facTxt=rat.map(([n,m])=>m===1?lfac(n):`(${poly([m,-n])})`).join('')+`(${V('x')} ${MINUS} (${pair.a}))(${V('x')} ${MINUS} (${pair.b}))`;
+  how=[`Use the Rational Zero Theorem and synthetic division to find ${rat.length>1?'the rational zeros':'a rational zero'}: ${ratTxt.map(M).join(' and ')}.`];
+  let cur=c;rat.forEach(([n,m])=>{const s=synth(cur,n/m);how.push(`Divide by ${M(rHTML(R(n,m)))}:${synthTable(cur.map(x=>x),rHTML(R(n,m)).includes('frac')?n/m:n/m,s).replace(/<td class="k">[^<]*<\/td>/, `<td class="k">${rHTML(R(n,m))}</td>`)}`);cur=s.q;if(m!==1){how.push(`The quotient ${M(poly(s.q))} has a common factor of ${m}: ${M(`${m}(${poly(s.q.map(x=>x/m))})`)}.`);cur=cur.map(x=>x/m)}});
+  how.push(`Solve the quadratic ${M(poly(quad)+' = 0')} with the quadratic formula: ${M(V('x')+' = '+ex.body)}.`);
+  checkRoots=[...rat.map(([n,m])=>[n/m,0]),...pair.roots];
+  return{q:ins('Find all the zeros. Then write the function as a product of linear factors.')+`<div class="seq">${M(`${V('f')}(${V('x')}) = ${poly(c)}`)}</div>`,
+    a:`<div>Zeros: ${M(zerosTxt)}<br><span style="font-size:.85em">${M(`${V('f')}(${V('x')}) = ${facTxt}`)}</span></div>`,how,chk:()=>chkRoots(c,checkRoots)&&samePoly(cur,quad)}})}
+
+function genFromZeros(lv){return tryGen(()=>{
+  let zs,c,how;
+  if(lv<=2){const rs=lv===1?[nz(-6,6),nz(-6,6)]:[nz(-5,5),nz(-5,5),nz(-5,5)];if(new Set(rs).size<rs.length)return null;c=pfromRoots(rs);zs=rs.map(num).join(', ');
+    how=[`Each zero ${M(V('r'))} gives a factor ${M(`(${V('x')} ${MINUS} ${V('r')})`)}: ${M(rs.map(lfac).join(''))}.`,`Multiply and simplify: ${M(poly(c))}.`];
+    return{q:ins('Write a polynomial function of least degree with integer coefficients and leading coefficient 1 that has the given zeros.')+`<div class="seq">${M(zs)}</div>`,a:`<div>${M(`${V('f')}(${V('x')}) = ${poly(c)}`)}</div>`,how,chk:()=>chkRoots(c,rs.map(r=>[r,0]))}}
+  const r=nz(-5,5);let quad,given,pairTxt,roots;
+  if(lv===3){const m=pick(SQF);quad=[1,0,-m];given=rad(m);pairTxt=`${MINUS}${rad(m)}`;roots=[[Math.sqrt(m),0],[-Math.sqrt(m),0]]}
+  else if(lv===4){const b=rand(1,5);quad=[1,0,b*b];given=(b===1?'':b)+V('i');pairTxt=`${MINUS}${(b===1?'':b)+V('i')}`;roots=[[0,b],[0,-b]]}
+  else{const p=nz(-4,4);if(Math.random()<.5){const m=pick(SQF);quad=[1,-2*p,p*p-m];given=`${num(p)} + ${rad(m)}`;pairTxt=`${num(p)} ${MINUS} ${rad(m)}`;roots=[[p+Math.sqrt(m),0],[p-Math.sqrt(m),0]]}
+    else{const q=rand(1,4);quad=[1,-2*p,p*p+q*q];given=`${num(p)} + ${(q===1?'':q)+V('i')}`;pairTxt=`${num(p)} ${MINUS} ${(q===1?'':q)+V('i')}`;roots=[[p,q],[p,-q]]}}
+  c=pmul([1,-r],quad);
+  how=[`${lv===4||given.includes('i')?'Complex':'Irrational'} zeros come in conjugate pairs, so ${M(pairTxt)} is also a zero.`,`Multiply the conjugate factors: ${M(`(${V('x')} ${MINUS} (${given}))(${V('x')} ${MINUS} (${pairTxt})) = ${poly(quad)}`)}.`,`Multiply by ${M(lfac(r))}: ${M(poly(c))}.`];
+  return{q:ins('Write a polynomial function of least degree with integer coefficients and leading coefficient 1 that has the given zeros.')+`<div class="seq">${M(`${num(r)} and ${given}`)}</div>`,
+    a:`<div>${M(`${V('f')}(${V('x')}) = ${poly(c)}`)}</div>`,how,chk:()=>chkRoots(c,[[r,0],...roots])}})}
+
+function plotSVG(f,x0,x1,{pts=[],yr=null}={}){
+  const W=400,H=300,pl=34,pb=24,pr=10,pt_=10,xs=[];for(let i=0;i<=400;i++)xs.push(x0+(x1-x0)*i/400);
+  let Y=yr||Math.max(4,...xs.map(x=>Math.abs(f(x))))*1.15;const sy=niceStep(2*Y);Y=Math.ceil(Y/sy)*sy;const sx=niceStep(x1-x0)<1?1:niceStep(x1-x0);
+  const X=x=>+(pl+(x-x0)/(x1-x0)*(W-pl-pr)).toFixed(2),Yp=y=>+(pt_+(Y-y)/(2*Y)*(H-pb-pt_)).toFixed(2),id='p'+(++svgN)+Math.random().toString(36).slice(2,6);
+  let s=`<svg class="graph" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="${id}"><rect x="${pl}" y="${pt_}" width="${W-pl-pr}" height="${H-pb-pt_}"/></clipPath></defs>`;
+  for(let x=Math.ceil(x0/sx)*sx;x<=x1+1e-9;x+=sx){s+=`<line class="gr" x1="${X(x)}" y1="${pt_}" x2="${X(x)}" y2="${H-pb}"/><text x="${X(x)}" y="${H-pb+15}" text-anchor="middle">${num(rnd(x,6))}</text>`}
+  for(let y=-Y;y<=Y+1e-9;y+=sy){s+=`<line class="gr" x1="${pl}" y1="${Yp(y)}" x2="${W-pr}" y2="${Yp(y)}"/><text x="${pl-5}" y="${Yp(y)+3.5}" text-anchor="end">${num(rnd(y,6))}</text>`}
+  s+=`<line class="ax" x1="${pl}" y1="${Yp(0)}" x2="${W-pr}" y2="${Yp(0)}"/>`;if(x0<=0&&x1>=0)s+=`<line class="ax" x1="${X(0)}" y1="${pt_}" x2="${X(0)}" y2="${H-pb}"/>`;
+  s+=`<g clip-path="url(#${id})"><polyline class="ln ln0" points="${xs.map(x=>`${X(x)},${Yp(Math.max(-3*Y,Math.min(3*Y,f(x))))}`).join(' ')}"/></g>`;
+  pts.forEach(p=>{if(Math.abs(p.y)<=Y)s+=`<circle class="pt" cx="${X(p.x)}" cy="${Yp(p.y)}" r="4.5"/>`});return s+'</svg>'}
+const factorStr=(a,fs)=>{const cnt=new Map();fs.forEach(([n,m])=>{const k=n+'/'+m;cnt.set(k,(cnt.get(k)||0)+1)});let s=a===1?'':a===-1?MINUS:num(a);
+  [...cnt.entries()].sort((u,v)=>{const[a1,b1]=u[0].split('/').map(Number),[a2,b2]=v[0].split('/').map(Number);return a1/b1-a2/b2}).forEach(([k,e])=>{const[n,m]=k.split('/').map(Number);const base=m===1?lfac(n):`(${poly([m,-n])})`;s+=e>1?(n===0&&m===1?V('x')+sup(e):base+sup(e)):base});return s};
+function genEndBeh(lv){return tryGen(()=>{
+  let c,lc,deg,shown,how=[];
+  if(lv===3){deg=rand(2,5);const sign=sgn(),rs=[];for(let i=0;i<deg;i++)rs.push(rand(-3,3));c=pmul([sign],pfromRoots(rs));const lo=Math.min(...rs)-1.3,hi=Math.max(...rs)+1.3;if(hi-lo<4)return null;
+    const rmin=Math.min(...rs),rmax=Math.max(...rs);let Y=0;for(let i=0;i<=100;i++)Y=Math.max(Y,Math.abs(peval(c,rmin+(rmax-rmin)*i/100)));if(Y<1)return null;
+    return{q:ins('For the function graphed: is the degree even or odd? Is the leading coefficient positive or negative?')+`<div class="qgraph">${plotSVG(x=>peval(c,x),lo,hi,{yr:Y*1.6})}</div>`,
+      a:`<div>Degree: ${deg%2?'odd':'even'}<br>Leading coefficient: ${sign>0?'positive':'negative'}</div>`,
+      how:[`The ends go ${deg%2?'in opposite directions':'in the same direction'}, so the degree is ${deg%2?'odd':'even'}.`,deg%2?`The right end goes ${sign>0?'up':'down'}, so the leading coefficient is ${sign>0?'positive':'negative'}.`:`Both ends go ${sign>0?'up':'down'}, so the leading coefficient is ${sign>0?'positive':'negative'}.`],chk:()=>true}}
+  if(lv<=2){deg=lv===1?rand(2,3):rand(4,5);c=randPoly(deg,-9,9);lc=c[0];
+    if(lv===2){const parts=[];c.forEach((co,i)=>{if(co)parts.push([co,deg-i])});shuffle(parts);if(parts[0][1]===deg)parts.push(parts.shift());shown=parts.map(([co,p],i)=>{const t=(Math.abs(co)===1&&p>0?'':Math.abs(co))+xp(p);return i===0?(co<0?MINUS:'')+t:(co<0?` ${MINUS} `:' + ')+t}).join('')}
+    else shown=poly(c);how.push(`The leading term (highest power) is ${M(poly([lc].concat(Array(deg).fill(0))))}.`)}
+  else{const a=lv===4?pick([1,-1,2,-2,3]):pick([1,-1,2]),n=rand(2,3);const fs=[];for(let i=0;i<n;i++)fs.push([nz(-5,5),1]);if(lv===5){fs.push(fs[0])}
+    let sh=factorStr(a,fs),flip=false;
+    if(lv===5&&Math.random()<.6){const r=nz(1,6);sh=sh+`(${r} ${MINUS} ${V('x')})`;flip=true;fs.push([r,1])}
+    c=pmul([a*(flip?-1:1)],pfromRoots(fs.map(f=>f[0])));deg=c.length-1;lc=c[0];shown=sh;
+    how.push(`Multiply only the leading parts of the factors: ${flip?`the ${M(`(${MINUS}${V('x')})`)} from the last factor makes it negative; `:''}the leading term is ${M(poly([lc].concat(Array(deg).fill(0))))}.`)}
+  const even=deg%2===0,left=even?(lc>0?'+∞':MINUS+'∞'):(lc>0?MINUS+'∞':'+∞'),right=lc>0?'+∞':MINUS+'∞';
+  how.push(`Degree ${deg} is ${even?'even, so both ends go the same direction':'odd, so the ends go opposite directions'}; the leading coefficient is ${lc>0?'positive, so the right end goes up':'negative, so the right end goes down'}.`);
+  return{q:ins('Describe the end behavior.')+`<div class="seq">${M(`${V('f')}(${V('x')}) = ${shown}`)}</div>`,
+    a:`<div>As ${M(`${V('x')} → ${MINUS}∞`)}, ${M(`${V('f')}(${V('x')}) → ${left}`)}<br>As ${M(`${V('x')} → +∞`)}, ${M(`${V('f')}(${V('x')}) → ${right}`)}</div>`,
+    graph:lv>=4?plotSVG(x=>peval(c,x),-7,7,{yr:Math.max(10,...[...Array(57).keys()].map(i=>Math.abs(peval(c,-7+i*.25))).sort((u,v)=>u-v).slice(0,40).slice(-1))}):'',how,chk:()=>Math.sign(lc)!==0}})}
+
+function genReadFactored(lv){return tryGen(()=>{
+  const deg=lv<=3?3:4,a=lv===1?1:lv===2?-1:lv===5?pick([2,-2,1,-1]):pick([1,-1]);const fs=[];
+  for(let i=0;i<deg;i++)fs.push([rand(-4,4),1]);
+  if(lv===3||lv===5){fs[1]=fs[0]}if(lv===5&&Math.random()<.5){fs[deg-1]=[pick([1,-1,3,-3]),2]}
+  const distinct=new Set(fs.map(f=>f[0]/f[1]));if(lv!==3&&lv!==5&&distinct.size<deg)return null;if((lv===3||lv===5)&&distinct.size<deg-1)return null;
+  let c=[a];fs.forEach(([n,m])=>{c=pmul(c,[m,-n])});const yint=c[c.length-1],zs=[...distinct].sort((u,v)=>u-v);
+  const mult=z=>fs.filter(([n,m])=>near(n/m,z)).length;
+  const zTxt=zs.map(z=>{const r=fs.find(([n,m])=>near(n/m,z));return rHTML(R(r[0],r[1]))+(mult(z)>1?` (multiplicity ${mult(z)})`:'')});
+  const lc=c[0],even=deg%2===0,left=even?(lc>0?'+∞':MINUS+'∞'):(lc>0?MINUS+'∞':'+∞'),right=lc>0?'+∞':MINUS+'∞';
+  const lo=Math.min(...zs)-1.5,hi=Math.max(...zs)+1.5;let Y=Math.abs(yint);for(let i=0;i<=100;i++)Y=Math.max(Y,Math.abs(peval(c,Math.min(...zs)+(Math.max(...zs)-Math.min(...zs))*i/100)));if(Y<2)Y=4;
+  const touch=lv===3||lv===5;
+  return{q:ins(`Find the zeros${touch?' (and whether the graph crosses or touches at each)':''}, the y-intercept, the end behavior, and the maximum number of turning points.`)+`<div class="seq">${M(`${V('g')}(${V('x')}) = ${factorStr(a,fs)}`)}</div>`,
+    a:`<div style="font-size:.9em">Zeros: ${zTxt.map(M).join(', ')}${touch?`<br>${zs.map(z=>`${M(rHTML(R(fs.find(([n,m])=>near(n/m,z))[0],fs.find(([n,m])=>near(n/m,z))[1])))}: ${mult(z)%2?'crosses':'touches'}`).join('; ')}`:''}<br><i>y</i>-intercept: ${M(pt(0,yint))}<br>As ${M(`${V('x')} → ${MINUS}∞`)}, ${M(`${V('g')} → ${left}`)}; as ${M(`${V('x')} → +∞`)}, ${M(`${V('g')} → ${right}`)}<br>At most ${deg-1} turning points</div>`,
+    graph:plotSVG(x=>peval(c,x),lo,hi,{yr:Y*1.25,pts:[...zs.map(z=>({x:z,y:0})),{x:0,y:yint}]}),
+    how:['Set each factor equal to 0 to find the zeros.'+(touch?' A factor that appears twice (even multiplicity) touches the x-axis; one that appears once crosses.':''),
+      `<i>y</i>-intercept: substitute ${M(V('x')+' = 0')}: ${M(`${V('g')}(0) = ${num(yint)}`)}.`,`The leading term is ${M(poly([lc].concat(Array(deg).fill(0))))}: degree ${deg} (${even?'even':'odd'}), leading coefficient ${lc>0?'positive':'negative'}.`,`A degree-${deg} polynomial has at most ${deg} ${MINUS} 1 = ${deg-1} turning points.`],
+    chk:()=>zs.every(z=>near(peval(c,z),0))&&near(peval(c,0),yint)}})}
+
+const BUILTIN=[
+  {id:'q-keyfeat',name:'Key features from a form',gen:genKeyFeat},
+  {id:'q-tostd',name:'Convert to standard form',gen:genToStd},
+  {id:'q-graph',name:'Graph a quadratic',gen:genGraphQuad},
+  {id:'q-domrange',name:'Domain, range & end behavior',gen:genDomRange},
+  {id:'q-factor',name:'Solve by factoring',gen:genFactorSolve},
+  {id:'q-radical',name:'Simplify radicals & rationalize',gen:genRadical},
+  {id:'q-sqrt',name:'Solve by square roots',gen:genSqrtSolve},
+  {id:'q-complex',name:'Complex number operations',gen:genComplex},
+  {id:'q-ctsq',name:'Solve by completing the square',gen:genCtsq},
+  {id:'q-qf',name:'Quadratic formula',gen:genQF},
+  {id:'q-disc',name:'Discriminant',gen:genDiscrim},
+  {id:'p-ornot',name:'Polynomial or not?',gen:genPolyOrNot},
+  {id:'p-synsub',name:'Evaluate with synthetic substitution',gen:genSynthSub},
+  {id:'p-funcops',name:'Operations on functions',gen:genFuncOps},
+  {id:'p-ops',name:'Add, subtract & multiply polynomials',gen:genPolyOps},
+  {id:'p-divide',name:'Divide polynomials',gen:genDivide},
+  {id:'p-factor',name:'Factor special patterns',gen:genFactorSpecial},
+  {id:'p-ratzeros',name:'List possible rational zeros',gen:genRatZeros},
+  {id:'p-zeros',name:'Find all zeros',gen:genFindZeros},
+  {id:'p-fromzeros',name:'Write a polynomial from its zeros',gen:genFromZeros},
+  {id:'p-endbeh',name:'End behavior',gen:genEndBeh},
+  {id:'p-read',name:'Read a factored polynomial',gen:genReadFactored},
+];
+
+/* ===================== state ===================== */
+const KEY='alg2-warmups-v1',OLDKEY='alg2-warmups-none';
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtText=s=>esc(s).replace(/\^(-?\w+|\([^)]*\))/g,'<sup>$1</sup>');
+const todayStr=()=>{const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+function newClass(name,students){return{id:'k-'+uid(),name,students,level:3,enabled:{},log:[],absent:{date:'',names:[]}}}
+function defaults(){return{version:2,classes:[],current:null,custom:[]}}
+function fromV1(o){const k=newClass('B Period',o.students||[]);k.level=3;k.enabled=Object.assign({},o.enabled||{});
+  (o.custom||[]).forEach(c=>{if(c.enabled===false)k.enabled[c.id]=false});k.log=o.log||[];k.absent=o.absent||{date:'',names:[]};
+  return{version:2,classes:[k],current:k.id,custom:(o.custom||[]).map(c=>({id:c.id,name:c.name,items:c.items||[]}))}}
+function normalize(d){if(!d||typeof d!=='object')throw 0;if(!Array.isArray(d.classes)){if(!Array.isArray(d.students))throw 0;return fromV1(d)}
+  d.version=2;d.custom=d.custom||[];d.classes.forEach(k=>{k.level=k.level||3;k.enabled=k.enabled||{};k.log=k.log||[];k.absent=k.absent||{date:'',names:[]};k.students=k.students||[]});
+  if(!d.classes.some(k=>k.id===d.current))d.current=d.classes[0]?d.classes[0].id:null;return d}
+let S=defaults(),canSave=true;
+function load(){try{const raw=localStorage.getItem(KEY);if(raw){S=normalize(JSON.parse(raw));return}
+  const old=localStorage.getItem(OLDKEY);if(old){S=fromV1(JSON.parse(old));return}}catch(e){canSave=false}S=defaults()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));canSave=true}catch(e){canSave=false}renderBanner()}
+const C=()=>S.classes.find(k=>k.id===S.current)||null;
+
+function cats(all){const k=C(),on=id=>!k||k.enabled[id]!==false;
+  const list=BUILTIN.map(c=>({...c,builtin:true,enabled:on(c.id)}))
+  .concat(S.custom.map(c=>({...c,builtin:false,enabled:on(c.id),gen:()=>{const it=pick(c.items);return{q:fmtText(it.q),a:`<div>${fmtText(it.a)}</div>`}}})));
+  return all?list:list.filter(c=>c.enabled&&(c.builtin||c.items.length))}
+const catName=id=>(cats(true).find(c=>c.id===id)||{name:'(deleted skill)'}).name;
+function absentToday(){const k=C();if(k.absent.date!==todayStr())k.absent={date:todayStr(),names:[]};return k.absent.names}
+
+function stats(){const k=C(),st={},today=todayStr();
+  k.students.forEach(n=>st[n]={turns:0,last:0,by:{}});
+  const catCorrect={},todayUses={};
+  for(const r of k.log){const s=st[r.student];
+    if(r.t.slice(0,10)===today)todayUses[r.cat]=(todayUses[r.cat]||0)+1;
+    if(r.result==='correct'){(catCorrect[r.cat]=catCorrect[r.cat]||new Set()).add(r.student)}
+    if(!s)continue;s.turns++;s.last=Math.max(s.last,Date.parse(r.t));
+    const b=s.by[r.cat]=s.by[r.cat]||{c:0,i:0,n:0};b[r.result==='correct'?'c':r.result==='incorrect'?'i':'n']++}
+  return{st,catCorrect,todayUses}}
+function cmp(a,b){for(let i=0;i<a.length;i++)if(a[i]!==b[i])return a[i]-b[i];return 0}
+function pickStudent(exclude=[]){const{st}=stats(),ab=absentToday();
+  const c=C().students.filter(n=>!ab.includes(n)&&!exclude.includes(n));if(!c.length)return null;
+  return c.map(n=>({n,k:[st[n].turns,st[n].last,Math.random()]})).sort((a,b)=>cmp(a.k,b.k))[0].n}
+function pickCat(student,exclude=[]){const{st,catCorrect,todayUses}=stats(),list=cats().filter(c=>!exclude.includes(c.id));
+  if(!list.length)return null;const by=(st[student]||{by:{}}).by;
+  return list.map(c=>{const b=by[c.id]||{c:0,i:0,n:0};return{c,k:[b.c>0?1:0,b.c+b.i,todayUses[c.id]||0,(catCorrect[c.id]||new Set()).size,Math.random()]}})
+    .sort((a,b)=>cmp(a.k,b.k))[0].c}
+
+/* ===================== UI ===================== */
+let tab='warm',round=null,toastTimer=null,editing=null;
+const $=s=>document.querySelector(s);
+const pickLevel=()=>rand(1,(C()&&C().level)||3);
+function genFor(cat,d){try{return cat.gen(d)}catch(e){return{q:'Could not make a problem — press New problem.',a:''}}}
+function fill(slot,cat){slot.cat=cat.id;slot.lv=cat.builtin?pickLevel():null;slot.p=genFor(cat,slot.lv);slot.shown=false}
+function makeSlot(student,cat){const s={student,revealed:false,result:null};fill(s,cat);return s}
+function newRound(){if(!C())return;const s1=pickStudent();if(!s1){round=null;return render()}
+  const c1=pickCat(s1);if(!c1){round=null;return render()}const slots=[makeSlot(s1,c1)];
+  const s2=pickStudent([s1]);if(s2){const c2=pickCat(s2,[c1.id])||pickCat(s2);slots.push(makeSlot(s2,c2))}
+  round={slots};render()}
+const activeIdx=()=>round?round.slots.findIndex(s=>!s.result):-1;
+const usesCat=id=>round&&round.slots.some(s=>s.cat===id);
+
+function renderBanner(){$('#banner').innerHTML=canSave?'':'<div class="banner">This browser isn\'t letting the app save. Use Export backup on the Setup tab before closing, or open the file in Chrome or Edge.</div>'}
+function renderHeader(){
+  $('#classbox').innerHTML=S.classes.length?`<select id="classpick" title="Switch class">${S.classes.map(k=>`<option value="${k.id}" ${k.id===S.current?'selected':''}>${esc(k.name)}</option>`).join('')}</select>`:'';
+  $('#lvlbox').innerHTML=C()?`<span class="lvl" title="Each problem is a random level from 1 up to this maximum"><span>Max difficulty</span>${[1,2,3,4,5].map(v=>`<button data-act="lvl" data-v="${v}" class="${v===C().level?'on':''}">${v}</button>`).join('')}</span>`:'';
+  if(!C()){$('#today').innerHTML='';return}
+  const ab=absentToday(),n=C().log.filter(r=>r.t.slice(0,10)===todayStr()).length;
+  $('#today').innerHTML=`<span>Today: ${n} turn${n===1?'':'s'}</span>`+(ab.length?`<span>· Absent:</span>`+ab.map(a=>`<button class="chip" data-act="unabsent" data-name="${esc(a)}" title="Mark present">${esc(a)} ✕</button>`).join(''):'')}
+
+const noClass=()=>`<div class="card empty"><p>No classes yet.</p><button class="btn primary" data-tab="setup">Add a class in Setup</button></div>`;
+const howHTML=h=>h&&h.length?`<div class="how"><div class="howt">How to solve</div><ol>${h.map(x=>`<li>${x}</li>`).join('')}</ol></div>`:'';
+function viewWarm(){if(!C())return noClass();
+  if(!C().students.length)return`<div class="card empty"><p>${esc(C().name)} has no students yet. Add the roster on the Setup tab.</p></div>`;
+  if(!cats().length)return`<div class="card empty"><p>No skills are turned on for ${esc(C().name)}. Turn some on in Setup.</p></div>`;
+  if(!round)return`<div class="card empty"><button class="btn primary big" data-act="newround">Start warm-up</button>
+    <p class="muted">${pickStudent()?'Shows two problems. Names stay hidden until you reveal them.':'Everyone is marked absent today.'}</p></div>`;
+  const act=activeIdx(),all=cats(),lab={correct:['✓ Correct','c-good'],incorrect:['✗ Incorrect','c-bad'],noattempt:["Didn't attempt",'c-na']};
+  let h=`<div class="slots${round.slots.length===1?' one':''}">`;
+  round.slots.forEach((s,i)=>{
+    h+=`<div class="card slot${i===act?' active':''}${s.result?' done':''}">
+      <div class="slothead"><span class="pnum">${i+1}</span><span class="skill">${esc(catName(s.cat))}</span>${s.lv?`<span class="lvtag" title="Difficulty level">Level ${s.lv}</span>`:''}</div>
+      <div class="prob">${s.p.q}</div>
+      ${s.shown?`<div class="ans">${s.p.a||''}${s.p.graph||''}${howHTML(s.p.how)}</div>`:''}
+      <div class="whobox">`;
+    if(!s.revealed)h+=i===act?`<button class="btn primary big" data-act="reveal" data-i="${i}">Who's solving #${i+1}?</button>`
+      :`<span class="muted">Name appears after #${act+1} is marked.</span>`;
+    else h+=`<div class="who">${esc(s.student)}</div>${s.result?`<span class="tag big ${lab[s.result][1]}">${lab[s.result][0]}</span>`:''}`;
+    h+=`</div>`;
+    const grading=s.revealed&&!s.result;
+    if(grading)h+=`<div class="row">
+        <button class="btn res ${s.shown?'':'primary'}" data-act="toggle" data-i="${i}">${s.shown?'Hide answer':'Show answer'}</button>
+        <button class="btn res good" data-act="rec" data-i="${i}" data-r="correct">✓ Correct</button>
+        <button class="btn res bad" data-act="rec" data-i="${i}" data-r="incorrect">✗ Incorrect</button>
+        <button class="btn res na" data-act="rec" data-i="${i}" data-r="noattempt">Didn't attempt</button></div>
+      <div class="row"><button class="btn" data-act="absent" data-i="${i}">Absent today</button>
+        <button class="btn" data-act="someoneelse" data-i="${i}">Call someone else</button></div>`;
+    h+=`<div class="row small-row">
+        ${grading?'':`<button class="btn" data-act="toggle" data-i="${i}">${s.shown?'Hide answer':'Show answer'}</button>`}
+        ${s.result?'':`<button class="btn" data-act="newprob" data-i="${i}">New problem</button>
+        <select data-act="setcat" data-i="${i}" title="Change skill">${all.map(c=>`<option value="${c.id}" ${c.id===s.cat?'selected':''}>${esc(c.name)}</option>`).join('')}</select>`}
+      </div></div>`});
+  h+='</div>';
+  h+=act<0?`<div class="row center"><button class="btn primary big" data-act="newround">Next round</button></div>`:'';
+  return h+`<div class="kbd">Keys: Enter = reveal name / next round · 1 = correct · 2 = incorrect · 3 = didn't attempt · Space = show/hide answer for the current problem</div>`}
+
+function viewCov(){if(!C())return noClass();const{st,catCorrect}=stats(),list=cats(true).filter(c=>c.enabled),k=C(),n=k.students.length;
+  if(!n)return`<p>${esc(k.name)} has no students yet.</p>`;
+  let pairs=0;k.students.forEach(s=>list.forEach(c=>{if((st[s].by[c.id]||{}).c)pairs++}));
+  const tot=n*list.length;
+  let h=`<p><b>${esc(k.name)}:</b> <b>${pairs}</b> of ${tot} student–skill pairs answered correctly (${tot?Math.round(100*pairs/tot):0}%). Only skills turned on for this class are shown.</p>
+  <div class="legend"><span><b class="c-good">✓</b>got it right at least once</span><span><b class="c-bad">✗</b>tried, not right yet</span><span><b class="c-na">–</b>didn't attempt</span><span>small number = times asked</span></div>
+  <div class="tablewrap"><table class="cov"><thead><tr><th>Student</th><th>Turns</th>${list.map(c=>`<th>${esc(c.name)}</th>`).join('')}</tr></thead><tbody>`;
+  for(const s of k.students){h+=`<tr><td>${esc(s)}</td><td>${st[s].turns}</td>`;
+    for(const c of list){const b=st[s].by[c.id];if(!b){h+='<td class="cell"></td>';continue}
+      const t=b.c+b.i+b.n,cls=b.c?'c-good':b.i?'c-bad':'c-na',sym=b.c?'✓':b.i?'✗':'–';
+      h+=`<td class="cell ${cls}" title="${b.c} correct, ${b.i} incorrect, ${b.n} didn't attempt">${sym}${t>1?`<sup>${t}</sup>`:''}</td>`}
+    h+='</tr>'}
+  h+=`<tr><td><b>Class</b></td><td></td>${list.map(c=>{const kk=(catCorrect[c.id]||new Set());const got=k.students.filter(s=>kk.has(s)).length;return`<td class="small"><b>${got}/${n}</b> ✓</td>`}).join('')}</tr>`;
+  return h+'</tbody></table></div>'}
+
+function viewHist(){if(!C())return noClass();const log=C().log;if(!log.length)return`<p class="muted">No turns recorded yet for ${esc(C().name)}.</p>`;
+  const lab={correct:['Correct','c-good'],incorrect:['Incorrect','c-bad'],noattempt:["Didn't attempt",'c-na']};let h='',day='';
+  h+='<div class="tablewrap"><table class="hist"><tbody>';
+  [...log].reverse().forEach(r=>{const d=new Date(r.t),ds=d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
+    if(ds!==day){day=ds;h+=`<tr><th colspan="5">${ds}</th></tr>`}
+    h+=`<tr><td class="small muted">${d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}</td><td><b>${esc(r.student)}</b></td><td class="small">${esc(catName(r.cat))}${r.lv?`<br><span class="muted">Level ${r.lv}</span>`:''}</td>
+      <td class="p">${r.q||''}</td><td><span class="tag ${lab[r.result][1]}">${lab[r.result][0]}</span> <button class="btn sm" data-act="del" data-id="${r.id}" title="Delete this entry">✕</button></td></tr>`});
+  return h+'</tbody></table></div>'}
+
+function viewSetup(){const k=C();
+  let h=`<section class="set"><h2>Classes</h2>`;
+  if(!S.classes.length)h+=`<p>Add your first class below: give it a name and paste the student names.</p>`;
+  S.classes.forEach(c=>{h+=`<div class="classrow${c.id===S.current?' cur':''}"><span class="nm">${esc(c.name)}</span><span class="small muted">${c.students.length} student${c.students.length===1?'':'s'} · ${c.log.length} turn${c.log.length===1?'':'s'}</span>
+    ${c.id===S.current?'':`<button class="btn sm" data-act="selclass" data-id="${c.id}">Select</button>`}
+    <button class="btn sm" data-act="renclass" data-id="${c.id}">Rename</button><button class="btn sm danger" data-act="delclass" data-id="${c.id}">Delete</button></div>`});
+  h+=`<h3>Add a class</h3><input type="text" id="newcname" placeholder="Class name, e.g. 3rd Period" style="width:100%;margin-bottom:8px">
+    <textarea id="newcroster" rows="5" placeholder="Student names, one per line"></textarea>
+    <div class="row"><button class="btn primary" data-act="addclass">Add class</button></div></section>`;
+  if(k){h+=`<section class="set"><h2>${esc(k.name)} roster</h2><p class="small muted">One name per line. History is matched by name, so renaming a student starts them fresh.</p>
+    <textarea id="roster" rows="8">${esc(k.students.join('\n'))}</textarea><div class="row"><button class="btn primary" data-act="saveroster">Save roster</button></div></section>
+  <section class="set"><h2>Skills for ${esc(k.name)}</h2><p class="small muted">Only checked skills come up for this class. Each class has its own checkboxes, so periods can be at different places. Unchecking keeps a skill's history.</p>
+  <div class="row" style="margin:0 0 6px"><button class="btn sm" data-act="allon">Check all</button><button class="btn sm" data-act="alloff">Uncheck all</button></div>`;
+  cats(true).forEach(c=>{h+=`<div class="catrow"><label><input type="checkbox" data-act="togglecat" data-id="${c.id}" ${c.enabled?'checked':''}> ${esc(c.name)}
+    ${c.builtin?'<span class="small muted">generated</span>':`<span class="small muted">your list · ${c.items.length} problem${c.items.length===1?'':'s'}</span>`}</label>
+    ${c.builtin?'':`<button class="btn sm" data-act="editcat" data-id="${c.id}">Edit</button><button class="btn sm danger" data-act="delcat" data-id="${c.id}">Delete</button>`}</div>`});
+  const e=editing?S.custom.find(c=>c.id===editing):null;
+  h+=`<h3>${e?'Edit skill':'Add a skill'}</h3>
+    <p class="small muted">Skills you add are available to all your classes. Type one problem per line as <code>problem | answer</code>. Use ^ for exponents (x^2). Example: <code>Simplify 3(x − 4) + 2x | 5x − 12</code></p>
+    <input type="text" id="cname" placeholder="Skill name" value="${e?esc(e.name):''}" style="width:100%;margin-bottom:8px">
+    <textarea id="citems" rows="7" placeholder="Solve 2x + 5 = 17 | x = 6">${e?esc(e.items.map(i=>i.q+' | '+i.a).join('\n')):''}</textarea>
+    <div class="row"><button class="btn primary" data-act="savecat">${e?'Save changes':'Add skill'}</button>${e?'<button class="btn" data-act="canceledit">Cancel</button>':''}</div></section>`}
+  h+=`<section class="set"><h2>Backup &amp; sharing</h2>
+    <p class="small muted">Everything is saved in this browser. Export a backup now and then. History stays on this device only. A backup includes all classes, rosters, history and your added skills.</p>
+    <div class="row"><button class="btn primary" data-act="export">Export backup</button><button class="btn" data-act="import">Import backup</button></div>
+    <h3>Share added skills</h3><p class="small muted">Sends only the skills you added (no students or history), so another teacher can import them into their copy.</p>
+    <div class="row"><button class="btn" data-act="exportskills" ${S.custom.length?'':'disabled'}>Export my added skills</button><button class="btn" data-act="importskills">Import skills</button></div>
+    <h3>Clear history</h3><p class="small muted">Removes recorded turns and today's absences. Classes, rosters and skills are kept.</p>
+    <div class="row">${k?`<button class="btn danger" data-act="clearclass">Clear ${esc(k.name)} history</button>`:''}<button class="btn danger" data-act="clearall" ${S.classes.length?'':'disabled'}>Clear history for all classes</button></div></section>`;
+  return h}
+
+function render(){document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));renderHeader();renderBanner();
+  $('#main').innerHTML=tab==='warm'?viewWarm():tab==='cov'?viewCov():tab==='hist'?viewHist():viewSetup();
+  if(tab==='warm')fitSlots()}
+// Safety net: anything still wider than its card is allowed to wrap or shrink, so nothing runs off the edge.
+function fitSlots(){document.querySelectorAll('.slot').forEach(el=>{const right=el.getBoundingClientRect().right-parseFloat(getComputedStyle(el).paddingRight);
+  el.querySelectorAll('.math').forEach(m=>{if(m.getBoundingClientRect().right>right+1)m.style.whiteSpace='normal'});
+  el.querySelectorAll('table.vt').forEach(t=>{let f=parseFloat(getComputedStyle(t).fontSize);while(t.getBoundingClientRect().right>right+1&&f>11){f-=1;t.style.fontSize=f+'px'}})})}
+window.addEventListener('resize',()=>{if(tab==='warm')render()});
+
+function toast(msg,undo){clearTimeout(toastTimer);$('#toast').innerHTML=`<div class="toast"><span>${msg}</span>${undo?'<button data-act="undo">Undo</button>':''}</div>`;
+  window._undo=undo;toastTimer=setTimeout(()=>{$('#toast').innerHTML='';window._undo=null},6000)}
+
+function snapshot(){return JSON.parse(JSON.stringify(round))}
+function record(i,result){const s=round&&round.slots[i];if(!s||!s.revealed||s.result)return;const snap=snapshot(),k=C();
+  const id=uid();
+  k.log.push({id,t:new Date().toISOString(),student:s.student,cat:s.cat,lv:s.lv,result,q:s.p.q});save();
+  s.result=result;s.shown=true;const nx=round.slots[i+1];if(nx)nx.revealed=true;render();
+  const lab={correct:'✓ correct',incorrect:'✗ incorrect',noattempt:"didn't attempt"}[result];
+  toast(`${esc(s.student)}: ${lab}`,()=>{k.log=k.log.filter(r=>r.id!==id);save();round=snap;render()})}
+function replaceStudent(i,absent){const s=round.slots[i],snap=snapshot(),old=s.student,k=C();
+  if(absent){absentToday().push(old);save()}
+  const n=pickStudent(round.slots.map(x=>x.student));
+  if(!n){if(absent){k.absent.names=k.absent.names.filter(x=>x!==old);save()}return toast('No one else is available.')}
+  s.student=n;render();
+  toast(absent?`${esc(old)} marked absent today`:`Skipped ${esc(old)}`,()=>{if(absent){k.absent.names=k.absent.names.filter(x=>x!==old);save()}round=snap;render()})}
+const parseNames=t=>[...new Set(t.split('\n').map(s=>s.trim()).filter(Boolean))];
+// In-page dialogs (the hosted viewer blocks alert/confirm/prompt).
+function ask({title,body='',ok='OK',cancel='Cancel',danger=false,input=null,wide=false,extra=''}){return new Promise(res=>{
+  const m=$('#modal'),prev=document.activeElement;
+  m.innerHTML=`<div class="mback"><div class="mbox${wide?' wide':''}" role="dialog" aria-modal="true" aria-labelledby="mtitle"><h2 id="mtitle">${title}</h2>${body?`<div class="mbody">${body}</div>`:''}${input!==null?`<input type="text" id="minput" value="${esc(input)}" aria-label="${title}">`:''}${extra}<div class="row mrow">${cancel?`<button class="btn" id="mcancel">${cancel}</button>`:''}${ok?`<button class="btn ${danger?'dangerfill':'primary'}" id="mok">${ok}</button>`:''}</div></div></div>`;
+  const close=v=>{document.removeEventListener('keydown',kh,true);m.innerHTML='';try{prev&&prev.focus()}catch(e){}res(v)};
+  const okv=()=>input!==null?$('#minput').value:true,nov=input!==null?null:false;
+  const kh=e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close(nov)}else if(e.key==='Enter'&&e.target.id==='minput'){e.preventDefault();e.stopPropagation();close(okv())}};
+  document.addEventListener('keydown',kh,true);
+  m.querySelector('.mback').addEventListener('click',e=>{if(e.target.classList.contains('mback'))close(nov)});
+  if($('#mcancel'))$('#mcancel').onclick=()=>close(nov);
+  if($('#mok'))$('#mok').onclick=()=>close(okv());
+  m._close=close;
+  const f=$('#minput')||$('#mok')||$('#mcancel');if(f){f.focus();if(f.select)f.select()}})}
+const modalOpen=()=>!!$('#modal').innerHTML;
+// Saving a file: Claude's save prompt on claude.ai, a normal download anywhere else, otherwise copyable text.
+const DL=(window.claude&&window.claude.use)?window.claude.use('downloads').catch(()=>null):Promise.resolve(null);
+async function offerFile(obj,filename,what){const text=JSON.stringify(obj,null,1);
+  const dl=await DL;
+  if(dl){try{await dl.save({filename,data:text});toast(`Saved ${esc(filename)}`);return}
+    catch(e){const c=e&&e.code;if(c==='declined')return;if(c==='rate_limited')return toast('A save prompt is already open.')}}
+  else if(!window.claude){const u=URL.createObjectURL(new Blob([text],{type:'application/json'})),l=document.createElement('a');
+    l.href=u;l.download=filename;document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);return}
+  ask({title:`Copy your ${what}`,wide:true,ok:'Copy',cancel:'Close',
+    body:`Saving files isn't available here. Copy this text and keep it somewhere safe, such as a note or an email to yourself. To restore it, choose Import and paste the text.`,
+    extra:`<textarea id="mtext" rows="9" readonly aria-label="${what} text">${esc(text)}</textarea>`});
+  $('#mok').onclick=async()=>{const ta=$('#mtext');try{await navigator.clipboard.writeText(text);toast('Copied')}catch(e){ta.focus();ta.select();toast('Text selected. Use Copy from your device\'s menu.')}}}
+function chooseImport(kind){
+  ask({title:kind==='backup'?'Import a backup':'Import skills',wide:true,ok:'Import pasted text',cancel:'Cancel',
+    body:kind==='backup'?'Choose a backup file, or paste backup text below. This replaces the classes, rosters, history and skills on this device.':'Choose a skills file, or paste skills text below. Skills with the same name are updated; the rest are added.',
+    extra:`<div class="row"><button class="btn" id="mfile">Choose file…</button></div><textarea id="mtext" rows="7" placeholder="Paste text here" aria-label="Paste text"></textarea>`});
+  const box=$('#modal');
+  $('#mfile').onclick=()=>{$(kind==='backup'?'#importFile':'#importSkills').click();box._close(false)};
+  $('#mok').onclick=()=>{const txt=$('#mtext').value.trim();if(!txt)return toast('Paste the text first.');box._close(false);importText(txt,kind)}}
+function importText(txt,kind){
+  if(kind==='backup'){let d;try{d=normalize(JSON.parse(txt))}catch(e){return ask({title:"That isn't a warm-up backup",body:'Check that you chose or pasted the whole backup, starting with { and ending with }.',cancel:null})}
+    const turns=d.classes.reduce((s,k)=>s+k.log.length,0);
+    return ask({title:'Replace everything on this device?',body:`The backup has ${d.classes.length} class${d.classes.length===1?'':'es'} and ${turns} recorded turn${turns===1?'':'s'}. It replaces what is here now.`,ok:'Replace',danger:true})
+      .then(ok=>{if(ok){S=d;save();round=null;render();toast('Backup imported')}})}
+  let list;try{const d=JSON.parse(txt);list=d&&d.kind==='warmup-skills'?d.skills:(d&&Array.isArray(d.custom)?d.custom:null);if(!Array.isArray(list))throw 0}
+  catch(e){return ask({title:"That isn't a skills file",body:'Use a file made with “Export my added skills”, or a full backup.',cancel:null})}
+  let added=0,upd=0;
+  list.forEach(sk=>{if(!sk||!sk.name||!Array.isArray(sk.items))return;const ex=S.custom.find(c=>c.id===sk.id||c.name.toLowerCase()===sk.name.toLowerCase());
+    if(ex){ex.name=sk.name;ex.items=sk.items;upd++}else{S.custom.push({id:sk.id||'c-'+uid(),name:sk.name,items:sk.items});added++}});
+  save();render();toast(`Skills imported: ${added} new, ${upd} updated`)}
+function setAll(on){const k=C();cats(true).forEach(c=>{k.enabled[c.id]=on});save();round=null;render()}
+
+document.addEventListener('click',e=>{if(e.target.closest('#modal'))return;const t=e.target.closest('[data-act],[data-tab]');if(!t||t.disabled)return;
+  if(t.dataset.tab){tab=t.dataset.tab;return render()}
+  const a=t.dataset.act;
+  if(a==='fs')return fsToggle();
+  if(a==='newround')return newRound();
+  if(a==='lvl'){C().level=+t.dataset.v;save();renderHeader();return toast(`Max difficulty for ${esc(C().name)}: ${t.dataset.v}. Applies to new problems.`)}
+  const i=+t.dataset.i,sl=round&&round.slots[i];
+  if(a==='reveal'){if(sl)sl.revealed=true;return render()}
+  if(a==='toggle'){if(sl)sl.shown=!sl.shown;return render()}
+  if(a==='newprob'){if(sl)fill(sl,cats(true).find(c=>c.id===sl.cat));return render()}
+  if(a==='rec')return record(i,t.dataset.r);
+  if(a==='absent')return replaceStudent(i,true);
+  if(a==='someoneelse')return replaceStudent(i,false);
+  if(a==='unabsent'){const k=C();k.absent.names=k.absent.names.filter(x=>x!==t.dataset.name);save();return render()}
+  if(a==='undo'){const u=window._undo;$('#toast').innerHTML='';window._undo=null;if(u)u();return}
+  if(a==='del'){const id=t.dataset.id;ask({title:'Delete this turn?',body:'It is removed from the history and coverage.',ok:'Delete',danger:true}).then(ok=>{if(ok){const k=C();k.log=k.log.filter(r=>r.id!==id);save();render()}});return}
+  if(a==='selclass'){S.current=t.dataset.id;round=null;save();return render()}
+  if(a==='addclass'){const name=$('#newcname').value.trim();if(!name){toast('Give the class a name.');$('#newcname').focus();return}
+    const k=newClass(name,parseNames($('#newcroster').value));S.classes.push(k);S.current=k.id;round=null;save();toast(`Added ${esc(name)}`);return render()}
+  if(a==='renclass'){const k=S.classes.find(c=>c.id===t.dataset.id);ask({title:'Rename class',input:k.name,ok:'Rename'}).then(n=>{if(n&&n.trim()){k.name=n.trim();save();render()}});return}
+  if(a==='delclass'){const k=S.classes.find(c=>c.id===t.dataset.id);
+    ask({title:`Delete ${esc(k.name)}?`,body:`This removes its roster and all ${k.log.length} recorded turn${k.log.length===1?'':'s'}. Export a backup first if you might want them.`,ok:'Delete class',danger:true}).then(ok=>{if(ok){
+      S.classes=S.classes.filter(c=>c!==k);if(S.current===k.id){S.current=S.classes[0]?S.classes[0].id:null;round=null}save();render()}});return}
+  if(a==='saveroster'){C().students=parseNames($('#roster').value);save();round=null;toast('Roster saved');return render()}
+  if(a==='allon')return setAll(true);
+  if(a==='alloff')return setAll(false);
+  if(a==='editcat'){editing=t.dataset.id;render();$('#cname').scrollIntoView({behavior:'smooth',block:'center'});return}
+  if(a==='canceledit'){editing=null;return render()}
+  if(a==='delcat'){const c=S.custom.find(c=>c.id===t.dataset.id);if(c)ask({title:`Delete “${esc(c.name)}”?`,body:'It is removed from all classes. Past turns stay in the history, marked as a deleted skill.',ok:'Delete skill',danger:true}).then(ok=>{if(ok){S.custom=S.custom.filter(x=>x!==c);save();if(usesCat(c.id))round=null;render()}});return}
+  if(a==='savecat'){const name=$('#cname').value.trim();const items=$('#citems').value.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{const i=l.indexOf('|');return i<0?{q:l,a:''}:{q:l.slice(0,i).trim(),a:l.slice(i+1).trim()}}).filter(x=>x.q);
+    if(!name){toast('Give the skill a name.');$('#cname').focus();return}if(!items.length){toast('Add at least one problem.');$('#citems').focus();return}
+    if(editing){const c=S.custom.find(c=>c.id===editing);c.name=name;c.items=items}else S.custom.push({id:'c-'+uid(),name,items});
+    editing=null;save();toast(`Saved "${esc(name)}"`);return render()}
+  if(a==='export')return offerFile(S,`algebra2-warmups-backup-${todayStr()}.json`,'backup');
+  if(a==='import')return chooseImport('backup');
+  if(a==='exportskills')return offerFile({kind:'warmup-skills',version:1,skills:S.custom},`algebra2-warmup-skills-${todayStr()}.json`,'skills');
+  if(a==='importskills')return chooseImport('skills');
+  if(a==='clearclass'){const k=C();ask({title:`Clear ${esc(k.name)} history?`,body:'All recorded turns for this class are removed. The roster and skills are kept.',ok:'Clear history',danger:true}).then(ok=>{if(ok){k.log=[];k.absent={date:'',names:[]};save();round=null;render()}});return}
+  if(a==='clearall'){ask({title:'Clear history for all classes?',body:'Recorded turns are removed for every class. Rosters and skills are kept. Export a backup first if you might want it.',ok:'Clear all history',danger:true}).then(ok=>{if(ok){S.classes.forEach(k=>{k.log=[];k.absent={date:'',names:[]}});save();round=null;render()}});return}
+});
+document.addEventListener('change',e=>{const t=e.target,a=t.dataset.act;
+  if(t.id==='classpick'){S.current=t.value;round=null;save();return render()}
+  if(a==='setcat'){fill(round.slots[+t.dataset.i],cats(true).find(c=>c.id===t.value));return render()}
+  if(a==='togglecat'){const id=t.dataset.id;C().enabled[id]=t.checked;save();if(!t.checked&&usesCat(id))round=null;return render()}
+  if((t.id==='importFile'||t.id==='importSkills')&&t.files[0]){const kind=t.id==='importFile'?'backup':'skills';t.files[0].text().then(txt=>importText(txt,kind)).finally(()=>{t.value=''})}});
+document.addEventListener('keydown',e=>{if(modalOpen()||tab!=='warm'||!C()||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.ctrlKey||e.metaKey||e.altKey)return;
+  if(e.key==='Enter'||e.key===' ')e.preventDefault();
+  const act=activeIdx();
+  if(e.key==='Enter'){if(!round||act<0)return newRound();const s=round.slots[act];if(!s.revealed){s.revealed=true;render()}return}
+  if(!round)return;const s=round.slots[act<0?round.slots.length-1:act];
+  if(e.key===' '){s.shown=!s.shown;render()}
+  else if(act>=0&&'123'.includes(e.key))record(act,{1:'correct',2:'incorrect',3:'noattempt'}[e.key]);});
+
+// Full screen: one tap hides the browser and system bars (hidden where the browser can't do it, or when already running as an installed full-screen app).
+const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
+function fsSync(){const b=$('#fsbtn'),can=document.fullscreenEnabled||document.webkitFullscreenEnabled,inst=matchMedia('(display-mode: fullscreen)').matches;
+  b.hidden=!can||(inst&&!fsEl());b.textContent=fsEl()?'Exit full screen':'Full screen'}
+document.addEventListener('fullscreenchange',fsSync);document.addEventListener('webkitfullscreenchange',fsSync);
+function fsToggle(){const d=document.documentElement;
+  if(fsEl()){(document.exitFullscreen||document.webkitExitFullscreen).call(document)}
+  else{const r=(d.requestFullscreen||d.webkitRequestFullscreen).call(d,{navigationUI:'hide'});if(r&&r.catch)r.catch(()=>toast("Full screen isn't available here."))}}
+if(typeof document!=='undefined'&&document.getElementById('main')){load();save();render();fsSync()}
+</script>
+</body>
+</html>
