@@ -136,10 +136,16 @@ table.syn td.k{border-right:1.5px solid currentColor;padding-right:8px}
 table.syn tr.res td{border-top:1.5px solid currentColor}
 table.syn tr.res td.k{border-top:none}
 table.syn td.last{font-weight:700}
-.rc{border-top:.07em solid currentColor;padding:0 .06em;margin-left:.02em}
+.rd{position:relative;display:inline-block;padding-left:.6em;margin-left:.04em;white-space:nowrap;line-height:1.15}
+.rd.hasix{padding-left:.66em;margin-left:.12em}
+.rd .rs{position:absolute;left:0;top:.04em;width:.6em;height:calc(100% - .04em);overflow:visible;fill:none;stroke:currentColor;stroke-width:.08em;stroke-linejoin:round;stroke-linecap:round}
+.rd.hasix .rs{width:.66em}
+.rd .rc{display:inline-block;border-top:.08em solid currentColor;padding:.06em .1em 0 .04em;line-height:1.15}
+.frac .de .rd{margin-top:.18em}
+.frac .nu .rd{margin-bottom:.06em}
+.rd .ix{position:absolute;left:-.1em;bottom:42%;font-size:.5em;line-height:1}
 .math sup{font-size:.68em;line-height:0}
-.nr{white-space:nowrap}
-.nr .ix{font-size:.55em;margin-right:-.42em;position:relative;top:-.2em;padding-left:.05em}
+
 .mback{position:fixed;inset:0;background:var(--scrim);display:flex;align-items:center;justify-content:center;z-index:20;padding:16px}
 .mbox{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:20px 22px;width:min(100%,460px);max-height:calc(100% - 32px);overflow:auto;box-shadow:0 12px 40px rgba(0,0,0,.25)}
 .mbox.wide{width:min(100%,640px)}
@@ -320,7 +326,8 @@ function synth(c,k){const out=[c[0]],mid=[null];for(let i=1;i<c.length;i++){cons
 function synthTable(c,k,s){return `<table class="syn"><tr><td class="k">${num(k)}</td>${c.map(x=>`<td>${num(x)}</td>`).join('')}</tr><tr><td class="k"></td>${s.mid.map(x=>`<td>${x===null?'':num(x)}</td>`).join('')}</tr><tr class="res"><td class="k"></td>${s.out.map((x,i)=>`<td${i===s.out.length-1?' class="last"':''}>${num(x)}</td>`).join('')}</tr></table>`}
 function sqrtParts(n){let k=1,m=n;for(let f=2;f*f<=m;f++)while(m%(f*f)===0){m/=f*f;k*=f}return[k,m]}
 const isSq=n=>n>=0&&Math.round(Math.sqrt(n))**2===n;
-const rad=m=>`√<span class="rc">${m}</span>`;
+const RADSVG='<svg class="rs" viewBox="0 0 10 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0.3 12.2 L2.6 10.6 L5.2 19.6 L10 0" vector-effect="non-scaling-stroke"/></svg>';
+const rad=(m,ix)=>`<span class="rd${ix?' hasix':''}">${ix?`<span class="ix">${ix}</span>`:''}${RADSVG}<span class="rc">${m}</span></span>`;
 const radStr=(k,m)=>m===1?String(k):(k===1?'':String(k))+rad(m);
 const imag=(k,m)=>(k===1?'':String(k))+V('i')+(m===1?'':rad(m));
 const SQF=[2,3,5,6,7,10,11,13];
@@ -756,7 +763,7 @@ function genReadFactored(lv){return tryGen(()=>{
     chk:()=>zs.every(z=>near(peval(c,z),0))&&near(peval(c,0),yint)}})}
 
 /* ---------- Unit 3: rational exponents & radicals (3.1, 3.2) ---------- */
-const nroot=(n,inner)=>n===2?rad(inner):`<span class="nr"><sup class="ix">${n}</sup>${rad(inner)}</span>`;
+const nroot=(n,inner)=>n===2?rad(inner):rad(inner,n);
 const rexp=(base,m,n)=>{const r=R(m,n);if(r.d===1)return r.n===1?base:base+sup(num(r.n));return base+sup(`${r.n<0?MINUS:''}${Math.abs(r.n)}/${r.d}`)};
 const realRoot=(a,n)=>Math.sign(a)*Math.abs(a)**(1/n);
 const ROOTNAME={2:'square',3:'cube',4:'fourth',5:'fifth',6:'sixth',7:'seventh'};
