@@ -138,6 +138,8 @@ table.syn tr.res td.k{border-top:none}
 table.syn td.last{font-weight:700}
 .rc{border-top:.07em solid currentColor;padding:0 .06em;margin-left:.02em}
 .math sup{font-size:.68em;line-height:0}
+.nr{white-space:nowrap}
+.nr .ix{font-size:.55em;margin-right:-.42em;position:relative;top:-.2em;padding-left:.05em}
 .mback{position:fixed;inset:0;background:var(--scrim);display:flex;align-items:center;justify-content:center;z-index:20;padding:16px}
 .mbox{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:20px 22px;width:min(100%,460px);max-height:calc(100% - 32px);overflow:auto;box-shadow:0 12px 40px rgba(0,0,0,.25)}
 .mbox.wide{width:min(100%,640px)}
@@ -753,6 +755,175 @@ function genReadFactored(lv){return tryGen(()=>{
       `<i>y</i>-intercept: substitute ${M(V('x')+' = 0')}: ${M(`${V('g')}(0) = ${num(yint)}`)}.`,`The leading term is ${M(poly([lc].concat(Array(deg).fill(0))))}: degree ${deg} (${even?'even':'odd'}), leading coefficient ${lc>0?'positive':'negative'}.`,`A degree-${deg} polynomial has at most ${deg} ${MINUS} 1 = ${deg-1} turning points.`],
     chk:()=>zs.every(z=>near(peval(c,z),0))&&near(peval(c,0),yint)}})}
 
+/* ---------- Unit 3: rational exponents & radicals (3.1, 3.2) ---------- */
+const nroot=(n,inner)=>n===2?rad(inner):`<span class="nr"><sup class="ix">${n}</sup>${rad(inner)}</span>`;
+const rexp=(base,m,n)=>{const r=R(m,n);if(r.d===1)return r.n===1?base:base+sup(num(r.n));return base+sup(`${r.n<0?MINUS:''}${Math.abs(r.n)}/${r.d}`)};
+const realRoot=(a,n)=>Math.sign(a)*Math.abs(a)**(1/n);
+const ROOTNAME={2:'square',3:'cube',4:'fourth',5:'fifth',6:'sixth',7:'seventh'};
+const lcm=(a,b)=>Math.abs(a*b)/gcd(a,b);
+const ipow=(b,e)=>{let r=1;for(let i=0;i<e;i++)r*=b;return r};
+function nthFree(c,n){let k=1,m=c;for(let f=2;ipow(f,n)<=m;f++)while(m%ipow(f,n)===0){m/=ipow(f,n);k*=f}return[k,m]} // c = k^n · m
+const NTH_FREE={2:[2,3,5,6,7,10,11],3:[2,3,4,5,6,7,9,10],4:[2,3,5,6,7,8],5:[2,3,4,5,6],6:[2,3,4,5]};
+const radTerm=(coef,n,m)=>m===1?String(coef):(coef===1?'':coef===-1?MINUS:num(coef))+nroot(n,m);
+const RX='The index of the radical is the denominator of the exponent, and the power is the numerator: '+M(`${V('a')}${sup(`${V('m')}/${V('n')}`)} = (${nroot(V('n'),V('a'))})${sup(V('m'))} = ${nroot(V('n'),V('a')+sup(V('m')))}`)+'.';
+
+function genNthRoot(lv){return tryGen(()=>{
+  let n,a,r;
+  if(lv===1){n=pick([2,3]);r=rand(2,n===2?15:7);a=ipow(r,n)}
+  else if(lv===2){n=pick([3,5]);r=rand(2,n===3?7:3);a=-ipow(r,n)}
+  else if(lv===3){const t=pick(['neg','zero','pos','pos']);n=pick([2,4,6]);if(t==='zero'){a=0;r=0}else{r=rand(2,n===2?12:3);a=t==='neg'?-ipow(r,n):ipow(r,n)}}
+  else{n=lv===4?pick([4,5,6]):pick([3,4,5,6]);r=rand(lv===5?1:2,n>=5?3:lv===5?6:4);a=ipow(r,n)*(Math.random()<.5?-1:1);if(Math.random()<.1)a=0}
+  const even=n%2===0,nm=ROOTNAME[n];let ans,why;
+  if(a===0){ans='0';why=`Only ${M('0'+sup(n)+' = 0')}, so there is one real ${nm} root.`}
+  else if(even&&a<0){ans=`No real ${nm} roots`;why=`${M(V('n')+' = '+n)} is even and ${M(V('a'))} is negative. An even power is never negative, so there are no real ${nm} roots.`}
+  else if(even){ans=`±${r}`;why=`${M(V('n')+' = '+n)} is even and ${M(V('a'))} is positive, so there are two real ${nm} roots: ${M(`${r}${sup(n)} = ${a}`)} and ${M(`(${MINUS}${r})${sup(n)} = ${a}`)}.`}
+  else{const v=a<0?-r:r;ans=num(v);why=`${M(V('n')+' = '+n)} is odd, so there is exactly one real ${nm} root: ${M(`${par(v)}${sup(n)} = ${num(a)}`)}.`}
+  return{q:ins('Find the indicated real nth root(s) of a.')+`<div class="seq">${M(`${V('n')} = ${n}, &nbsp;${V('a')} = ${num(a)}`)}</div>`,a:`<div>${a===0||!(even&&a<0)?M(ans):ans}</div>`,
+    how:['Odd index: exactly one real root, with the same sign as a. Even index: two roots (±) if a > 0, one if a = 0, none if a < 0.',why],
+    chk:()=>a===0||(even&&a<0)||near(ipow(Math.abs(Number(ans.replace('±','').replace(MINUS,'-'))),n)*(a<0?-1:1),a)}})}
+
+function genRewriteRad(lv){return tryGen(()=>{
+  const n=lv<=1?pick([3,4,5]):pick([3,4,5,6,7]);let m=lv<=1?1:pick([2,3,4,5,7]);if(gcd(m,n)!==1)return null;
+  let q,a,how=[RX],val;
+  if(lv===1){const b=rand(2,15);if(Math.random()<.5){q=`Rewrite using rational exponent notation.`;val=M(nroot(n,b));a=M(rexp(String(b),1,n))}else{q='Rewrite using radical notation.';val=M(rexp(String(b),1,n));a=M(nroot(n,b))}}
+  else if(lv===2){const b=rand(2,12);if(Math.random()<.5){q='Rewrite using radical notation.';val=M(rexp(String(b),m,n));a=`${M(`(${nroot(n,b)})${sup(m)}`)} or ${M(nroot(n,b+sup(m)))}`}else{q='Rewrite using rational exponent notation.';val=M(nroot(n,b+sup(m)));a=M(rexp(String(b),m,n))}}
+  else if(lv===3){if(Math.random()<.5){const mm=pick([3,5,7]),nn=pick([2,3,4]);if(gcd(mm,nn)!==1)return null;q='Rewrite using rational exponent notation.';val=M(nroot(nn,V('x')+sup(mm)));a=M(rexp(V('x'),mm,nn))}
+    else{const k=rand(2,9);q='Rewrite using radical notation.';val=M(rexp(`(${k}${V('t')})`,1,n));a=M(nroot(n,`${k}${V('t')}`))}}
+  else if(lv===4){const c=nz(-6,6),base=`(${V('y')} ${c<0?MINUS:'+'} ${Math.abs(c)})`;if(Math.random()<.5){q='Rewrite using rational exponent notation.';val=M(nroot(n,base+sup(m)));a=M(rexp(base,m,n))}
+    else{q='Rewrite using radical notation.';val=M(rexp(V('x'),m,n));a=`${M(`(${nroot(n,V('x'))})${sup(m)}`)} or ${M(nroot(n,V('x')+sup(m)))}`}}
+  else{const b=pick([V('x'),String(rand(2,9))]);if(Math.random()<.5){q='Rewrite using radical notation.';val=M(rexp(b,-m,n));a=`${M(frac(1,`(${nroot(n,b)})${sup(m)}`))} or ${M(frac(1,nroot(n,b+sup(m))))}`;how.push('A negative exponent means take the reciprocal: '+M(`${V('a')}${sup(`${MINUS}${V('m')}/${V('n')}`)} = ${frac(1,`${V('a')}${sup(`${V('m')}/${V('n')}`)}`)}`)+'.')}
+    else{q='Rewrite using rational exponent notation (no fraction bar).';val=M(frac(1,nroot(n,b+sup(m))));a=M(rexp(b,-m,n));how.push('Moving a power from the denominator to the numerator makes its exponent negative.')}}
+  return{q:ins(q)+`<div class="seq">${val}</div>`,a:`<div>${a}</div>`,how,chk:()=>true}})}
+
+function genEvalRat(lv){return tryGen(()=>{
+  let b,n,m,r,shown,val,how,want;
+  const pickRoot=(neg)=>{n=pick(neg?[3,5]:[2,3,4,5,6]);r=rand(2,n===2?12:n===3?5:n===4?3:2);b=ipow(r,n)*(neg?-1:1)};
+  if(lv===1){pickRoot(false);m=1;shown=Math.random()<.5?rexp(String(b),1,n):nroot(n,b);val=R(r);want=realRoot(b,n);how=[`${M(rexp(String(b),1,n)+' = '+nroot(n,b))}: what number to the power ${n} is ${b}? ${M(`${r}${sup(n)} = ${b}`)}.`]}
+  else if(lv===2){pickRoot(false);m=pick([2,3,4,5]);if(gcd(m,n)!==1||ipow(r,m)>1500)return null;shown=rexp(String(b),m,n);val=R(ipow(r,m));want=realRoot(b,n)**m;
+    how=[`Take the root first: ${M(`${nroot(n,b)} = ${r}`)}.`,`Then raise to the ${ord(m)} power: ${M(`${r}${sup(m)} = ${ipow(r,m)}`)}.`]}
+  else if(lv===3){pickRoot(true);m=pick([1,2,3,4]);if(gcd(m,n)!==1||ipow(r,m)>1500)return null;const neg=-r;val=R(ipow(neg,m));want=realRoot(b,n)**m;
+    shown=Math.random()<.5?rexp(`(${num(b)})`,m,n):(m===1?nroot(n,num(b)):`(${nroot(n,num(b))})${sup(m)}`);
+    how=[`The index ${n} is odd, so the root of a negative number is negative: ${M(`${nroot(n,num(b))} = ${num(neg)}`)}.`,...(m>1?[`${M(`(${num(neg)})${sup(m)} = ${num(ipow(neg,m))}`)}${m%2===0?' (an even power is positive)':''}.`]:[])]}
+  else if(lv===4){pickRoot(false);m=pick([1,2,3]);if(gcd(m,n)!==1||ipow(r,m)>1500)return null;val=R(1,ipow(r,m));want=realRoot(b,n)**(-m);
+    shown=Math.random()<.5?rexp(String(b),-m,n):`(${nroot(n,b)})${sup(MINUS+m)}`;
+    how=['A negative exponent means take the reciprocal; it does not make the answer negative.',`${M(`${nroot(n,b)} = ${r}`)}, so the value is ${M(m>1?`${frac(1,`${r}${sup(m)}`)} = ${rHTML(val)}`:rHTML(val))}.`]}
+  else{if(Math.random()<.5){pickRoot(false);m=pick([2,3,4,5]);if(gcd(m,n)!==1||ipow(r,m)>1500)return null;val=R(ipow(r,m));want=1/realRoot(b,n)**(-m);shown=frac(1,rexp(String(b),-m,n));
+      how=[`${M(frac(1,`${V('a')}${sup(MINUS+V('k'))}`)+' = '+V('a')+sup(V('k')))}: dividing by a negative power is the same as multiplying by the positive power.`,`${M(`${rexp(String(b),m,n)} = (${nroot(n,b)})${sup(m)} = ${r}${sup(m)} = ${ipow(r,m)}`)}.`]}
+    else{n=pick([5,7]);r=2;b=ipow(2,n);m=pick([2,3,4,5,6]);if(gcd(m,n)!==1)return null;const neg=Math.random()<.4;val=neg?R(1,ipow(r,m)):R(ipow(r,m));want=realRoot(b,n)**(neg?-m:m);shown=rexp(String(b),neg?-m:m,n);
+      how=[`${M(`${nroot(n,b)} = 2`)} because ${M(`2${sup(n)} = ${b}`)}.`,neg?`${M(`2${sup(m)} = ${ipow(2,m)}`)}, and the negative exponent gives the reciprocal: ${M(rHTML(val))}.`:`${M(`2${sup(m)} = ${ipow(2,m)}`)}.`]}}
+  return{q:ins('Evaluate without a calculator.')+`<div class="seq">${M(shown)}</div>`,a:`<div>${M(rHTML(val))}</div>`,how,
+    chk:()=>near(rval(val),want)}})}
+
+function genSolveN(lv){return tryGen(()=>{
+  let n,shown,sols,how,approx=false,F,nums;
+  if(lv===1){n=pick([2,3,3,5]);const r=rand(2,n===2?12:n===3?7:3),val=ipow(r,n);shown=`${V('x')}${sup(n)} = ${val}`;sols=n%2===0?[`±${r}`]:[String(r)];F=x=>x**n-val;nums=n%2===0?[r,-r]:[r];
+    how=[`Take the ${ROOTNAME[n]} root of each side: ${M(`${V('x')} = ${n%2===0?'±':''}${nroot(n,val)}`)}.`,n%2===0?`The index is even, so use ±: ${M(V('x')+' = ±'+r)}.`:`${M(`${r}${sup(n)} = ${val}`)}, so ${M(V('x')+' = '+r)}.`]}
+  else if(lv===2){n=pick([3,4]);const c=pick([2,3,4,5,7]),r=rand(2,n===3?6:4),val=c*ipow(r,n);shown=`${c}${V('x')}${sup(n)} = ${val}`;sols=n%2===0?[`±${r}`]:[String(r)];F=x=>c*x**n-val;nums=n%2===0?[r,-r]:[r];
+    how=[`Divide by ${c}: ${M(`${V('x')}${sup(n)} = ${ipow(r,n)}`)}.`,`Take the ${ROOTNAME[n]} root${n%2===0?' (use ± because the index is even)':''}: ${M(`${V('x')} = ${sols[0]}`)}.`]}
+  else if(lv===3){n=pick([3,5,6,4]);const r=rand(2,n>=5?2:4),s=n%2?sgn():1,base=ipow(r,n)*s,c=nz(-60,60),d=base+c;shown=`${V('x')}${sup(n)} ${c<0?MINUS:'+'} ${Math.abs(c)} = ${num(d)}`;sols=n%2===0?[`±${r}`]:[num(s*r)];F=x=>x**n+c-d;nums=n%2===0?[r,-r]:[s*r];
+    how=[`${c<0?'Add':'Subtract'} ${Math.abs(c)}: ${M(`${V('x')}${sup(n)} = ${num(base)}`)}.`,`Take the ${ROOTNAME[n]} root${n%2===0?' (±, even index)':''}: ${M(`${V('x')} = ${sols[0]}`)}.`]}
+  else if(lv===4){n=pick([3,4,2]);const r=rand(2,n===2?9:n===3?5:4),h=nz(-8,8),val=ipow(r,n);shown=`${sup(`(${xm(h)})`).replace(/<sup>2<\/sup>$/,'')}${sup(n)} = ${val}`;shown=`(${xm(h)})${sup(n)} = ${val}`;
+    sols=n%2===0?[num(h-r),num(h+r)]:[num(h+r)];F=x=>(x-h)**n-val;nums=n%2===0?[h-r,h+r]:[h+r];
+    how=[`Take the ${ROOTNAME[n]} root${n%2===0?' (±)':''}: ${M(`${xm(h)} = ${n%2===0?'±':''}${r}`)}.`,`${h>0?'Add':'Subtract'} ${Math.abs(h)}: ${sols.map(s=>M(V('x')+' = '+s)).join(' or ')}.`]}
+  else{approx=true;n=pick([4,5,3]);const c=pick([1,1,2,3,5,7]);let rhs=rand(10,99)*(n%2&&Math.random()<.5?-1:1);if(n%2===0)rhs=Math.abs(rhs);if(Number.isInteger(realRoot(rhs/c,n)))return null;
+    const v=realRoot(rhs/c,n);shown=`${c===1?'':c}${V('x')}${sup(n)} = ${num(rhs)}`;sols=n%2===0?[`±${Math.abs(v).toFixed(2)}`]:[(v<0?MINUS:'')+Math.abs(v).toFixed(2)];F=x=>c*x**n-rhs;nums=n%2===0?[v,-v]:[v];
+    how=[...(c>1?[`Divide by ${c}: ${M(`${V('x')}${sup(n)} = ${rHTML(R(rhs,c))}`)}.`]:[]),`Take the ${ROOTNAME[n]} root${n%2===0?' (±, even index)':''}: ${M(`${V('x')} = ${n%2===0?'±':''}${nroot(n,c>1?rHTML(R(rhs,c)):num(rhs))}`)}.`,`Use a calculator and round: ${M(`${V('x')} ≈ ${sols[0]}`)}.`]}
+  return{q:ins(approx?'Solve. Round to two decimal places.':'Solve the equation.')+`<div class="seq">${M(shown)}</div>`,a:`<div>${sols.map(s=>M(V('x')+(approx?' ≈ ':' = ')+s)).join(', &nbsp;')}</div>`,how,chk:()=>nums.every(x=>Math.abs(F(x))<1e-6*Math.max(1,Math.abs(F(0))))}})}
+
+/* 3.2 */
+function monoStr(coef,ex){ // coef: R; ex: {x:R,y:R}; positive exponents only, split num/den
+  const top=[],bot=[];Object.entries(ex).forEach(([v,e])=>{if(e.n===0)return;const ae=R(Math.abs(e.n),e.d),s=rexp(V(v),ae.n,ae.d);(e.n>0?top:bot).push(s)});
+  const cn=Math.abs(coef.n),cd=coef.d,neg=coef.n<0;
+  const T=(cn!==1||!top.length?String(cn):'')+top.join(''),B=(cd!==1?String(cd):'')+bot.join('');
+  return(neg?MINUS:'')+(B?frac(T||'1',B):T)}
+function genExpProps(lv){return tryGen(()=>{
+  let shown,ans,how,chk=()=>true;
+  if(lv===1){const b=rand(2,7),q=pick([2,3,4]),k=pick([1,2]),p=rand(1,k*q-1),r2=k*q-p;if(gcd(p,q)!==1&&gcd(r2,q)!==1)return null;if(ipow(b,k)>100)return null;
+    shown=`${rexp(String(b),p,q)} · ${rexp(String(b),r2,q)}`;ans=String(ipow(b,k));
+    how=[`Product of powers: add the exponents. ${M(`${rHTML(R(p,q))} + ${rHTML(R(r2,q))} = ${k}`)}.`,`${M(`${b}${sup(k)} = ${ipow(b,k)}`)}.`]}
+  else if(lv===2){if(Math.random()<.5){const n=pick([2,3,4]),r=rand(2,n===2?9:n===3?4:3),d=rand(2,6),c=ipow(r,n)*d;shown=frac(rexp(String(c),1,n),rexp(String(d),1,n));ans=String(r);
+      how=[`Power of a quotient: ${M(`${frac(rexp(String(c),1,n),rexp(String(d),1,n))} = (${frac(c,d)})${sup(`1/${n}`)} = ${rexp(String(ipow(r,n)),1,n)}`)}.`,`${M(`${nroot(n,ipow(r,n))} = ${r}`)}.`]}
+    else{const b=rand(2,13),q=pick([3,5,7]),p1=rand(1,q-1);let p2;do{p2=rand(1,q+3)}while(p2<=p1);const diff=R(p1-p2,q);shown=frac(rexp(String(b),p1,q),rexp(String(b),p2,q));ans=frac(1,rexp(String(b),-diff.n,diff.d));
+      how=[`Quotient of powers: subtract the exponents. ${M(`${rHTML(R(p1,q))} ${MINUS} ${rHTML(R(p2,q))} = ${rHTML(diff)}`)}.`,`Rewrite with a positive exponent: ${M(`${rexp(String(b),diff.n,diff.d)} = ${ans}`)}.`]}}
+  else if(lv===3){if(Math.random()<.5){const a=R(rand(1,4),pick([2,3,4,5])),b=R(rand(1,4),pick([2,3,4,5]));if(a.d===b.d)return null;const s=radd(a,b);shown=`${rexp(V('x'),a.n,a.d)} · ${rexp(V('x'),b.n,b.d)}`;ans=rexp(V('x'),s.n,s.d);
+      how=[`Product of powers: add the exponents with a common denominator.`,`${M(`${rHTML(a)} + ${rHTML(b)} = ${rHTML(s)}`)}, so ${M(ans)}.`];chk=()=>near(1.7**rval(a)*1.7**rval(b),1.7**rval(s))}
+    else{const c=rand(2,9),e=R(rand(1,5),pick([2,3,4]));if(e.d===1)return null;shown=frac(c,rexp(V('x'),-e.n,e.d));ans=`${c}${rexp(V('x'),e.n,e.d)}`;
+      how=[`${M(frac(1,`${V('x')}${sup(MINUS+V('k'))}`)+' = '+V('x')+sup(V('k')))}: a negative exponent in the denominator moves to the numerator as a positive exponent.`,`${M(ans)}.`]}}
+  else if(lv===4){const a=R(rand(1,5),pick([2,3,4,6])),b=R(rand(1,5),pick([2,3,4,6])),k=lcm(a.d,b.d)*pick([1,1,2]);if(k>12)return null;const A=rmul(a,R(k)),B=rmul(b,R(k));
+    shown=`(${rexp(V('x'),a.n,a.d)}${rexp(V('y'),b.n,b.d)})${sup(k)}`;ans=`${rexp(V('x'),A.n,A.d)}${rexp(V('y'),B.n,B.d)}`;
+    how=[`Power of a product: raise each factor to the ${ord(k)} power.`,`Power of a power: multiply exponents. ${M(`${rHTML(a)} · ${k} = ${rHTML(A)}`)} and ${M(`${rHTML(b)} · ${k} = ${rHTML(B)}`)}.`];chk=()=>near((1.3**rval(a)*2.1**rval(b))**k,1.3**rval(A)*2.1**rval(B))}
+  else{const ex1={x:R(rand(1,4),pick([2,3,5])),y:R(rand(-3,3),pick([1,2,3]))},ex2={x:R(rand(1,3),pick([1,2,3])),y:R(rand(-3,3),pick([1,2,3]))};
+    const res={x:rsub(ex1.x,ex2.x),y:rsub(ex1.y,ex2.y)};if(res.x.n===0||res.y.n===0||ex1.y.n===0||ex2.y.n===0)return null;
+    const disp=ex=>Object.entries(ex).map(([v,e])=>rexp(V(v),e.n,e.d)).join('');
+    shown=frac(disp(ex1),disp(ex2));ans=monoStr(R(1),res);
+    how=[`Quotient of powers for each variable: subtract the exponents (top minus bottom).`,`${M(`${V('x')}: ${rHTML(ex1.x)} ${MINUS} ${par2(ex2.x)} = ${rHTML(res.x)}`)}; ${M(`${V('y')}: ${rHTML(ex1.y)} ${MINUS} ${par2(ex2.y)} = ${rHTML(res.y)}`)}.`,'Write every exponent as positive: a negative exponent moves that factor to the denominator.'];
+    chk=()=>{const X=1.3,Y=2.1,lhs=X**rval(ex1.x)*Y**rval(ex1.y)/(X**rval(ex2.x)*Y**rval(ex2.y)),rhs=X**rval(res.x)*Y**rval(res.y);return near(lhs,rhs)}}
+  return{q:ins(lv>=3?'Simplify. Assume all variables are positive.':'Simplify.')+`<div class="seq">${M(shown)}</div>`,a:`<div>${M(ans)}</div>`,how,chk}})}
+const par2=r=>r.n<0?`(${rHTML(r)})`:rHTML(r);
+
+function genRadMulDiv(lv){return tryGen(()=>{
+  let n,shown,ans,how,check;
+  if(lv===1){n=2;const m=pick(NTH_FREE[2]),a=m*pick([1,2,3]),b=m*pick([1,4,5]);if(a===b||isSq(a)||isSq(b))return null;const p=a*b;if(!isSq(p))return null;
+    shown=`${rad(a)} · ${rad(b)}`;ans=String(Math.sqrt(p));how=[`Product property: ${M(`${rad(a)} · ${rad(b)} = ${rad(`${a} · ${b}`)} = ${rad(p)}`)}.`,`${M(`${rad(p)} = ${ans}`)}.`];check=()=>near(Math.sqrt(a)*Math.sqrt(b),Number(ans))}
+  else if(lv===2){n=pick([3,4,5]);const r=rand(2,n===3?4:2),P=ipow(r,n),divs=divisors(P).filter(d=>d>1&&d<P);const a=pick(divs);
+    if(Math.random()<.5){const b=P/a;shown=`${nroot(n,a)} · ${nroot(n,b)}`;how=[`Product property: ${M(`${nroot(n,`${a} · ${b}`)} = ${nroot(n,P)}`)}.`]}
+    else{const k=rand(2,4);shown=frac(nroot(n,P*k),nroot(n,k));how=[`Quotient property: ${M(`${nroot(n,frac(P*k,k))} = ${nroot(n,P)}`)}.`]}
+    ans=String(r);how.push(`${M(`${r}${sup(n)} = ${P}`)}, so the value is ${M(ans)}.`);check=()=>true}
+  else if(lv===3){n=pick([2,2,3]);const a=rand(2,n===2?15:12),b=rand(2,n===2?15:12),p=a*b,[k,m]=nthFree(p,n);if(k===1||m===1||nthFree(a,n)[0]>1||nthFree(b,n)[0]>1)return null;
+    shown=`${nroot(n,a)} · ${nroot(n,b)}`;ans=radTerm(k,n,m);how=[`Product property: ${M(`${nroot(n,a)} · ${nroot(n,b)} = ${nroot(n,p)}`)}.`,`Factor out a perfect ${ROOTNAME[n]}: ${M(`${p} = ${ipow(k,n)} · ${m}`)}, so ${M(ans)}.`];check=()=>near(realRoot(a,n)*realRoot(b,n),k*realRoot(m,n))}
+  else if(lv===4){n=pick([3,4]);const c1=nz(-5,5),c2=nz(-7,7),a=rand(2,40),b=rand(2,9),p=a*b,[k,m]=nthFree(p,n);if(nthFree(b,n)[0]>1||k===1||m===1)return null;
+    shown=`${c1===1?'':c1===-1?MINUS:num(c1)}${nroot(n,a)} · (${c2===1?'':c2===-1?MINUS:num(c2)}${nroot(n,b)})`;ans=radTerm(c1*c2*k,n,m);
+    how=[`Multiply the coefficients: ${M(`${par(c1)} · ${par(c2)} = ${num(c1*c2)}`)}. Multiply the radicands: ${M(nroot(n,p))}.`,`Simplify: ${M(`${nroot(n,p)} = ${radTerm(k,n,m)}`)}, so the product is ${M(ans)}.`];check=()=>near(c1*realRoot(a,n)*c2*realRoot(b,n),c1*c2*k*realRoot(m,n))}
+  else{n=pick([3,4]);const r=rand(2,3),P=ipow(r,n),a=rand(2,9),b=rand(2,4),c=a*b;if(P*b>400)return null;if((c*P)%b!==0)return null;const top2=P*b;// (ⁿ√a · ⁿ√top2) / ⁿ√(a·b)  = ⁿ√P = r
+    shown=frac(`${nroot(n,a)} · ${nroot(n,top2)}`,nroot(n,a*b));ans=String(r);
+    how=[`Combine into one radical: ${M(nroot(n,frac(`${a} · ${top2}`,a*b)))}.`,`${M(`${frac(a*top2,a*b)} = ${P}`)}, and ${M(`${nroot(n,P)} = ${r}`)}.`];check=()=>near(realRoot(a,n)*realRoot(top2,n)/realRoot(a*b,n),r)}
+  return{q:ins('Simplify.')+`<div class="seq">${M(shown)}</div>`,a:`<div>${M(ans)}</div>`,how,chk:check}})}
+
+function genSimplestRad(lv){return tryGen(()=>{
+  let n,shown,ans,how,check;
+  if(lv<=3){n=lv===1?2:lv===2?3:pick([4,5,6]);const m=pick(NTH_FREE[n]),k=rand(2,lv===1?8:lv===2?5:2),c=ipow(k,n)*m;if(c>800)return null;
+    shown=nroot(n,c);ans=radTerm(k,n,m);how=[`Find the largest perfect ${ROOTNAME[n]} power factor: ${M(`${c} = ${ipow(k,n)} · ${m}`)} (${M(`${k}${sup(n)} = ${ipow(k,n)}`)}).`,`Product property: ${M(`${nroot(n,ipow(k,n))} · ${nroot(n,m)} = ${ans}`)}.`];check=()=>near(realRoot(c,n),k*realRoot(m,n))}
+  else if(lv===4){n=pick([3,3,4,5]);const q=pick([2,3,5,6,7]),p=pick([1,1,2,3]);if(gcd(p,q)!==1)return null;const inner=p*ipow(q,n-1),[k,m]=nthFree(inner,n);if(k!==1)return null;
+    shown=nroot(n,frac(p,q));ans=frac(nroot(n,inner),q);
+    how=['A radical in a denominator is not simplest form. Make the denominator a perfect power for the index.',`Multiply inside by ${M(frac(`${q}${sup(n-1)}`,`${q}${sup(n-1)}`))}: ${M(`${nroot(n,frac(inner,ipow(q,n)))} = ${frac(nroot(n,inner),nroot(n,ipow(q,n)))} = ${ans}`)}.`];check=()=>near(realRoot(p/q,n),realRoot(inner,n)/q)}
+  else{n=pick([2,2,3]);const m=pick(NTH_FREE[n].slice(0,4)),k=rand(2,n===2?7:3),c=ipow(k,n)*m,ex={x:rand(2,9),y:n===3?rand(0,7):0};
+    const out={},inn={};Object.entries(ex).forEach(([v,e])=>{out[v]=Math.floor(e/n);inn[v]=e%n});
+    const vs=o=>Object.entries(o).map(([v,e])=>e===0?'':e===1?V(v):V(v)+sup(e)).join('');
+    const radicand=`${c}${vs(ex)}`;shown=nroot(n,radicand);const inside=`${m===1?'':m}${vs(inn)}`;ans=`${k}${vs(out)}${inside?nroot(n,inside):''}`;
+    how=[`Split into perfect ${ROOTNAME[n]} powers and what is left: ${M(`${c} = ${ipow(k,n)} · ${m}`)}${Object.entries(ex).filter(([v,e])=>e).map(([v,e])=>`, ${M(`${V(v)}${sup(e)} = ${V(v)}${sup(n*out[v])} · ${V(v)}${inn[v]?sup(inn[v]):''}`)}`).join('').replace(/<sup>1<\/sup>/g,'')}.`,
+      `Take the ${ROOTNAME[n]} root of the perfect powers (divide each exponent by ${n}) and leave the rest inside: ${M(ans)}.`];
+    check=()=>{const X=1.7,Y=1.3,lhs=realRoot(c*X**ex.x*Y**ex.y,n),rhs=k*X**out.x*Y**out.y*realRoot(m*X**inn.x*Y**inn.y,n);return near(lhs,rhs)}}
+  return{q:ins(lv>=5?'Write in simplest form. Assume all variables are positive.':'Write in simplest form.')+`<div class="seq">${M(shown)}</div>`,a:`<div>${M(ans)}</div>`,how,chk:check}})}
+
+function genLikeRad(lv){return tryGen(()=>{
+  let n,shown,ans,how,check;const T=(c,i,r)=>`${c===1?'':c===-1?MINUS:num(c)}${nroot(i,r)}`,op=s=>s<0?` ${MINUS} `:' + ';
+  if(lv===1){n=pick([2,3,4,6]);const r=pick(NTH_FREE[n]),a=rand(2,12),b=rand(1,12),s=sgn(),c=a+s*b;if(c===0)return null;
+    shown=`${T(a,n,r)}${op(s)}${T(b,n,r)}`;ans=radTerm(c,n,r);how=['Same index and same radicand, so these are like radicals.',`Add or subtract the coefficients: ${M(`${a} ${s<0?MINUS:'+'} ${b} = ${num(c)}`)}, giving ${M(ans)}.`];check=()=>true}
+  else if(lv===2||lv===3||(lv===4&&Math.random()<.5)){n=pick([2,3,3,4]);const r=pick(NTH_FREE[n].slice(0,4)),k1=lv===2?1:rand(2,n===2?5:3),k2=rand(2,n===2?5:3),a=rand(1,8),b=rand(1,8),s=sgn(),c=a*k1+s*b*k2;if(c===0)return null;
+    const r1=ipow(k1,n)*r,r2=ipow(k2,n)*r;shown=`${T(a,n,r1)}${op(s)}${T(b,n,r2)}`;ans=radTerm(c,n,r);
+    how=[`Simplify each radical first: ${k1>1?M(`${nroot(n,r1)} = ${radTerm(k1,n,r)}`)+', ':''}${M(`${nroot(n,r2)} = ${radTerm(k2,n,r)}`)}.`,`Now they are like radicals: ${M(`${radTerm(a*k1,n,r)}${op(s)}${radTerm(b*k2,n,r)} = ${ans}`)}.`];check=()=>near(a*realRoot(r1,n)+s*b*realRoot(r2,n),c*realRoot(r,n))}
+  else if(lv===4){n=pick([2,3]);const r1=pick(NTH_FREE[n].slice(0,4)),idx2=Math.random()<.5?n:(n===2?3:2);let r2;do{r2=pick(NTH_FREE[idx2].slice(0,5))}while(idx2===n&&r2===r1);const k=rand(1,3),a=rand(2,9),b=rand(2,9);
+    const R2=ipow(k,idx2)*r2;shown=`${T(a,n,r1)} + ${T(b,idx2,R2)}`;const simp2=radTerm(b*k,idx2,r2);ans=idx2===n&&k===1?shown:`${radTerm(a,n,r1)} + ${simp2}`;
+    how=[`Simplify each radical${k>1?`: ${M(`${nroot(idx2,R2)} = ${radTerm(k,idx2,r2)}`)}`:''}.`,`${idx2!==n?'The indexes are different':'The radicands are different'}, so these are not like radicals and cannot be combined. ${M(ans)} is simplified.`];check=()=>true;
+    return{q:ins('Simplify if possible.')+`<div class="seq">${M(shown)}</div>`,a:`<div>${M(ans)}<div class="sub">not like radicals</div></div>`,how,chk:check}}
+  else{n=pick([2,2,3]);const t=rand(1,3),q1=n===2?pick([1,3,5].filter(q=>(q-1)/2<=t)):pick([1,4].filter(q=>(q-1)/3<=t)),e1=t-(q1-1)/n,q2=n*t+1,s1=rand(1,3),s2=rand(1,3),c1=rand(1,4),c2=rand(1,4),s=sgn();
+    if(e1<1)return null;const sq1=ipow(s1,n),sq2=ipow(s2,n),coef=c1*s1+s*c2*s2;if(coef===0)return null;
+    const xe=e=>e===0?'':e===1?V('x'):V('x')+sup(e);
+    shown=`${c1===1?'':c1}${xe(e1)}${nroot(n,`${sq1===1?'':sq1}${xe(q1)}`)}${op(s)}${c2===1?'':c2}${nroot(n,`${sq2===1?'':sq2}${xe(q2)}`)}`;
+    ans=`${coef===1?'':coef===-1?MINUS:num(coef)}${xe(t)}${nroot(n,V('x'))}`;
+    how=[`Simplify each radical: ${M(`${nroot(n,`${sq1===1?'':sq1}${xe(q1)}`)} = ${s1===1?'':s1}${xe((q1-1)/n)}${nroot(n,V('x'))}`)} and ${M(`${nroot(n,`${sq2===1?'':sq2}${xe(q2)}`)} = ${s2===1?'':s2}${xe(t)}${nroot(n,V('x'))}`)}.`,
+      `Both terms are now multiples of ${M(`${xe(t)}${nroot(n,V('x'))}`)}: combine the coefficients ${M(`${c1*s1} ${s<0?MINUS:'+'} ${c2*s2} = ${num(coef)}`)}.`];
+    check=()=>{const X=1.7;return near(c1*X**e1*realRoot(sq1*X**q1,n)+s*c2*realRoot(sq2*X**q2,n),coef*X**t*realRoot(X,n))}}
+  return{q:ins(lv>=5?'Simplify. Assume all variables are positive.':'Simplify.')+`<div class="seq">${M(shown)}</div>`,a:`<div>${M(ans)}</div>`,how,chk:check}})}
+
+const mixGen=gens=>lv=>pick(gens)(lv);
+const UNIT3=[
+  {id:'r-roots',name:'nth roots & rational exponents',gen:mixGen([genNthRoot,genRewriteRad,genEvalRat])},
+  {id:'r-solve',name:'Solve using nth roots',gen:genSolveN},
+  {id:'r-props',name:'Properties of exponents & radicals',gen:mixGen([genExpProps,genRadMulDiv])},
+  {id:'r-simplify',name:'Simplify & combine radicals',gen:mixGen([genSimplestRad,genLikeRad])},
+];
+
 const BUILTIN=[
   {id:'q-keyfeat',name:'Key features from a form',gen:genKeyFeat},
   {id:'q-tostd',name:'Convert to standard form',gen:genToStd},
@@ -776,6 +947,7 @@ const BUILTIN=[
   {id:'p-fromzeros',name:'Write a polynomial from its zeros',gen:genFromZeros},
   {id:'p-endbeh',name:'End behavior',gen:genEndBeh},
   {id:'p-read',name:'Read a factored polynomial',gen:genReadFactored},
+  ...UNIT3,
 ];
 
 /* ===================== state ===================== */
