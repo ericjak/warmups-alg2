@@ -145,6 +145,11 @@ table.syn td.last{font-weight:700}
 .frac .nu .rd{margin-bottom:.06em}
 .rd .ix{position:absolute;left:-.1em;bottom:42%;font-size:.5em;line-height:1}
 .math sup{font-size:.68em;line-height:0}
+.watch{order:1;flex-basis:100%;font-size:.78em;line-height:1.45;background:var(--warn-bg);border:1px solid var(--warn);border-left-width:5px;border-radius:10px;padding:8px 14px 8px 12px}
+.watch .wt{font-size:.8em;text-transform:uppercase;letter-spacing:.07em;color:var(--warn);font-weight:700;margin-bottom:2px}
+.watch ul{margin:0;padding-left:1.2em}
+.watch li{margin:2px 0}
+.ans .how{order:2}
 
 .mback{position:fixed;inset:0;background:var(--scrim);display:flex;align-items:center;justify-content:center;z-index:20;padding:16px}
 .mbox{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:20px 22px;width:min(100%,460px);max-height:calc(100% - 32px);overflow:auto;box-shadow:0 12px 40px rgba(0,0,0,.25)}
@@ -931,6 +936,146 @@ const UNIT3=[
   {id:'r-simplify',name:'Simplify & combine radicals',gen:mixGen([genSimplestRad,genLikeRad])},
 ];
 
+/* ---------- Polynomial Test Fix-Ups (weighted mix of the Unit 2 test mistakes) ---------- */
+const watchBox=items=>`<div class="watch"><div class="wt">Watch out</div><ul>${items.map(t=>`<li>${t}</li>`).join('')}</ul></div>`;
+const fx_=v=>`${V('f')}(${V('x')})`;
+const linPQ=(p,q)=>`(${poly([p,-q])})`; // (px − q)
+const cplxFac=(h,m,sgnI)=>`(${V('x')}${h===0?'':` ${-h<0?MINUS:'+'} ${Math.abs(h)}`} ${sgnI<0?'+':MINUS} ${m===1?'':m}${V('i')})`; // x − (h + s·m i)
+const endBeh=(lc,deg,y='y')=>{const even=deg%2===0,L=even?(lc>0?'+∞':MINUS+'∞'):(lc>0?MINUS+'∞':'+∞'),Rr=lc>0?'+∞':MINUS+'∞';
+  return`As ${M(`${V('x')} → ${MINUS}∞`)}, ${M(`${V(y)} → ${L}`)}; as ${M(`${V('x')} → +∞`)}, ${M(`${V(y)} → ${Rr}`)}`};
+
+function fxA(lv){return tryGen(()=>{
+  const nInt=lv<=2?1:lv===3?pick([1,2]):2,ints=[];while(ints.length<nInt){const r=nz(-5,5);if(!ints.includes(r))ints.push(r)}
+  const irr=Math.random()<.5;let quad,zq,facq,qroots;
+  if(irr){const n=pick([2,3,5,6,7,10]);quad=[1,0,-n];zq=`±${rad(n)}`;facq=`(${V('x')} ${MINUS} ${rad(n)})(${V('x')} + ${rad(n)})`;qroots=[[Math.sqrt(n),0],[-Math.sqrt(n),0]]}
+  else{const h=rand(-3,3),m=pick([1,2,3]);quad=[1,-2*h,h*h+m*m];zq=`${h===0?'':num(h)+' '}±${h===0?'':' '}${m===1?'':m}${V('i')}`;facq=`${cplxFac(h,m,1)}${cplxFac(h,m,-1)}`;qroots=[[h,m],[h,-m]]}
+  const c=pmul(pfromRoots(ints),quad),hint=nInt===1&&Math.random()<.5;
+  const srt=[...ints].sort((u,v)=>u-v);
+  const how=[];let cur=c;
+  if(!hint)how.push(`Possible rational zeros: factors of ${M(num(c[c.length-1]))}. Test them with synthetic division until the remainder is 0.`);
+  srt.forEach(r=>{const s=synth(cur,r);how.push(`Divide by ${M(lfac(r))} (use ${M(num(r))}):${synthTable(cur,r,s)}`);cur=s.q});
+  how.push(irr?`The leftover quadratic ${M(poly(cur)+' = 0')} gives ${M(`${sq(V('x'))} = ${-cur[2]}`)}, so ${M(V('x')+' = '+zq)}.`:`The leftover quadratic ${M(poly(cur))} does not factor; the quadratic formula gives ${M(V('x')+' = '+zq)}.`,
+    `Every factor must be linear: ${M(`${srt.map(lfac).join('')}${facq}`)}.`);
+  return{q:ins(`Find all zeros and write ${M(fx_())} as a product of linear factors.${hint?` One zero is ${M(num(ints[0]))}.`:''}`)+`<div class="seq">${M(`${fx_()} = ${poly(c)}`)}</div>`,
+    a:`<div>Zeros: ${M([...srt.map(num),zq].join(', '))}<br><span style="font-size:.9em">${M(`${fx_()} = ${srt.map(lfac).join('')}${facq}`)}</span></div>`+watchBox([
+      "Don't stop at the leftover quadratic. Every factor must be linear.",
+      `${M(`${sq(V('x'))} ${MINUS} 5 = 0`)} gives ${M('±'+rad(5))}. It is not ${M('±5')}, and it is not ${M(`±${rad(5)}${V('i')}`)}.`,
+      `In the quadratic formula, keep the ${M(MINUS+V('b'))} and divide the whole numerator by ${M('2'+V('a'))}.`,
+      `The zero from ${M('('+V('x')+' + 2)')} is ${M(MINUS+'2')}, not 2.`,'The answer lines get the zeros, not the list of possible rational zeros.']),
+    how,chk:()=>chkRoots(c,[...ints.map(r=>[r,0]),...qroots])&&samePoly(cur,quad)}})}
+
+function fxB(lv){return tryGen(()=>{
+  const cubic=lv<=2?true:lv>=5?Math.random()<.5:Math.random()<.5;let c,shown,zeros,a;
+  if(cubic){a=pick([-3,-2,2,3]);const p=pick([2,3]),q=pick([1,-1,2,-2]);if(gcd(p,q)!==1)return null;const r=nz(-5,5),s=nz(-5,5);if(r===s)return null;
+    c=pmul([a],pmul([p,-q],pfromRoots([r,s])));shown=`${num(a)}${linPQ(p,q)}${lfac(r)}${lfac(s)}`;zeros=[R(q,p),R(r),R(s)]}
+  else{a=sgn();const rs=new Set();while(rs.size<4)rs.add(nz(-6,7));const arr=[...rs];c=pmul([a],pfromRoots(arr));shown=`${a<0?MINUS:''}${arr.map(lfac).join('')}`;zeros=arr.map(r=>R(r))}
+  zeros.sort((u,v)=>rval(u)-rval(v));const deg=c.length-1,lc=c[0],y0=c[c.length-1];
+  const lo=Math.min(...zeros.map(rval))-1.3,hi=Math.max(...zeros.map(rval))+1.3;let Y=Math.abs(y0);for(let i=0;i<=100;i++)Y=Math.max(Y,Math.abs(peval(c,lo+1.3+(hi-lo-2.6)*i/100)));
+  return{q:ins(`For ${M(`${V('g')}(${V('x')}) = ${shown}`)}, find (a) the zeros, (b) the y-intercept, (c) the end behavior, (d) the maximum number of turning points.`),
+    a:`<div style="font-size:.92em">(a) ${M(zeros.map(rHTML).join(', '))}<br>(b) ${M(pt(0,y0))}<br>(c) ${endBeh(lc,deg)}<br>(d) ${deg-1}</div>`+watchBox([
+      `The zero from ${M(`(2${V('x')} ${MINUS} 1)`)} is ${M(frac(1,2))}, not 1 or 2.`,
+      `Include the constant in front (value and sign) for the y-intercept and the leading term. The leading term of ${M(`${MINUS}2(2${V('x')} ${MINUS} 1)(${V('x')} + 5)(${V('x')} ${MINUS} 1)`)} is ${M(MINUS+'4'+V('x')+sup(3))}, not ${M(V('x')+sup(3))}.`,
+      'End behavior needs both the degree (even or odd) and the sign of the leading coefficient.','A degree-3 graph has at most 2 turning points; degree 4 has at most 3.']),
+    graph:plotSVG(x=>peval(c,x),lo,hi,{yr:Math.max(4,Y)*1.2,pts:[...zeros.map(z=>({x:rval(z),y:0})),{x:0,y:y0}]}),
+    how:[(()=>{const z=zeros.find(z=>z.d>1);return`Set each factor to 0.${z?` For ${M(linPQ(z.d,z.n))}, solve ${M(`${z.d}${V('x')} = ${num(z.n)}`)}, so ${M(`${V('x')} = ${rHTML(z)}`)}.`:''}`})(),
+      `${M(`${V('g')}(0) = ${num(y0)}`)}: substitute ${M(V('x')+' = 0')} into every factor, including the constant in front.`,
+      `Leading term: multiply the leading parts, ${M(poly([lc].concat(Array(deg).fill(0))))}. Degree ${deg} is ${deg%2?'odd':'even'}, leading coefficient ${lc>0?'positive':'negative'}.`,
+      `At most ${deg} ${MINUS} 1 = ${deg-1} turning points.`],
+    chk:()=>zeros.every(z=>near(peval(c,rval(z)),0))}})}
+
+function fxC(lv){return tryGen(()=>{
+  const k=pick([1,2,-1,-2]),a4=pick([2,3,4]),missX=Math.random()<.3;
+  const c=missX?[a4,nz(-9,9),rand(-9,9),0,rand(-9,9)]:[a4,0,rand(-9,9),rand(-9,9),rand(-9,9)];
+  const s=synth(c,k);if(s.r===0||Math.abs(s.r)>20)return null;
+  const divS=xm(k),ans=poly(s.q)+remTerm(s.r,divS),miss=missX?'x':'x³';
+  return{q:ins('Use long division. Write the remainder as a fraction.')+`<div class="seq">${M(`(${poly(c)}) ÷ (${divS})`)}</div>`,
+    a:`<div>${M(ans)}</div>`+watchBox([`Write the ${M(missX?'0'+V('x'):'0'+V('x')+sup(3))} placeholder.`,
+      `When subtracting, change the sign of every term of the line you subtract: ${M(`0${V('x')}${sup(3)} ${MINUS} (${MINUS}3${V('x')}${sup(3)}) = +3${V('x')}${sup(3)}`)}, and ${M(`${MINUS}8${V('x')} ${MINUS} (+3${V('x')}) = ${MINUS}11${V('x')}`)}.`,
+      'The quotient is one degree lower than the dividend.']),
+    how:[`Rewrite the dividend with a ${M('0'+(missX?V('x'):V('x')+sup(3)))} placeholder: ${M(c.map((co,i)=>{const p=4-i;return`${i===0?'':co<0?` ${MINUS} `:' + '}${Math.abs(co)===1&&p?'':Math.abs(co)}${p?xp(p):''}`}).join(''))}.`,
+      `Divide leading terms, multiply, subtract (change every sign), bring down, repeat. Quotient: ${M(poly(s.q))}, remainder ${M(num(s.r))}.`,
+      `Check with synthetic division:${synthTable(c,k,s)}`,`Answer: ${M(ans)}.`],
+    chk:()=>samePoly(padd(pmul(s.q,[1,-k]),[s.r]),c)}})}
+
+function fxD(lv){return tryGen(()=>{
+  const W=2*rand(5,14),L=2*rand(W/2+1,15);if(L<=W)return null;
+  const exp=[4,-2*(L+W),L*W,0],withMax=lv===5;
+  let maxTxt='',maxHow=[];
+  if(withMax){const A=12,B=-4*(L+W),C=L*W,x=(-B-Math.sqrt(B*B-4*A*C))/(2*A),v=peval(exp,x);
+    maxTxt=`<br>Maximum: ${M(`${V('x')} ≈ ${x.toFixed(2)}`)} in; box ${M(`${(L-2*x).toFixed(2)} × ${(W-2*x).toFixed(2)} × ${x.toFixed(2)}`)} in; ${M(`${V('V')} ≈ ${v.toFixed(2)}`)} in³`;
+    maxHow=[`Graph ${M(`${V('V')}(${V('x')})`)} on ${M(`0 &lt; ${V('x')} &lt; ${W/2}`)} and use the maximum feature: ${M(`${V('x')} ≈ ${x.toFixed(2)}`)}, ${M(`${V('V')} ≈ ${v.toFixed(2)}`)}.`]}
+  return{q:wp(`A box is made from ${/^(8|11|18)/.test(''+L)?'an':'a'} ${L}-by-${W} inch sheet by cutting an ${M(V('x'))}-by-${M(V('x'))} square from each corner and folding up the sides. Write the length, width and height in terms of ${M(V('x'))}, the volume function ${M(`${V('V')}(${V('x')})`)}, and its domain.${withMax?' Then use a calculator to find the maximum volume to the nearest hundredth.':''}`),
+    a:`<div style="font-size:.9em">Length ${M(`${L} ${MINUS} 2${V('x')}`)}, width ${M(`${W} ${MINUS} 2${V('x')}`)}, height ${M(V('x'))}<br>${M(`${V('V')}(${V('x')}) = ${V('x')}(${L} ${MINUS} 2${V('x')})(${W} ${MINUS} 2${V('x')}) = ${poly(exp)}`)}<br>Domain: ${M(`0 &lt; ${V('x')} &lt; ${W/2}`)}${maxTxt}</div>`+watchBox([
+      `Each side loses ${M('2'+V('x'))}, one square at each end. It is not ${M(V('x'))} or ${M(sq(V('x')))}.`,`Don't forget the height ${M(V('x'))} in the volume. ${M(`(${L} ${MINUS} 2${V('x')})(${W} ${MINUS} 2${V('x')})`)} is only the base area.`,'The answer is numbers, not just expressions.']),
+    how:[`A square comes off each end of each side, so the length is ${M(`${L} ${MINUS} 2${V('x')}`)} and the width is ${M(`${W} ${MINUS} 2${V('x')}`)}; the folded flaps make the height ${M(V('x'))}.`,
+      `${M(`${V('V')} = ${V('x')}(${L} ${MINUS} 2${V('x')})(${W} ${MINUS} 2${V('x')})`)}; expanding gives ${M(poly(exp))}.`,`Every dimension must be positive: ${M(`${V('x')} > 0`)} and ${M(`${W} ${MINUS} 2${V('x')} > 0`)}, so ${M(`0 &lt; ${V('x')} &lt; ${W/2}`)}.`,...maxHow],
+    chk:()=>samePoly(exp,pmul([1,0],pmul([-2,L],[-2,W])))}})}
+
+function fxE(lv){return tryGen(()=>{
+  const a=nz(-9,9);if(Math.abs(a)<2)return null;const n=lv<=2?rand(3,6):rand(3,12),k=rand(2,3),pows=new Set();while(pows.size<k)pows.add(rand(0,n-1));
+  const terms=[[a,n],...[...pows].map(p=>[nz(-9,9),p])];if(Math.random()<.5){shuffle(terms);if(terms[0][1]===n)terms.push(terms.shift())}else terms.sort((u,v)=>v[1]-u[1]);
+  const shown=terms.map(([co,p],i)=>{const t=(Math.abs(co)===1&&p>0?'':Math.abs(co))+(p?xp(p):'');return i===0?(co<0?MINUS:'')+t:(co<0?` ${MINUS} `:' + ')+t}).join('');
+  return{q:ins('Describe the end behavior.')+`<div class="seq">${M(`${fx_()} = ${shown}`)}</div>`,a:`<div>${endBeh(a,n)}</div>`+watchBox(['The most common error was getting one end reversed. Use both the degree and the sign of the leading coefficient.']),
+    how:[`The leading term is the highest power: ${M(poly([a].concat(Array(n).fill(0))))}${terms[0][1]!==n?' (it is not written first)':''}.`,
+      n%2===0?`Even degree: both ends match the sign of ${M(num(a))}, so both go ${a>0?'up':'down'}.`:`Odd degree: the right end matches the sign of ${M(num(a))} (${a>0?'up':'down'}) and the left end is the opposite.`],chk:()=>true}})}
+
+function fxF(lv){return tryGen(()=>{
+  const t=pick(['prod','not','trick']);let shown,ans,how;
+  if(t==='prod'){const c=nz(-6,6),a=rand(1,3),b=rand(1,3),d=rand(1,3),p=rand(2,5),q=nz(-9,9),r=nz(-9,9);
+    shown=`${lead(c)}${xp(a)}(${poly([p,q])})${b>1?sup(b):''}(${poly([1,r])})${d>1?sup(d):''}`;ans=`<b>Yes</b>, degree ${a+b+d}`;
+    how=['A product of polynomials is a polynomial.',`Add the degrees of the factors: ${a} + ${b} + ${d} = ${a+b+d}.`]}
+  else if(t==='not'){const k=rand(2,9),n=rand(1,3),base=poly(randPoly(rand(1,3)));
+    const bad=pick([[`${k}${rad(V('x'))}`,'fractional exponent: '+M(`${rad(V('x'))} = ${V('x')}${sup('1/2')}`)],[frac(k,xp(n)),'negative exponent: '+M(`${frac(k,xp(n))} = ${k}${V('x')}${sup(MINUS+n)}`)],[`${k}${V('x')}${sup('1/2')}`,'fractional exponent']]);
+    shown=`${base} ${pick(['+',MINUS])} ${bad[0]}`;ans=`<b>No</b> — ${bad[1]}`;how=['Every exponent on the variable must be a whole number.',`This has a ${bad[1]}, so it is not a polynomial.`]}
+  else{const n=pick([2,3,5,7]),deg=rand(2,4);shown=`${rad(n)}${xp(deg)} + ${rand(2,9)}${V('x')}${Math.random()<.5?` ${MINUS} ${rand(1,9)}`:''}`;ans=`<b>Yes</b>, degree ${deg}`;
+    how=[`${M(rad(n))} is just a number (a coefficient). The variable is not under the radical.`,`The highest exponent on ${M(V('x'))} is ${deg}.`]}
+  return{q:ins('Is this a polynomial function? If yes, give its degree. If no, explain why.')+`<div class="seq">${M(`${fx_()} = ${shown}`)}</div>`,a:`<div>${ans}</div>`+watchBox([
+      'The degree of a product is the sum of the factor degrees. On the test, 20 of 43 students got this wrong, usually by giving the degree of one factor.',
+      `${M(rad(V('x')))} and ${M(frac(1,V('x')))} are not polynomial terms. Give the reason: fractional exponent or negative exponent.`]),how,chk:()=>true}})}
+
+function fxG(lv){return tryGen(()=>{
+  const f=[nz(-4,4),rand(-9,9),rand(-9,9)],g=[nz(-4,4),rand(-9,9),rand(-9,9)],h=[nz(-5,5),rand(-9,9)];
+  const F=`${fx_()} = ${poly(f)}`,G=`${V('g')}(${V('x')}) = ${poly(g)}`,H=`${V('h')}(${V('x')}) = ${poly(h)}`,t=Math.random();let ask,ans,how;
+  if(t<.45){const r=padd(f,pneg(g));if(r.length<2)return null;ask=`(${V('f')} ${MINUS} ${V('g')})(${V('x')})`;ans=poly(r);
+    how=[`${M(`(${poly(f)}) ${MINUS} (${poly(g)})`)}: distribute the minus to every term: ${M(poly(pneg(g)))}.`,`Combine like terms: ${M(ans)}.`]}
+  else if(t<.9){const a=rand(-3,4),gv=peval(g,a),hv=peval(h,a);ask=`(${V('g')} ${MINUS} ${V('h')})(${num(a)})`;ans=num(gv-hv);
+    how=[`Evaluate each function at ${M(num(a))}: ${M(`${V('g')}(${num(a)}) = ${num(gv)}`)}, ${M(`${V('h')}(${num(a)}) = ${num(hv)}`)}.`,`Subtract: ${M(`${num(gv)} ${MINUS} ${par(hv)} = ${ans}`)}. The answer is a number.`]}
+  else{const r=padd(f,g);ask=`(${V('f')} + ${V('g')})(${V('x')})`;ans=poly(r);how=[`Add like terms: ${M(ans)}.`]}
+  return{q:wp(`Let ${M(F)}, ${M(G)}, and ${M(H)}. Find ${M(ask)}.`),a:`<div>${M(ans)}</div>`+watchBox([
+      `${M(`(${V('g')} ${MINUS} ${V('h')})(3)`)} means ${M(`${V('g')}(3) ${MINUS} ${V('h')}(3)`)}. It does not mean 3 times ${M(`(${V('g')} ${MINUS} ${V('h')})(${V('x')})`)}, and the answer is a number.`,
+      `Distribute the minus to every term of the second function: ${M(`${MINUS}(${sq(V('x'))} ${MINUS} 6${V('x')} + 5) = ${MINUS}${sq(V('x'))} + 6${V('x')} ${MINUS} 5`)}.`,"Don't multiply by x."]),how,chk:()=>true}})}
+
+function fxH(lv){return tryGen(()=>{
+  const r=nz(-5,5),irr=Math.random()<.5;let quad,given,roots;
+  if(irr){const n=pick([2,3,5,7]),s=sgn();quad=[1,0,-n];given=(s<0?MINUS:'')+rad(n);roots=[[Math.sqrt(n),0],[-Math.sqrt(n),0]]}
+  else{const h=rand(-2,2),m=pick([1,2]),s=sgn();quad=[1,-2*h,h*h+m*m];given=h===0?`${s<0?MINUS:''}${m===1?'':m}${V('i')}`:`${num(h)} ${s<0?MINUS:'+'} ${m===1?'':m}${V('i')}`;roots=[[h,m],[h,-m]]}
+  const c=pmul([1,-r],quad);
+  return{q:ins('Write a polynomial of least degree with integer coefficients and leading coefficient 1 that has the given zeros. Write it in standard form.')+`<div class="seq">${M(`${num(r)}, &nbsp;${given}`)}</div>`,
+    a:`<div>${M(`${fx_()} = ${poly(c)}`)}</div>`+watchBox(["Include the conjugate, or the coefficients won't be integers.",
+      `${M(`(${V('x')} ${MINUS} ${rad(2)})(${V('x')} + ${rad(2)}) = ${sq(V('x'))} ${MINUS} 2`)}. It is not ${M(sq(V('x'))+' + 2')}, ${M(V('x')+' '+MINUS+' 2')}, or ${M(`(${V('x')} ${MINUS} 2)`)}.`,'Multiply out all the way to standard form.']),
+    how:[`${irr?'Irrational':'Complex'} zeros come in conjugate pairs, so the conjugate of ${M(given)} is also a zero.`,`The conjugate pair gives ${M(poly(quad))}.`,`Multiply by ${M(lfac(r))}: ${M(poly(c))}.`],
+    chk:()=>chkRoots(c,[[r,0],...roots])}})}
+
+function fxI(lv){return tryGen(()=>{
+  const a=pick([2,3,5]),k=pick([6,10,12,15])*sgn(),deg=rand(3,4),c=[a];for(let i=1;i<deg;i++)c.push(rand(-9,9));c.push(k);
+  const P=divisors(k),Q=divisors(a),set=new Map();P.forEach(p=>Q.forEach(q=>{const r=R(p,q);set.set(rval(r),r)}));const list=[...set.values()].sort((u,v)=>rval(u)-rval(v));
+  return{q:ins('List all possible rational zeros.')+`<div class="seq">${M(`${V('h')}(${V('x')}) = ${poly(c)}`)}</div>`,a:`<div style="font-size:.9em">${list.map(r=>M('±'+rHTML(r))).join(', ')}</div>`+watchBox([
+      `${M(V('p'))} comes from the constant and ${M(V('q'))} from the leading coefficient.`,'The leading coefficient itself is not automatically a candidate.',"Don't forget ±, and don't stop at the integers."]),
+    how:[`${M(V('p'))}: factors of the constant ${M(num(k))}: ${M('±'+P.join(', ±'))}. ${M(V('q'))}: factors of the leading coefficient ${a}: ${M('±'+Q.join(', ±'))}.`,`List every ${M(frac(V('p'),V('q')))} in lowest terms and remove duplicates.`],chk:()=>true}})}
+
+function fxJ(lv){return tryGen(()=>{
+  const a=rand(1,6),b=rand(1,6),c=pick([2,3]),d=pick([1,-1,2,-2]);if(gcd(c,Math.abs(d))!==1||a===b)return null;
+  const z3=R(-d,c);
+  if(Math.random()<.5){const shown=`(${V('x')} + ${a})(${V('x')} ${MINUS} ${b})(${c}${V('x')} ${d<0?MINUS:'+'} ${Math.abs(d)})`,zs=[R(-a),R(b),z3];
+    return{q:ins('What are the zeros?')+`<div class="seq">${M(`${fx_()} = ${shown}`)}</div>`,a:`<div>${M(zs.map(rHTML).join(', '))}</div>`+watchBox([`The zero from ${M(`(${V('x')} + 4)`)} is ${M(MINUS+'4')}.`,`The zero from ${M(`(3${V('x')} + 2)`)} is ${M(MINUS+frac(2,3))}.`]),
+      how:['Set each factor equal to 0 and solve.',`${M(`${V('x')} + ${a} = 0 → ${V('x')} = ${MINUS}${a}`)}; ${M(`${V('x')} ${MINUS} ${b} = 0 → ${V('x')} = ${b}`)}; ${M(`${c}${V('x')} ${d<0?MINUS:'+'} ${Math.abs(d)} = 0 → ${V('x')} = ${rHTML(z3)}`)}.`],chk:()=>true}}
+  const zs=[R(-a),R(b),R(d,c)],fac=`(${V('x')} + ${a})(${V('x')} ${MINUS} ${b})(${c}${V('x')} ${d<0?'+':MINUS} ${Math.abs(d)})`;
+  return{q:ins('A polynomial has these zeros. Write it in factored form.')+`<div class="seq">${M(zs.map(rHTML).join(', '))}</div>`,a:`<div>${M(`${fx_()} = ${fac}`)}</div>`+watchBox([`The zero ${M(MINUS+'4')} gives the factor ${M(`(${V('x')} + 4)`)}.`,`A fraction zero like ${M(frac(2,3))} gives ${M(`(3${V('x')} ${MINUS} 2)`)}.`]),
+    how:[`A zero ${M(V('r'))} gives the factor ${M(`(${V('x')} ${MINUS} ${V('r')})`)}: ${M(`${MINUS}${a} → (${V('x')} + ${a})`)}, ${M(`${b} → (${V('x')} ${MINUS} ${b})`)}.`,`For ${M(rHTML(zs[2]))}: ${M(`${V('x')} = ${rHTML(zs[2])} → ${c}${V('x')} = ${num(d)} → (${c}${V('x')} ${d<0?'+':MINUS} ${Math.abs(d)})`)}.`],chk:()=>true}})}
+
+const FIXUP_TYPES=[[fxA,20],[fxB,20],[fxC,10],[fxD,10],[fxE,8],[fxF,8],[fxG,8],[fxH,8],[fxI,4],[fxJ,4]];
+function genFixUps(lv){let t=Math.random()*100;for(const[g,w]of FIXUP_TYPES){if((t-=w)<0)return g(lv)}return fxA(lv)}
+
 const BUILTIN=[
   {id:'q-keyfeat',name:'Key features from a form',gen:genKeyFeat},
   {id:'q-tostd',name:'Convert to standard form',gen:genToStd},
@@ -954,6 +1099,7 @@ const BUILTIN=[
   {id:'p-fromzeros',name:'Write a polynomial from its zeros',gen:genFromZeros},
   {id:'p-endbeh',name:'End behavior',gen:genEndBeh},
   {id:'p-read',name:'Read a factored polynomial',gen:genReadFactored},
+  {id:'p-fixups',name:'Polynomial Test Fix-Ups',gen:genFixUps},
   ...UNIT3,
 ];
 
